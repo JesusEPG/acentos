@@ -1,0 +1,22 @@
+<div class="container">
+	<div class="row">
+		<div class="col-md-offset-4 col-md-4">
+			<form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+
+				<input class="form-control" placeholder="Nombre" formControlName="firstName" id="firstName">
+				
+				<input class="form-control" placeholder="Apellido" formControlName="lastName" id="lastName">
+				
+				<input class="form-control" placeholder="Nombre de Usuario" formControlName="userName" id="userName">
+				
+				<input type="password" class="form-control" placeholder="Contraseña" formControlName="password" id="password">
+				
+				<button type="submit" class="btn btn-primary" color="accent">Crear usuario</button>
+				<p style="text-align: center;">
+					¿Ya tienes un usuario?
+					<a color="primary" [routerLink]="['/signin']">Iniciar sesión</a>
+				</p>
+			</form>
+		</div>
+	</div>
+</div>

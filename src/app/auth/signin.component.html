@@ -1,0 +1,13 @@
+<form [formGroup]="signinForm" (ngSubmit)="onSubmit()">
+
+	<input class="formControl" placeholder="Nombre de Usuario" formControlName="userName" id="userName">
+	
+
+	<input type="password" class="formControl" placeholder="Contraseña" formControlName="password" id="password">
+	
+	<button type="submit" class="btn btn-primary" color="accent">Iniciar Sesión</button>
+	<p style="text-align: center;">
+		¿Eres nuevo?
+		<a color="primary" [routerLink]="['/signup']">Crear usuario</a>
+	</p>
+</form>
