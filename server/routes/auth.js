@@ -1,7 +1,6 @@
 import express from 'express'
 import jwt from 'jsonwebtoken'
 import { secret } from '../config'
-//import { findUserByEmail, users } from '../middleware' 
 import { User } from '../models'
 import Debug from 'debug'
 
@@ -10,21 +9,19 @@ import {
 	compareSync as comparePasswords
 } from 'bcryptjs'
 
-const debug = Debug('platziOverflow:auth-routes')
+const debug = Debug('acentos:auth-routes')
 
 
 const app = express.Router()
 
-/*
-
 app.post('/signin', async (req, res, next) => {
-	const { email, password } = req.body
-	const user = await User.findOne({ email }) //busca el que tenga ese email
+	const { userName, password } = req.body
+	const user = await User.findOne({ userName }) //busca el que tenga ese userName
 
 	//El usuario no existe
 	if(!user){
-		debug(`User with email ${email} not found`)
-		return handleLoginFailed(res, 'Email not found')
+		debug(`User with Username ${userName} not found`)
+		return handleLoginFailed(res, 'Username not found')
 	}
 
 	//La contraseña ingresada es invalida
@@ -43,14 +40,14 @@ app.post('/signin', async (req, res, next) => {
 		userId: user._id,
 		firstName: user.firstName,
 		lastName: user.lastName,
-		email: user.email
+		userName: user.userName
 	})
 
 })
 
 app.post('/signup', async (req, res) => {
 
-	const { firstName, lastName, email, password } = req.body
+	const { firstName, lastName, userName, password } = req.body
 	
 	//VALIDAR QUE EL USUARIO NO EXISTA
 
@@ -58,7 +55,7 @@ app.post('/signup', async (req, res) => {
 	const u = new User({
 		firstName,
 		lastName,
-		email,
+		userName,
 		password: hash(password, 10)
 	})
 	
@@ -76,9 +73,9 @@ app.post('/signup', async (req, res) => {
 			userId: newUser._id,
 			firstName,
 			lastName,
-			email
+			userName
 		})
-	  });*/
+	  });
 
 	  //Defectuoso
 	/*debug(`Creating new user ${newUser}`)
@@ -89,9 +86,8 @@ app.post('/signup', async (req, res) => {
 		userId: newUser._id,
 		firstName,
 		lastName,
-		email
+		userName
 	})*/
-/*
 
 })
 
@@ -104,6 +100,6 @@ function handleLoginFailed(res, msg){
 
 //El primer parametro de sign es la info del usuario, el segundo la clave con la que se va a encriptar la info
 //Y el tercer parametro son opciones de como se generará la encriptación
-const createToken = (user) => jwt.sign({ user }, secret, { expiresIn: 86400})*/
+const createToken = (user) => jwt.sign({ user }, secret, { expiresIn: 86400})
 
 export default app

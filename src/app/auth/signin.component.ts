@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { AuthService } from './auth.service';
+import { User } from './user.model';
+//import { AlertComponent } from 'ngx-bootstrap/alert/alert.component';
 
 
 @Component({
@@ -10,8 +13,9 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 export class SigninComponent implements OnInit {
 
 	signinForm: FormGroup;
+	alert?: any;
 
-	constructor(){}
+	constructor(private authService: AuthService){}
 
 	ngOnInit() {
 		this.signinForm = new FormGroup({
@@ -29,14 +33,13 @@ export class SigninComponent implements OnInit {
 			const { userName, password} = this.signinForm.value;
 			console.log(`Usuario: ${userName}, Contraseña: ${password}`);
 			this.signinForm.reset();
-			/*
-			const user = new User (email, password);
+
+			const user = new User (userName, password);
 			this.authService.signin(user)
 				.subscribe(
 					this.authService.login,
 					this.authService.handleError
-				);
-			*/	
+				);	
 		}
 	}
 }

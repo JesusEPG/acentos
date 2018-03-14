@@ -21,9 +21,9 @@ if(process.env.NODE_ENV === 'development') {		//indica en que entorno estamos
 // se usa 'use' porque se pueden manejar distintos tipos de request, y es cuestion donde define cada tipo
 //app.use('/api/questions', question)
 
-//app.use('/api/auth', auth)
+app.use('/api/auth', auth)
 
-app.get('/', (req, res) => res.send('Hola desde el servidor'))
+//app.get('/', (req, res) => res.send('Hola desde el servidor'))
 
 
 
