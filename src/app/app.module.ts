@@ -11,6 +11,7 @@ import { AppComponent } from './app.component';
 import { LandingComponent } from './landing/landing.component';
 import { SignupComponent } from './auth/signup.component';
 import { SigninComponent } from './auth/signin.component';
+import { ProfileComponent } from './profile/profile.component';
 
 //Services
 import { AuthService } from './auth/auth.service';
@@ -24,7 +25,8 @@ import { Routing } from './app.routing';
     AppComponent,
     LandingComponent,
     SignupComponent,
-    SigninComponent
+    SigninComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,

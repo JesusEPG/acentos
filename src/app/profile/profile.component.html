@@ -1,0 +1,8 @@
+<div *ngIf="!isLoggedIn()">
+	<h1>Not Logged In</h1>
+</div>
+
+<div *ngIf="isLoggedIn()">
+	<h1>Logged In</h1>
+	<h1>{{ fullName() }}</h1>
+</div>
