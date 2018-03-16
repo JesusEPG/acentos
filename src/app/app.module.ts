@@ -15,6 +15,8 @@ import { ProfileComponent } from './profile/profile.component';
 
 //Services
 import { AuthService } from './auth/auth.service';
+import { AuthGuard } from './auth/auth-guard.service';
+//import { JwtHelperService } from '@auth0/angular-jwt';
 
 //Routes
 import { Routing } from './app.routing';
@@ -36,7 +38,7 @@ import { Routing } from './app.routing';
     ReactiveFormsModule,
     HttpModule
   ],
-  providers: [AuthService],
+  providers: [AuthService, AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
