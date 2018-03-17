@@ -5,12 +5,13 @@ import { SigninComponent } from './auth/signin.component';
 import { SignupComponent } from './auth/signup.component';
 import { ProfileComponent } from './profile/profile.component';
 import { AuthGuard } from './auth/auth-guard.service';
+import { SigninGuard } from './auth/signin-guard.service';
 //import { QUESTION_ROUTES } from './question/question.routing';
 
 
 const APP_ROUTES: Routes = [
 	{ path: '', component: LandingComponent, pathMatch: 'full' },
-	{ path: 'signin', component: SigninComponent },
+	{ path: 'signin', component: SigninComponent, canActivate: [SigninGuard] },
 	{ path: 'signup', component: SignupComponent },
 	{ path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] }
 
