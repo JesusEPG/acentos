@@ -1,9 +1,14 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../auth/auth.service';
+import { CarouselConfig } from 'ngx-bootstrap/carousel';
 
 @Component({
 	selector: 'app-landing-component',
-	templateUrl: './landing.component.html'
+	templateUrl: './landing.component.html',
+	styleUrls: ['./landing.component.css'],
+	providers: [
+		{ provide: CarouselConfig, useValue: { interval: 3000, noPause: true, showIndicators: true } }
+	]
 })
 
 export class LandingComponent {
