@@ -13,6 +13,8 @@ import { SignupComponent } from './auth/signup.component';
 import { SigninComponent } from './auth/signin.component';
 import { ProfileComponent } from './profile/profile.component';
 import { ActivitiesComponent } from './activities/activities.component';
+import { SimpleSelectionComponent } from './simpleSelection/simpleSelection.component';
+
 
 //Services
 import { AuthService } from './auth/auth.service';
@@ -31,7 +33,8 @@ import { Routing } from './app.routing';
     SignupComponent,
     SigninComponent,
     ProfileComponent,
-    ActivitiesComponent
+    ActivitiesComponent,
+    SimpleSelectionComponent
   ],
   imports: [
     BrowserModule,
