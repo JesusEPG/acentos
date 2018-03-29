@@ -12,6 +12,7 @@ import { LandingComponent } from './landing/landing.component';
 import { SignupComponent } from './auth/signup.component';
 import { SigninComponent } from './auth/signin.component';
 import { ProfileComponent } from './profile/profile.component';
+import { ActivitiesComponent } from './activities/activities.component';
 
 //Services
 import { AuthService } from './auth/auth.service';
@@ -29,7 +30,8 @@ import { Routing } from './app.routing';
     LandingComponent,
     SignupComponent,
     SigninComponent,
-    ProfileComponent
+    ProfileComponent,
+    ActivitiesComponent
   ],
   imports: [
     BrowserModule,

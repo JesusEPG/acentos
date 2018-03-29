@@ -29,26 +29,26 @@
       
     </ul>
     <ul class="navbar-nav ml-auto" *ngIf="!isLoggedIn()">
-            <li class="nav-item">
-                <a class="nav-link" [routerLink]="['/signin']">Iniciar Sesión</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" [routerLink]="['/signup']">Registrarse</a>
-            </li>
-        </ul>
-        <ul class="navbar-nav ml-auto" *ngIf="isLoggedIn()">
-            <li class="nav-item dropdown mr-5" dropdown>
-              <a class="nav-link dropdown-toggle" dropdownToggle href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <li class="nav-item">
+            <a class="nav-link" [routerLink]="['/signin']">Iniciar Sesión</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" [routerLink]="['/signup']">Registrarse</a>
+        </li>
+    </ul>
+    <ul class="navbar-nav ml-auto" *ngIf="isLoggedIn()">
+        <li class="nav-item dropdown" dropdown>
+            <a class="nav-link dropdown-toggle" dropdownToggle id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 {{ fullName() }}
-              </a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdown" *dropdownMenu>
-                <a class="dropdown-item" [routerLink]="['/profile']" href="#">Perfil</a>
-                <a class="dropdown-item" href="#">Estadistica</a>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown" *dropdownMenu>
+                <button class="dropdown-item" type="button" [routerLink]="['/profile']">Perfil</button>
+                <button class="dropdown-item" type="button">Estadistica</button>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" (click)="logout()" href="#">Cerrar Sesión</a>
-              </div>
-            </li>
-        </ul>
+                <button class="dropdown-item" type="button" (click)="logout()">Cerrar Sesión</button>
+            </div>
+        </li>
+    </ul>
   </div>
 </nav>
 
