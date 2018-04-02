@@ -46,6 +46,10 @@ export class SimpleSelectionComponent implements OnInit {
 
 			//Verificar si es un caracter especial, no es clickeable.
 			if(/^[a-zA-ZáÁéÉíÍóÓúÚ]+$/.test(token)){
+				
+				//Se debe agregar al arreglo de respuestas correctas y de respuestas posibles
+				//Analizar los casos en que se deben ocultar o no estas palabras
+				//O si se les puede hacer click
 				return {				
 				   	word: token,
 				   	hidden: false,
