@@ -1,1 +1,30 @@
-<h1>Hola selection simple</h1>
+<div class="container mt-5">
+	<form [formGroup]="activityForm" (ngSubmit)="onSubmit()">
+		<fieldset class="form-group form-row">
+			<div class="col-sm-12">
+				<label for="user_name">Texto</label>
+				<textarea class="form-control" placeholder="Ingrese Texto" formControlName="fullString" ></textarea>
+			
+			</div>
+		</fieldset>
+		<div class="row">
+			<button class="btn btn-primary" color="accent" (click)="stringTokenizer()">Dividir</button>		
+		</div>
+		<div *ngIf="splittedString">
+			<div *ngFor="let word of splittedString">
+				<button *ngIf="word.clickeable" type="submit" class="btn btn-primary submitButton" color="accent" (click)="hideAnswer(word)">{{ word.word }}</button>
+			</div>
+		</div>
+		<div class="row">
+			<button class="btn btn-primary" color="accent" (click)="log()">Log</button>		
+		</div>
+		
+		<div class="row submit-button">
+			<button type="submit" class="btn btn-primary submitButton" color="accent">Submit</button>		
+		</div>
+		<p class="mt-3 login-message">
+			¿Ya tienes un usuario?
+			<a color="primary" [routerLink]="['/signin']">Iniciar sesión</a>
+		</p>
+	</form>
+</div>
