@@ -10,11 +10,37 @@
 		<div class="row">
 			<button class="btn btn-primary" color="accent" (click)="stringTokenizer()">Dividir</button>		
 		</div>
-		<div *ngIf="splittedString">
-			<div *ngFor="let word of splittedString">
-				<button *ngIf="word.clickeable" type="submit" class="btn btn-primary submitButton" color="accent" (click)="hideAnswer(word)">{{ word.word }}</button>
-			</div>
+		<div *ngIf="splittedString" class="clearfix mt-5">
+			
+				<div class="btn-group pull-left" role="group" aria-label="Basic example">
+				  	<div *ngFor="let word of splittedString">
+						<button *ngIf="word.clickeable" type="button" class="btn btn-secondary submitButton" color="accent" (click)="hideAnswer(word)">{{ word.word }}</button>
+					</div>
+				</div>	
 		</div>
+		<fieldset class="form-group form-row">
+			<div class="col-sm-6">
+				<label for="first_name">Respuesta Posible</label>
+				<input class="form-control" placeholder="Ingrese respuesta a agregar" formControlName="possibleAnswer" id="possibleAnswer">
+			</div>
+			
+			<button class="btn btn-primary" color="accent" (click)="addPossibleAnswer()">Add</button>		
+			
+		</fieldset>
+		<div *ngIf="correctAnswers" class="clearfix">
+			
+				<div class="btn-group pull-left" role="group" aria-label="Basic example">
+				  	<div *ngFor="let word of correctAnswers">
+						<button type="button" class="btn btn-secondary submitButton" disabled color="accent">{{ word.word }}</button>
+					</div>
+
+				  	<div *ngFor="let word of possibleAnswers">
+
+						<button *ngIf="!word.hidden" type="button" class="btn btn-secondary submitButton" color="accent" (click)="deletePossibleAnswer(word)">{{ word.word }}</button>
+					</div>
+				</div>	
+		</div>
+
 		<div class="row">
 			<button class="btn btn-primary" color="accent" (click)="log()">Log</button>		
 		</div>
