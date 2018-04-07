@@ -62,7 +62,7 @@ export class AuthService {
 		return this.http.post(url, body, { headers })
 			.map((response: Response) => {
 				const json = response.json(); //Lo que responde la ruta
-				//this.login(json);
+				this.login(json);
 				return json;
 			})
 			.catch((error: Response) => {

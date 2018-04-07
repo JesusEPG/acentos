@@ -94,8 +94,16 @@ export class SimpleSelectionComponent implements OnInit {
 
 	addCorrectAnswer(word){
 		//word.clickeable = !word.clickeable;
-		this.correctAnswers.push(word);
 		this.possibleAnswers.push(word);
+		/*const newAnswer = {
+			id: word.id,
+			word: word.word,
+			hidden: false,
+			clickeable: false,
+			possibleAnswers: [word]
+			
+		}*/
+		this.correctAnswers.push(word);
 	}
 
 	deleteCorrectAnswer(word){

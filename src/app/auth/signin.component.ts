@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AuthService } from './auth.service';
 import { User } from './user.model';
+import { Router, ActivatedRoute } from '@angular/router';
 //import { AlertComponent } from 'ngx-bootstrap/alert/alert.component';
 
 
@@ -15,8 +16,12 @@ export class SigninComponent implements OnInit {
 
 	signinForm: FormGroup;
 	alert?: any;
+	returnUrl: string;
 
-	constructor(private authService: AuthService){}
+	constructor(
+		private authService: AuthService,
+		private route: ActivatedRoute,
+        private router: Router){}
 
 	ngOnInit() {
 		this.signinForm = new FormGroup({
@@ -26,6 +31,10 @@ export class SigninComponent implements OnInit {
 			]),//valor por default y array de validaciones
 			password: new FormControl(null, Validators.required)
 		})
+
+		// get return url from route parameters or default to '/'
+        this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+        console.log(this.returnUrl);
 	}
 
 	onSubmit(){
@@ -38,7 +47,13 @@ export class SigninComponent implements OnInit {
 			const user = new User (userName, password);
 			this.authService.signin(user)
 				.subscribe(
-					this.authService.login,
+					//this.router.navigateByUrl(this.returnUrl),
+					//this.authService.login,
+					data => {
+	                    // login successful so redirect to return url
+	                    //this.authService.login;
+	                    this.router.navigateByUrl(this.returnUrl);
+	                },
 					this.authService.handleError
 				);	
 		}
