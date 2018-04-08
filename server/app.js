@@ -1,6 +1,6 @@
 import express from 'express'
 import bodyParser from 'body-parser'
-import { auth } from './routes'
+import { auth, simpleSelection } from './routes'
 
 const app = express();
 
@@ -19,7 +19,8 @@ if(process.env.NODE_ENV === 'development') {		//indica en que entorno estamos
 
 //question se encargará de decidir que va a devolver
 // se usa 'use' porque se pueden manejar distintos tipos de request, y es cuestion donde define cada tipo
-//app.use('/api/questions', question)
+
+app.use('/api/simpleSelection', simpleSelection)
 
 app.use('/api/auth', auth)
 

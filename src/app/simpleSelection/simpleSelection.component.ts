@@ -1,11 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { simpleSelectionActivity } from './simpleSelection.model';
+import { SimpleSelectionActivity } from './simpleSelection.model';
+import { SimpleSelectionService } from './simpleSelection.service';
+import { AuthService } from '../auth/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
 	selector: 'app-simple-selection-component',
 	templateUrl: './simpleSelection.component.html',
-	styleUrls: ['simpleSelection.component.css']
+	styleUrls: ['simpleSelection.component.css'],
+	providers: [SimpleSelectionService]
 })
 
 export class SimpleSelectionComponent implements OnInit {
@@ -14,7 +18,10 @@ export class SimpleSelectionComponent implements OnInit {
 	correctAnswer: any;
 	possibleAnswers: any[]=[];
 
-	//constructor(private authService: AuthService){}
+	constructor(
+		private simpleSelectionService: SimpleSelectionService,
+		private router: Router,
+		private authService: AuthService){}
 
 	ngOnInit(){
 		this.activityForm = new FormGroup({
@@ -152,24 +159,44 @@ export class SimpleSelectionComponent implements OnInit {
 			console.log(difficulty)
 			const difficultyNumber = parseInt(difficulty, 10)
 			console.log(difficulty)
-			const activity = new simpleSelectionActivity(
+			const activity = new SimpleSelectionActivity(
 				difficultyNumber,
 				comment,
 				fullString,
 				this.splittedString,
 				this.correctAnswer,
-				this.possibleAnswers
+				this.possibleAnswers,
+				new Date
 			);
 			console.log(activity);
-			/*this.authService.signin(user)
+			/*this.simpleSelectionService.signin(user)
 				.subscribe(
 					this.authService.login,
 					this.authService.handleError
 				);
 			*/
+			this.simpleSelectionService.addSimpleSelectionActivity(activity)
+				.subscribe(
+					//( {_id} ) => this.router.navigate(['/questions', _id]),
+					//this.router.navigate(['/']),
+					( {_id} ) => this.router.navigate(['/']),
+					this.authService.handleError
+				);//recibe dos funciones como parametros, la función de exito y la función de error
 		} else {
 			//snackbar con mensaje 'Verificar los datos ingresados e intentar de nuevo'
 			console.log('Not valid');
 		}
 	}
+
+	/*simpleSelectionService
+		onSubmit(form: NgForm) {
+		const q = new Question(form.value.title, form.value.description, new Date(), form.value.icon);
+		this.questionService.addQuestion(q)
+			.subscribe(
+				( {_id} ) => this.router.navigate(['/questions', _id]),
+				this.authService.handleError
+			);//recibe dos funciones como parametros, la función de exito y la función de error
+		form.resetForm();
+	}
+	*/
 }

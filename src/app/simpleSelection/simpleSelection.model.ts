@@ -1,4 +1,4 @@
-export class simpleSelectionActivity {
+export class SimpleSelectionActivity {
 	constructor(
 		public difficulty: number,
 		public comment: string,
@@ -6,6 +6,7 @@ export class simpleSelectionActivity {
 		public splittedString: any[],
 		public correctAnswer: any,
 		public possibleAnswers: any[]=[],
+		public createdAt?: Date,
 		public _id?: string 
 	) {}
 
