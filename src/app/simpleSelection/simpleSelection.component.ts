@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { simpleSelectionActivity } from './simpleSelection.model';
 
 @Component({
 	selector: 'app-simple-selection-component',
@@ -17,25 +18,23 @@ export class SimpleSelectionComponent implements OnInit {
 
 	ngOnInit(){
 		this.activityForm = new FormGroup({
-			possibleAnswer: new FormControl(null, Validators.required),
+			comment: new FormControl(null, Validators.required),
 			difficulty: new FormControl(null, Validators.required),
-			fullString: new FormControl(null, [
+			possibleAnswer: new FormControl(null), //Validar que solo acepte
+			fullString: new FormControl(null, Validators.required)
+			/*fullString: new FormControl(null, [
 				Validators.required//,
-				//Validators.pattern(/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)
-			]),
-			password: new FormControl(null, Validators.required)
+				Validators.pattern(/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)
+			]),*/
 		});
 
 	}
 
 	stringTokenizer(){
 		//this.activityForm.patchValue({fullString: 'Partial'});
-		
-		console.log(this.activityForm.value.difficulty)
 
 		//Obtengo el texto del formulario
 		let str = this.activityForm.value.fullString;
-		console.log(str);
 
 		//Se debe usar una expresión regular para que solo forme las palabras
 		//Y guarde los signos de puntuación
@@ -66,7 +65,6 @@ export class SimpleSelectionComponent implements OnInit {
 			   	clickeable: false
 			}   
 		});
-		console.log(this.splittedString);
 	}
 
 	hideAnswer(word){
@@ -96,6 +94,7 @@ export class SimpleSelectionComponent implements OnInit {
 
 	addCorrectAnswer(word){
 		//word.clickeable = !word.clickeable;
+
 		this.possibleAnswers.push(word);
 		/*const newAnswer = {
 			id: word.id,
@@ -120,6 +119,8 @@ export class SimpleSelectionComponent implements OnInit {
 
 	addPossibleAnswer(){
 		let str = this.activityForm.value.possibleAnswer;
+		this.activityForm.patchValue({possibleAnswer: null});
+		console.log(str);
 		const word = {
 				   	id: this.possibleAnswers.length,
 				   	word: str,
@@ -144,5 +145,31 @@ export class SimpleSelectionComponent implements OnInit {
 	    }
 	}
 
-	onSubmit(){}
+	onSubmit(){
+		if(this.activityForm.valid){
+			console.log(this.activityForm.value.difficulty)
+			const {difficulty, comment, fullString} = this.activityForm.value;
+			console.log(difficulty)
+			const difficultyNumber = parseInt(difficulty, 10)
+			console.log(difficulty)
+			const activity = new simpleSelectionActivity(
+				difficultyNumber,
+				comment,
+				fullString,
+				this.splittedString,
+				this.correctAnswer,
+				this.possibleAnswers
+			);
+			console.log(activity);
+			/*this.authService.signin(user)
+				.subscribe(
+					this.authService.login,
+					this.authService.handleError
+				);
+			*/
+		} else {
+			//snackbar con mensaje 'Verificar los datos ingresados e intentar de nuevo'
+			console.log('Not valid');
+		}
+	}
 }
