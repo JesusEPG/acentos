@@ -3,22 +3,22 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
 	selector: 'app-simple-selection-component',
-	templateUrl: './simpleSelection.component.html'
+	templateUrl: './simpleSelection.component.html',
+	styleUrls: ['simpleSelection.component.css']
 })
 
 export class SimpleSelectionComponent implements OnInit {
 	activityForm: FormGroup;
 	splittedString: any[];
-	correctAnswers: any[]=[];
+	correctAnswer: any;
 	possibleAnswers: any[]=[];
 
 	//constructor(private authService: AuthService){}
 
 	ngOnInit(){
 		this.activityForm = new FormGroup({
-			firstName: new FormControl(null, Validators.required),
-			lastName: new FormControl(null, Validators.required),
 			possibleAnswer: new FormControl(null, Validators.required),
+			difficulty: new FormControl(null, Validators.required),
 			fullString: new FormControl(null, [
 				Validators.required//,
 				//Validators.pattern(/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)
@@ -31,6 +31,8 @@ export class SimpleSelectionComponent implements OnInit {
 	stringTokenizer(){
 		//this.activityForm.patchValue({fullString: 'Partial'});
 		
+		console.log(this.activityForm.value.difficulty)
+
 		//Obtengo el texto del formulario
 		let str = this.activityForm.value.fullString;
 		console.log(str);
@@ -88,7 +90,7 @@ export class SimpleSelectionComponent implements OnInit {
 
 	log(){
 		console.log(this.splittedString);
-		console.log(this.correctAnswers);
+		console.log(this.correctAnswer);
 		console.log(this.possibleAnswers);
 	}
 
@@ -103,14 +105,16 @@ export class SimpleSelectionComponent implements OnInit {
 			possibleAnswers: [word]
 			
 		}*/
-		this.correctAnswers.push(word);
+		this.correctAnswer=word;
 	}
 
 	deleteCorrectAnswer(word){
 		//word.clickeable = !word.clickeable;
 		//Buscar el objeto y luego eliminarlo
-		this.remove(this.correctAnswers, word);
-		this.remove(this.possibleAnswers, word);
+		//this.remove(this.correctAnswer, word);
+		this.correctAnswer = null;
+		//this.remove(this.possibleAnswers, word);
+		this.possibleAnswers=[];
 
 	}
 

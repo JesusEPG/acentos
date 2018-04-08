@@ -1,16 +1,45 @@
 <div class="container mt-5">
 	<form [formGroup]="activityForm" (ngSubmit)="onSubmit()">
-		<fieldset class="form-group form-row">
-			<div class="col-sm-12">
+		<div class="input-group mb-3">
+			<div class="input-group-prepend">
+		    	<label class="input-group-text" for="inputGroupSelect01">Dificultad</label>
+		  	</div>
+			<select class="custom-select" formControlName="difficulty" id="inputGroupSelect01">
+				<option selected>Seleccionar...</option>
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="5">5</option>
+				<option value="6">6</option>
+				<option value="7">7</option>
+				<option value="8">8</option>
+				<option value="9">9</option>
+				<option value="10">10</option>
+
+			</select>
+		</div>
+
+		<div class="input-group">
+				<div class="input-group-prepend">
+			    	<span class="input-group-text">With textarea</span>
+			  	</div>
+			  	<textarea class="form-control" aria-label="With textarea" formControlName="fullString"></textarea>
+			  	<div class="input-group-append">
+			    	<button class="btn btn-outline-secondary" type="button" (click)="stringTokenizer()">Dividir</button>
+				</div>
+		</div>
+
+		<!--<fieldset class="form-group form-row">
+			<div class="col-sm-8">
 				<label for="user_name">Texto</label>
 				<textarea class="form-control" placeholder="Ingrese Texto" formControlName="fullString" ></textarea>
-			
 			</div>
-		</fieldset>
-		<div class="row">
-			<button class="btn btn-primary" color="accent" (click)="stringTokenizer()">Dividir</button>		
-		</div>
-		<div *ngIf="splittedString" class="clearfix mt-5">
+			<div class="col">
+				<button class="btn btn-primary ml-auto" color="accent" (click)="stringTokenizer()">Dividir</button>		
+			</div>
+		</fieldset>-->
+		<div *ngIf="splittedString" class="clearfix mt-3">
 			
 				<div class="btn-group pull-left" role="group" aria-label="Basic example">
 				  	<div *ngFor="let word of splittedString">
@@ -18,39 +47,49 @@
 					</div>
 				</div>	
 		</div>
-		<fieldset class="form-group form-row">
-			<div class="col-sm-6">
-				<label for="first_name">Respuesta Posible</label>
-				<input class="form-control" placeholder="Ingrese respuesta a agregar" formControlName="possibleAnswer" id="possibleAnswer">
-			</div>
-			
-			<button class="btn btn-primary" color="accent" (click)="addPossibleAnswer()">Add</button>		
-			
-		</fieldset>
-		<div *ngIf="correctAnswers" class="clearfix">
+		<div *ngIf="correctAnswer" class="clearfix">
+
+				<!--<fieldset class="form-group form-row mt-3">
+					<h3>Número de respuestas a agregar: {{4-possibleAnswers.length}}</h3>
+					<div class="col-sm-9">
+						<label for="first_name">Respuesta Posible</label>
+						<input class="form-control" placeholder="Ingrese respuesta a agregar" formControlName="possibleAnswer" id="possibleAnswer">
+					</div>
+					
+					<div class="col" *ngIf="possibleAnswers.length<4">
+						<button class="btn btn-primary" color="accent" (click)="addPossibleAnswer()">Add</button>		
+					</div>
+					<div class="col" *ngIf="possibleAnswers.length>3">
+						<button class="btn btn-primary" color="accent" disabled (click)="addPossibleAnswer()">Add</button>		
+					</div>
+					
+				</fieldset>-->
+
+				<div class="input-group mb-3 mt-3">
+					  	<input type="text" class="form-control" placeholder="Ingrese respuesta a agregar" aria-label="Recipient's username" aria-describedby="basic-addon2" formControlName="possibleAnswer">
+					  	<div class="input-group-append" *ngIf="possibleAnswers.length<4">
+					    	<button class="btn btn-outline-secondary" type="button" (click)="addPossibleAnswer()">Agregar</button>
+						</div>
+						<div class="input-group-append" *ngIf="possibleAnswers.length>3">
+					    	<button class="btn btn-outline-secondary" type="button" disabled>Agregar</button>
+						</div>
+				</div>
 			
 				<div class="btn-group pull-left" role="group" aria-label="Basic example">
-				  	<div *ngFor="let word of correctAnswers">
-						<button type="button" class="btn btn-secondary submitButton" disabled color="accent">{{ word.word }}</button>
-					</div>
-
+					<button type="button" class="btn btn-secondary submitButton" disabled color="accent">{{ correctAnswer.word }}</button>
+					
 				  	<div *ngFor="let word of possibleAnswers">
-
 						<button *ngIf="!word.hidden" type="button" class="btn btn-secondary submitButton" color="accent" (click)="deletePossibleAnswer(word)">{{ word.word }}</button>
 					</div>
 				</div>	
 		</div>
 
-		<div class="row">
+		<div class="row mt-5">
 			<button class="btn btn-primary" color="accent" (click)="log()">Log</button>		
 		</div>
 		
 		<div class="row submit-button">
 			<button type="submit" class="btn btn-primary submitButton" color="accent">Submit</button>		
 		</div>
-		<p class="mt-3 login-message">
-			¿Ya tienes un usuario?
-			<a color="primary" [routerLink]="['/signin']">Iniciar sesión</a>
-		</p>
 	</form>
 </div>
