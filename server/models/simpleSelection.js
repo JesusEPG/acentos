@@ -6,8 +6,9 @@ const SimpleSelectionActivitySchema = Schema({
 	difficulty: { type: Number, required: true },
 	comment: { type: String, required: true },
 	fullString: { type: String, required: true },
-	splittedString: [{type: Object, required: true}],
-	correctAnswer: {type: Object, required: true},
+	splittedString: [{}],
+	//correctAnswer: {type: Object, required: true},
+	correctAnswer: {id: Number, word: String, hidden: Boolean, clickeable: {type: Boolean, required: true}}, //correcto
 	//possibleAnswers: [{type: Object, required: true}],
 	possibleAnswers: [{}],
 	createdAt: { type: Date, required: true, default: Date.now}

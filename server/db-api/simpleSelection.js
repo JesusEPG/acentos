@@ -29,11 +29,69 @@ export default {
 	},*/
 
 	create: (actv) => {
-		console.log('Lllegue a db-api')
-		console.log(actv)
+		console.log('Llegué a db-api')
+		/* const prueba = {
+			id: actv.id,
+			word: actv.word,
+			hidden: actv.hidden
+
+		}*/
 		debug(`Creating new simple selection activity ${actv}`)
 		const activity = new SimpleSelectionActivity(actv)
 		return activity.save()
+	},
+
+	testQuery: (_id) => {
+
+			/*SimpleSelectionActivity.
+	  			find({ _id }).
+	  			select({ possibleAnswers: 1 }).
+	  			sort({ 'possibleAnswers.id': -1 }).
+	  			limit(2).	  			
+	  			exec(function (err, docs) {
+	  				if (err){
+	  					console.log(err)
+	  					return err
+	  				}
+	  				console.log(docs)
+	  				return docs
+	  			});*/
+
+	  		SimpleSelectionActivity.aggregate(
+		    [
+				// Match the document(s) of interest
+				{ "$match" : {
+					_id: _id
+				}},
+			
+				// Separate the items array into a stream of documents
+  				{ "$unwind" : "$possibleAnswers" },
+  				// Sorting pipeline
+        		{ "$sort": { "possibleAnswers.id": -1 } },
+        		// Optionally limit results
+		        { "$limit": 2 },
+		        {
+					"$project" : { _id: 0, possibleAnswers : 1}
+				}
+		        // Grouping pipeline
+		        /*{ "$group": { 
+		            "_id": '$roomId', 
+		            "recommendCount": { "$sum": 1 }
+		        }},
+		        // Optionally limit results
+		        { "$limit": 5 }*/
+		    ],
+		    function(err,result) {
+
+		       // Result is an array of documents
+		       if(err){
+		       		console.log(err)
+		       		return err
+		       }
+		       console.log(result)
+		       return result
+		    }
+		);
 	}
 
 	/*createAnswer: async (q, a) => {

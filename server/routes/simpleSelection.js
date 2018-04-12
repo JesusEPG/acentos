@@ -51,10 +51,12 @@ app.post('/', async (req, res) => {
 		createdAt
 		//user: req.user._id
 	}
-	console.log(activity)
 
 	try {
 		const savedActivity = await simpleSelection.create(activity)
+		console.log(savedActivity._id)
+		const test = await simpleSelection.testQuery(savedActivity._id)
+		console.log(test)
 		res.status(201).json(savedActivity)
 	} catch (err){
 		console.log(err)
