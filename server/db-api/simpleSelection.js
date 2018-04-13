@@ -1,6 +1,7 @@
 import Debug from 'debug'
 //import { Question, Answer } from '../models'
 import { SimpleSelectionActivity } from '../models'
+import { User } from '../models'
 
 const debug = new Debug('acentos:db-api:simpleSelection')
 
@@ -57,7 +58,7 @@ export default {
 	  				return docs
 	  			});*/
 
-	  		SimpleSelectionActivity.aggregate(
+	  		/*SimpleSelectionActivity.aggregate(
 		    [
 				// Match the document(s) of interest
 				{ "$match" : {
@@ -74,12 +75,12 @@ export default {
 					"$project" : { _id: 0, possibleAnswers : 1}
 				}
 		        // Grouping pipeline
-		        /*{ "$group": { 
-		            "_id": '$roomId', 
-		            "recommendCount": { "$sum": 1 }
-		        }},
+		        //{ "$group": { 
+		        //    "_id": '$roomId', 
+		        //    "recommendCount": { "$sum": 1 }
+		        //}},
 		        // Optionally limit results
-		        { "$limit": 5 }*/
+		        //{ "$limit": 5 }
 		    ],
 		    function(err,result) {
 
@@ -91,7 +92,17 @@ export default {
 		       console.log(result)
 		       return result
 		    }
-		);
+		);*/
+		User.updateMany({}, { $push: { activities: { activity: _id } } }, function(err,result) {
+
+		       // Result is an array of documents
+		       if(err){
+		       		console.log(err)
+		       		return err
+		       }
+		       console.log(result)
+		       return result
+		    })
 	}
 
 	/*createAnswer: async (q, a) => {

@@ -5,7 +5,8 @@ const UserSchema = Schema({
 	firstName: { type: String, required: true},
 	lastName: { type: String, required: true},
 	userName: { type: String, required: true, unique: true, index: true},
-	password: { type: String, required: true}
+	password: { type: String, required: true},
+	activities: [{}]
 
 })
 
