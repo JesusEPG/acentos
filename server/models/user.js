@@ -7,6 +7,14 @@ const UserSchema = Schema({
 	userName: { type: String, required: true, unique: true, index: true},
 	password: { type: String, required: true},
 	activities: [{}]
+	/*activities: [{ 
+		activity: { type: Schema.Types.ObjectId, ref: 'SimpleSelectionActivity', required: true},
+		difficulty: { type: Number, required: true},
+    	percentOverDue: {type: Number, required: true},
+    	//dueDate: today + interval,
+    	interval: {type: Number, required: true},
+    	lastAttempt: {type: Date, default: Date.now}
+	}]*/
 
 })
 

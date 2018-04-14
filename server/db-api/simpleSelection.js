@@ -102,7 +102,7 @@ export default {
 		       }
 		       console.log(result)
 		       return result
-		    })
+		})
 	}
 
 	/*createAnswer: async (q, a) => {
