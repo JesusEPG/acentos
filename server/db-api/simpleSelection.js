@@ -7,14 +7,14 @@ const debug = new Debug('acentos:db-api:simpleSelection')
 
 export default {
 
-	/*findAll: () => {
-		debug('Finding all questions')
+	findAll: () => {
+		debug('Finding all activities')
 		//buscar populate
-		return Question.find().populate('answers')
+		return SimpleSelectionActivity.find()
 
 	},
 
-	findById: (_id) => {
+	/*findById: (_id) => {
 		debug(`Finding question with id: ${_id}`)
 		return Question
 			.findOne({ _id })
@@ -30,19 +30,12 @@ export default {
 	},*/
 
 	create: (actv) => {
-		console.log('Llegué a db-api')
-		/* const prueba = {
-			id: actv.id,
-			word: actv.word,
-			hidden: actv.hidden
-
-		}*/
 		debug(`Creating new simple selection activity ${actv}`)
 		const activity = new SimpleSelectionActivity(actv)
 		return activity.save()
 	},
 
-	testQuery: (_id) => {
+	updateUsers: (_id, difficulty) => {
 
 			/*SimpleSelectionActivity.
 	  			find({ _id }).
@@ -93,7 +86,17 @@ export default {
 		       return result
 		    }
 		);*/
-		User.updateMany({}, { $push: { activities: { activity: _id } } }, function(err,result) {
+		/*User.updateMany({},
+			{ $push: { 
+				activities: { 
+					activity: _id,
+					difficulty: difficulty,
+					percentOverDue: 1,
+					reviewInterval: 1,
+					lastAttempt: null
+				} 
+			} 
+		}, function(err,result) {
 
 		       // Result is an array of documents
 		       if(err){
@@ -102,6 +105,16 @@ export default {
 		       }
 		       console.log(result)
 		       return result
+		})*/
+		return User.updateMany({}, { $push: { 
+				activities: { 
+					activity: _id,
+					difficulty: difficulty,
+					percentOverDue: 1,
+					reviewInterval: 1,
+					lastAttempt: null
+				} 
+			} 
 		})
 	}
 

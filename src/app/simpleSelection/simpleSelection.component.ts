@@ -154,10 +154,8 @@ export class SimpleSelectionComponent implements OnInit {
 
 	onSubmit(){
 		if(this.activityForm.valid){
-			console.log(this.activityForm.value.difficulty)
 			const {difficulty, comment, fullString} = this.activityForm.value;
-			console.log(difficulty)
-			const difficultyNumber = parseInt(difficulty, 10)
+			const difficultyNumber = parseInt(difficulty, 10) * 0.1;
 			console.log(difficulty)
 			const activity = new SimpleSelectionActivity(
 				difficultyNumber,
@@ -188,15 +186,4 @@ export class SimpleSelectionComponent implements OnInit {
 		}
 	}
 
-	/*simpleSelectionService
-		onSubmit(form: NgForm) {
-		const q = new Question(form.value.title, form.value.description, new Date(), form.value.icon);
-		this.questionService.addQuestion(q)
-			.subscribe(
-				( {_id} ) => this.router.navigate(['/questions', _id]),
-				this.authService.handleError
-			);//recibe dos funciones como parametros, la función de exito y la función de error
-		form.resetForm();
-	}
-	*/
 }

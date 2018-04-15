@@ -6,15 +6,15 @@ const UserSchema = Schema({
 	lastName: { type: String, required: true},
 	userName: { type: String, required: true, unique: true, index: true},
 	password: { type: String, required: true},
-	activities: [{}]
-	/*activities: [{ 
-		activity: { type: Schema.Types.ObjectId, ref: 'SimpleSelectionActivity', required: true},
-		difficulty: { type: Number, required: true},
-    	percentOverDue: {type: Number, required: true},
+	//activities: [{}]
+	activities: [{ 
+		activity: { type: Schema.Types.ObjectId, ref: 'SimpleSelectionActivity', required: true },
+		difficulty: { type: Number, required: true, min: 0, max: 1 },
+    	percentOverDue: {type: Number, required: true, default: 1 },
     	//dueDate: today + interval,
-    	interval: {type: Number, required: true},
-    	lastAttempt: {type: Date, default: Date.now}
-	}]*/
+    	reviewInterval: {type: Number, required: true, default: 1 },
+    	lastAttempt: {type: Number, default: null }
+	}]
 
 })
 

@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken'
 import { secret } from '../config'
 import { User } from '../models'
 import Debug from 'debug'
+import { simpleSelection } from '../db-api'
 
 import {
 	hashSync as hash,
@@ -47,23 +48,36 @@ app.post('/signin', async (req, res, next) => {
 
 app.post('/signup', async (req, res) => {
 
+	let activities = []
+
 	const { firstName, lastName, userName, password } = req.body
 	
-	//VALIDAR QUE EL USUARIO NO EXISTA
+	//VALIDAR QUE EL USUARIO NO EXISTa
 
+	const result = await simpleSelection.findAll()
+
+	result.map(function(activity){
+		activities.push({ 
+					activity: activity._id,
+					difficulty: activity.difficulty,
+					percentOverDue: 1,
+					reviewInterval: 1,
+					lastAttempt: null
+				})
+	})
 
 	const u = new User({
 		firstName,
 		lastName,
 		userName,
-		password: hash(password, 10)
+		password: hash(password, 10),
+		activities
 	})
 	
 
 	//const newUser = await u.save()
 	u.save(function (err, newUser) {
-	    if (err) return console.error(err);
-	    console.log(newUser);
+	    if (err) return console.error(err); //Hacer handle error
 
 	    debug(`Creating new user ${newUser}`)
 		const token = createToken(newUser)
@@ -76,18 +90,6 @@ app.post('/signup', async (req, res) => {
 			userName
 		})
 	  });
-
-	  //Defectuoso
-	/*debug(`Creating new user ${newUser}`)
-	const token = createToken(newUser)
-	res.status(201).json({
-		message: 'User saved',
-		token,
-		userId: newUser._id,
-		firstName,
-		lastName,
-		userName
-	})*/
 
 })
 

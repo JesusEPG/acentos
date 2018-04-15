@@ -56,7 +56,9 @@ app.post('/', async (req, res) => {
 		const savedActivity = await simpleSelection.create(activity)
 		console.log(savedActivity._id)
 		try {
-			const test = await simpleSelection.testQuery(savedActivity._id)
+			//Hacer que updateUsers sea una promesa para poder validar errores
+			const test = await simpleSelection.updateUsers(savedActivity._id, savedActivity.difficulty)
+			console.log(`Testing ${test}`)
 			console.log(test)
 			res.status(201).json(savedActivity)
 		} catch (err) {
