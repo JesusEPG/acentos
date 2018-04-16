@@ -25,7 +25,9 @@
 			<div class="input-group-prepend">
 				<span class="input-group-text">Comentario</span>
 			</div>
-			<textarea class="form-control" aria-label="With textarea" formControlName="comment"></textarea>
+			<textarea class="form-control" aria-label="With textarea" formControlName="comment" #comment></textarea>
+			<br>
+			<small class="form-text text-muted"><code>{{comment.value.length}}</code> of <code>200</code> characters</small>
 		</div>
 
 		<div class="input-group">
@@ -38,16 +40,26 @@
 
 		<div *ngIf="splittedString" class="clearfix mt-2">
 			
-				<div class="btn-group pull-left" role="group" aria-label="Basic example">
+				<!--<div class="btn-group pull-left" role="group" aria-label="Basic example">
 				  	<div *ngFor="let word of splittedString">
 						<button *ngIf="word.clickeable" type="button" class="btn btn-secondary submitButton" color="accent" (click)="hideAnswer(word)">{{ word.word }}</button>
 					</div>
-				</div>	
+				</div>-->
+
+				<div class="row">
+			        <div class="col-12">
+						<div *ngFor="let word of splittedString" class="btn-group" role="group" aria-label="Basic example">
+						  	
+							<button *ngIf="word.clickeable" type="button" class="btn btn-secondary submitButton mb-2" color="accent" (click)="hideAnswer(word)">{{ word.word }}</button>
+						
+						</div>
+			    	</div>
+    			</div>	
 		</div>
 		<div *ngIf="correctAnswer" class="clearfix">
 
 				
-				<div class="input-group mb-2 mt-3">
+				<div class="input-group mb-2 mt-1">
 					  	<input type="text" class="form-control" placeholder="Ingrese respuesta a agregar" aria-label="Recipient's username" aria-describedby="basic-addon2" formControlName="possibleAnswer" onkeydown="if (event.keyCode == 13) return false">
 					  	<div class="input-group-append" *ngIf="possibleAnswers.length<4">
 					    	<button class="btn btn-outline-secondary" type="button" (click)="addPossibleAnswer()">Agregar</button>
@@ -63,7 +75,45 @@
 				  	<div *ngFor="let word of possibleAnswers">
 						<button *ngIf="!word.hidden" type="button" class="btn btn-secondary submitButton" color="accent" (click)="deletePossibleAnswer(word)">{{ word.word }}</button>
 					</div>
-				</div>	
+				</div>
+
+				<!-- ESTE ES
+				<div class="row">
+			        <div class="col-12">
+			        	<div class="btn-group pull-left" role="group" aria-label="Basic example">
+			        		<button type="button" class="btn btn-secondary submitButton" disabled color="accent">{{ correctAnswer.word }}</button>
+
+			        		<div *ngFor="let word of possibleAnswers" class="btn-group">
+								<button *ngIf="!word.hidden" type="button" class="btn btn-secondary submitButton" color="accent" (click)="deletePossibleAnswer(word)">{{ word.word }}</button>
+							</div>
+						</div>
+			    	</div>
+    			</div>-->
+
+    			<!--<div class="row">
+			        <div class="col-12">
+			        	<button type="button" class="btn btn-secondary btn-sm">{{ correctAnswer.word }}</button>
+			        		
+
+			        		<div *ngFor="let word of possibleAnswers">
+								<button *ngIf="!word.hidden" type="button" class="btn btn-secondary submitButton" color="accent" (click)="deletePossibleAnswer(word)">{{ word.word }}</button>
+							</div>
+			    	</div>
+    			</div>-->
+
+    			<!--<div class="row">
+			        <div class="col col-md-3">
+			        	<button type="button" class="btn btn-secondary">{{ correctAnswer.word }}</button>
+			       	</div>
+			       	<div>
+			       		
+			       	</div>
+			    	<div class="col col-md-3" *ngFor="let word of possibleAnswers">
+			    		
+						<button *ngIf="!word.hidden" type="button" class="btn btn-secondary submitButton" color="accent" (click)="deletePossibleAnswer(word)">{{ word.word }}</button>
+					
+			    	</div>
+    			</div>-->
 		</div>
 
 		<!--<div class="row mt-5">

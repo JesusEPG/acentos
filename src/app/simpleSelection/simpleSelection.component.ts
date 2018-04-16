@@ -28,7 +28,7 @@ export class SimpleSelectionComponent implements OnInit {
 			comment: new FormControl(null, Validators.required),
 			difficulty: new FormControl(null, Validators.required),
 			possibleAnswer: new FormControl(null), //Validar que solo acepte
-			fullString: new FormControl(null, Validators.required)
+			fullString: new FormControl(null, [Validators.required, Validators.max(200)])
 			/*fullString: new FormControl(null, [
 				Validators.required//,
 				Validators.pattern(/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)
@@ -38,8 +38,7 @@ export class SimpleSelectionComponent implements OnInit {
 	}
 
 	stringTokenizer(){
-		//this.activityForm.patchValue({fullString: 'Partial'});
-
+		
 		//Obtengo el texto del formulario
 		let str = this.activityForm.value.fullString;
 
@@ -54,7 +53,7 @@ export class SimpleSelectionComponent implements OnInit {
 		this.splittedString = tokens.map(function(token, index) {
 
 			//Verificar si es un caracter especial, no es clickeable.
-			if(/^[a-zA-ZáÁéÉíÍóÓúÚ]+$/.test(token)){
+			if(/^[a-zA-ZáÁéÉíÍóÓúÚñÑ]+$/.test(token)){
 				
 				return {
 					//id: window.performance && window.performance.now && window.performance.timing && window.performance.timing.navigationStart ? window.performance.now() + window.performance.timing.navigationStart : Date.now(),				
