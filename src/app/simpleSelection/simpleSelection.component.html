@@ -24,18 +24,26 @@
 		<div class="input-group mb-2">
 			<div class="input-group-prepend">
 				<span class="input-group-text">Comentario</span>
+				<span class="input-group-text"><code>{{comment.value.length}}/100</code></span>
+				<!--<small class="form-text text-muted"><code>{{comment.value.length}}</code> of <code>200</code> characters</small>-->
 			</div>
 			<textarea class="form-control" aria-label="With textarea" formControlName="comment" #comment></textarea>
-			<br>
-			<small class="form-text text-muted"><code>{{comment.value.length}}</code> of <code>200</code> characters</small>
+		</div>
+
+		<div *ngIf="comment.value.length>10" class="alert alert-warning" role="alert">
+			  Tienes más de los caracteres permitidos!
 		</div>
 
 		<div class="input-group">
-			  	<textarea class="form-control" placeholder="Ingrese texto" aria-label="With textarea" formControlName="fullString"></textarea>
+			  	<textarea class="form-control" placeholder="Ingrese texto" aria-label="With textarea" formControlName="fullString" #fullString></textarea>
 			  	<div class="input-group-append">
 			    	<!--<button class="btn btn-outline-secondary" type="button" color="accent" (click)="stringTokenizer()">Dividir</button>-->
-			    	<button class="btn btn-primary" type="button" color="accent" (click)="stringTokenizer()">Dividir</button>
+			    	<button class="btn btn-primary btn-sm" type="button" color="accent" (click)="stringTokenizer()">Dividir</button>
 				</div>
+		</div>
+
+		<div *ngIf="fullString.value.length>10" class="alert alert-warning" role="alert">
+			  Tienes más de los caracteres permitidos!
 		</div>
 
 		<div *ngIf="splittedString" class="clearfix mt-2">

@@ -1,1 +1,1 @@
-export { default as simpleSelection } from './simpleSelection'
+export { default as activities } from './activities'

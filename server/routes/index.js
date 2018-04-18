@@ -1,2 +1,2 @@
 export { default as auth } from './auth'
-export { default as simpleSelection } from './simpleSelection'
+export { default as activities } from './activities'

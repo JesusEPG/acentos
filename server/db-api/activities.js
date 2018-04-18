@@ -2,8 +2,9 @@ import Debug from 'debug'
 //import { Question, Answer } from '../models'
 import { SimpleSelectionActivity } from '../models'
 import { User } from '../models'
+import mongoose from 'mongoose'
 
-const debug = new Debug('acentos:db-api:simpleSelection')
+const debug = new Debug('acentos:db-api:activities')
 
 export default {
 
@@ -12,6 +13,59 @@ export default {
 		//buscar populate
 		return SimpleSelectionActivity.find()
 
+	},
+
+	findSelectionActivities: (_id) => {
+		const id = mongoose.Types.ObjectId(_id)
+		return User.aggregate(
+		    [
+				// Match the user id
+				{ "$match" : {
+					_id: id
+				}},
+				// Separate the items array into a stream of documents
+  				{ "$unwind" : "$activities" },
+  				// Sorting pipeline
+        		{ "$sort": { "activities.difficulty": -1 } },
+        		// Optionally limit results
+		        { "$limit": 2 },
+		        {
+		        	//Aquí van los campos que me voy a traer de cada activity
+					"$project" : { 
+						"_id": 0,
+						"activities":1 }
+				},
+				{
+					$lookup: {
+			        	from: "simpleselectionactivities",
+			        	localField: "activities.activity",    // field in the orders collection
+			        	foreignField: "_id",  // field in the items collection
+			        	as: "fromActivities"
+			      	}
+			  	}
+				//{ $project: { fromItems: 0 } }
+		        // Grouping pipeline
+		        //{ "$group": { 
+		        //    "_id": '$roomId', 
+		        //    "recommendCount": { "$sum": 1 }
+		        //}},
+		        // Optionally limit results
+		        //{ "$limit": 5 }
+		    ]/*,
+		    function(err,result) {
+
+		       // Result is an array of documents
+		       if(err){
+		       		console.log(err)
+		       		return err
+		       }
+
+		       console.log(result)
+		       //console.log(result[0].fromActivities[0])
+
+		       return result
+		    }*/
+		)
 	},
 
 	/*findById: (_id) => {

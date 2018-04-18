@@ -13,6 +13,7 @@ import { SignupComponent } from './auth/signup.component';
 import { SigninComponent } from './auth/signin.component';
 import { ProfileComponent } from './profile/profile.component';
 import { ActivitiesComponent } from './activities/activities.component';
+import { SelectionActivitiesComponent } from './activities/selectionActivities.component';
 import { SimpleSelectionComponent } from './simpleSelection/simpleSelection.component';
 
 
@@ -34,6 +35,7 @@ import { Routing } from './app.routing';
     SigninComponent,
     ProfileComponent,
     ActivitiesComponent,
+    SelectionActivitiesComponent,
     SimpleSelectionComponent
   ],
   imports: [

@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken'
 import { secret } from '../config'
 import { User } from '../models'
 import Debug from 'debug'
-import { simpleSelection } from '../db-api'
+import { activities } from '../db-api'
 
 import {
 	hashSync as hash,
@@ -18,7 +18,10 @@ const app = express.Router()
 app.post('/signin', async (req, res, next) => {
 	const { userName, password } = req.body
 	const user = await User.findOne({ userName }) //busca el que tenga ese userName
-	await simpleSelection.testQuery(user._id)
+	console.log(user._id)
+	let result = await activities.testQuery(user._id)
+	console.log(result)
+	console.log(result[0].fromActivities[0])
 
 	//El usuario no existe
 	if(!user){
@@ -49,16 +52,16 @@ app.post('/signin', async (req, res, next) => {
 
 app.post('/signup', async (req, res) => {
 
-	let activities = []
+	let newActivities = []
 
 	const { firstName, lastName, userName, password } = req.body
 	
 	//VALIDAR QUE EL USUARIO NO EXISTa
 
-	const result = await simpleSelection.findAll()
+	const result = await activities.findAll()
 
 	result.map(function(activity){
-		activities.push({ 
+		newActivities.push({ 
 					activity: activity._id,
 					difficulty: activity.difficulty,
 					percentOverDue: 1,
@@ -72,7 +75,7 @@ app.post('/signup', async (req, res) => {
 		lastName,
 		userName,
 		password: hash(password, 10),
-		activities
+		newActivities
 	})
 	
 

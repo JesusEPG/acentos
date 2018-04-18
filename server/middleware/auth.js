@@ -2,7 +2,7 @@ import Debug from 'debug'
 import { secret } from '../config'
 import jwt from 'jsonwebtoken'
 
-const debug = Debug('platziOverflow:auth-middleware')
+const debug = Debug('acentos:auth-middleware')
 
 
 export const required = (req, res, next) => {

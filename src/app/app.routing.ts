@@ -8,7 +8,8 @@ import { AuthGuard } from './auth/auth-guard.service';
 import { SigninGuard } from './auth/signin-guard.service';
 import { ActivitiesComponent } from './activities/activities.component';
 import { SimpleSelectionComponent } from './simpleSelection/simpleSelection.component';
-//import { QUESTION_ROUTES } from './question/question.routing';
+import { SelectionActivitiesComponent } from './activities/selectionActivities.component';
+import { ACTIVITIES_ROUTES } from './activities/activities.routing';
 
 
 const APP_ROUTES: Routes = [
@@ -16,7 +17,10 @@ const APP_ROUTES: Routes = [
 	{ path: 'signin', component: SigninComponent, canActivate: [SigninGuard] },
 	{ path: 'signup', component: SignupComponent },
 	{ path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
-	{ path: 'activities', component: ActivitiesComponent},
+	//{ path: 'activities', component: ActivitiesComponent},
+	{ path: 'activities', children: ACTIVITIES_ROUTES },
+
+	//{ path: 'selection', component: SelectionActivitiesComponent},
 	{ path: 'simpleSelection', component: SimpleSelectionComponent}
 
 	//{ path: 'questions', children: QUESTION_ROUTES }
