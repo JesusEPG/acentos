@@ -23,14 +23,14 @@ app.get('/selection', required, async (req, res) => {
 			return {
 				activity: activity.activities.activity,
 				difficulty: activity.activities.difficulty,
+				lastAttempt: activity.activities.lastAttempt,
+				reviewInterval: activity.activities.reviewInterval,
+				percentOverDue: activity.activities.percentOverDue,
 				correctAnswer: activity.fromActivities[0].correctAnswer,
 				possibleAnswers: activity.fromActivities[0].possibleAnswers,
 				splittedString: activity.fromActivities[0].splittedString,
 				comment: activity.fromActivities[0].comment,
-				fullString: activity.fromActivities[0].fullString,
-				lastAttempt: activity.activities.lastAttempt,
-				reviewInterval: activity.activities.reviewInterval,
-				percentOverDue: activity.activities.percentOverDue 
+				fullString: activity.fromActivities[0].fullString
 			}
 		})
 		//console.log(simpleSelectionActivities)
@@ -54,6 +54,29 @@ app.get('/selection', required, async (req, res) => {
 	}
 
 })*/
+
+//	POST  /api/simpleSelection
+//app.post('/', required, async (req, res) => {
+app.post('/updateSelectionActivities', required, async (req, res) => {
+
+	console.log('Llegó al post del update');
+	console.log('GUARDANDOOOOOOOOOO');
+
+	const toUpdate = req.body
+
+	toUpdate.forEach( async function(activity, index) {
+		// statements
+		try {
+			const savedActivity = await activities.updateActivities(req.user._id, activity)
+			console.log(savedActivity)
+		} catch (err){
+			console.log(err)
+			//handleError(err, res)
+		}
+	})
+
+	res.status(201).json({message: 'Todo Bien'})
+})
 
 //	POST  /api/simpleSelection
 //app.post('/', required, async (req, res) => {

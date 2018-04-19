@@ -60,7 +60,9 @@ app.post('/signup', async (req, res) => {
 
 	const result = await activities.findAll()
 
-	result.map(function(activity){
+	result.forEach(function(activity){
+		console.log('Agregando: ')
+		console.log(activity)
 		newActivities.push({ 
 					activity: activity._id,
 					difficulty: activity.difficulty,
@@ -70,12 +72,24 @@ app.post('/signup', async (req, res) => {
 				})
 	})
 
+	console.log(newActivities)
+
+	/*result.map(function(activity){
+		newActivities.push({ 
+					activity: activity._id,
+					difficulty: activity.difficulty,
+					percentOverDue: 1,
+					reviewInterval: 1,
+					lastAttempt: null
+				})
+	})*/
+
 	const u = new User({
 		firstName,
 		lastName,
 		userName,
 		password: hash(password, 10),
-		newActivities
+		activities: newActivities
 	})
 	
 

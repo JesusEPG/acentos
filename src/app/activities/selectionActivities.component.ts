@@ -12,6 +12,7 @@ import { WORST, BEST, CORRECT, DAY_IN_MINISECONDS, calculate } from './sm2-plus.
 export class SelectionActivitiesComponent {
 
 	activities: SelectionActivity[];
+	updatedActivities: SelectionActivity[];
 	//Verificar si selectedAnswers será object o String
 	selectedAnswers: any[] =[];
 	counter:number = 0;
@@ -75,13 +76,22 @@ export class SelectionActivitiesComponent {
 		} else {
 			this.loading = true;
 
-			let updatedActivities = this.activities.map(function(activity, index){
+			this.updatedActivities = this.activities.map(function(activity, index){
 				if(this.selectedAnswers[index].word === activity.correctAnswer.word){
 					//respuesta correcta
 					console.log('Correcto');
 					//calcular cambios del algoritmo
-					const newValues = calculate(activity, CORRECT, Math.round(new Date().getTime() / DAY_IN_MINISECONDS))
-					console.log(newValues);
+					//const newValues = calculate(activity, CORRECT, Math.round(new Date().getTime() / DAY_IN_MINISECONDS))
+					//console.log(newValues);
+
+					//new values
+					return new SelectionActivity(
+						activity.activity,
+						activity.difficulty+1,
+						activity.lastAttempt,
+						activity.reviewInterval,
+						activity.percentOverDue
+					);
 			/*		return {
 						activity: activity.activity ,
 						difficulty: ,
@@ -92,8 +102,16 @@ export class SelectionActivitiesComponent {
 				} else {
 					//respuesta erronea
 					console.log('Incorrecto');
-					const newValues = calculate(activity, WORST, Math.round(new Date().getTime() / DAY_IN_MINISECONDS))
-					console.log(newValues);
+					//const newValues = calculate(activity, WORST, Math.round(new Date().getTime() / DAY_IN_MINISECONDS))
+					//console.log(newValues);
+					//new values
+					return new SelectionActivity(
+						activity.activity,
+						activity.difficulty+1,
+						activity.lastAttempt,
+						activity.reviewInterval,
+						activity.percentOverDue
+					);
 					/*return {
 						activity: activity.activity ,
 						difficulty: ,
@@ -104,6 +122,14 @@ export class SelectionActivitiesComponent {
 				}
 			},this)
 			//Hacer el post para actualizar las actividades enviando updatedAnswers
+
+			//const q = new Question(form.value.title, form.value.description, new Date(), form.value.icon);
+			this.activitiesService.updateActivities(this.updatedActivities)
+				.subscribe(
+					//( {_id} ) => this.router.navigate(['/', _id]),
+					() => console.log('Todo bien'),
+					this.activitiesService.handleError
+				);//recibe dos funciones como parametros, la función de exito y la función de error
 			//Cuando responda la bdd hacer loading = false
 			//En el cliente hacer un *ngIf="!loading && selectedAnswers.length === 9"
 			//this.counter = 0;

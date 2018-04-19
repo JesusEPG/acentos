@@ -144,6 +144,18 @@ export default {
 		)
 	},
 
+	updateActivities: (_id, activity) => {
+	
+		return User.update({"_id": _id, "activities.activity": activity.activity }, { $set: { 
+					
+				"activities.$.difficulty": activity.difficulty,
+				"activities.$.lastAttempt": activity.lastAttempt,
+				"activities.$.reviewInterval": activity.reviewInterval,
+				"activities.$.percentOverDue": activity.percentOverDue
+			} 
+		})
+	},
+
 	updateUsers: (_id, difficulty) => {
 
 			/*SimpleSelectionActivity.

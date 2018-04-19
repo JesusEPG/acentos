@@ -37,6 +37,16 @@ export class ActivitiesService {
 			.catch(this.handleError);								//Error
 	}
 
+	updateActivities(activities: SelectionActivity[]) {
+		const body = JSON.stringify(activities);
+		const headers = new Headers({'Content-Type': 'application/json'});
+		const token = this.getToken();
+		const url = this.activitiesUrl + '/updateSelectionActivities' + token;
+		return this.http.post(url, body, { headers })
+			.map((response: Response) => response.json())
+			.catch((error: Response) => Observable.throw(error.json()));
+	}
+
 	/*getQuestion(id): Promise<void | Question>{
 		const url = urljoin(this.questionsUrl, id);
 		return this.http.get(url)
