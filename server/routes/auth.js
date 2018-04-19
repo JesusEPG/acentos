@@ -106,6 +106,6 @@ function handleLoginFailed(res, msg){
 
 //El primer parametro de sign es la info del usuario, el segundo la clave con la que se va a encriptar la info
 //Y el tercer parametro son opciones de como se generará la encriptación
-const createToken = (user) => jwt.sign({ user }, secret, /*{ expiresIn: 86400}*/{ expiresIn: 600})
+const createToken = (user) => jwt.sign({ user }, secret, /*{ expiresIn: 86400}*/{ expiresIn: 6000})
 
 export default app

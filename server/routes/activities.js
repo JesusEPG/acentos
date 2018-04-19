@@ -13,12 +13,30 @@ const app = express.Router()
 // 	GET	/api/activities
 app.get('/selection', required, async (req, res) => {
 
+	console.log(req.user._id)
 	try {
 		const simpleSelectionActivities = await activities.findSelectionActivities(req.user._id)
 		//let result = await activities.testQuery(req.user._id)
-		//console.log(result)
+		console.log('Selection')
 		console.log(simpleSelectionActivities)
-		res.status(200).json(simpleSelectionActivities)
+		let result = simpleSelectionActivities.map(function(activity, index){
+			return {
+				activity: activity.activities.activity,
+				difficulty: activity.activities.difficulty,
+				correctAnswer: activity.fromActivities[0].correctAnswer,
+				possibleAnswers: activity.fromActivities[0].possibleAnswers,
+				splittedString: activity.fromActivities[0].splittedString,
+				comment: activity.fromActivities[0].comment,
+				fullString: activity.fromActivities[0].fullString,
+				lastAttempt: activity.activities.lastAttempt,
+				reviewInterval: activity.activities.reviewInterval,
+				percentOverDue: activity.activities.percentOverDue 
+			}
+		})
+		//console.log(simpleSelectionActivities)
+		console.log('Resultado')
+		console.log(result)
+		res.status(200).json(result)
 	} catch (err) {
 		handleError(err, res)
 	}
