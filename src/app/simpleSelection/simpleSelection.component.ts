@@ -41,6 +41,7 @@ export class SimpleSelectionComponent implements OnInit {
 		
 		//Obtengo el texto del formulario
 		let str = this.activityForm.value.fullString;
+		str.trim();
 
 		//Se debe usar una expresión regular para que solo forme las palabras
 		//Y guarde los signos de puntuación
@@ -158,7 +159,7 @@ export class SimpleSelectionComponent implements OnInit {
 			console.log(difficulty)
 			const activity = new SimpleSelectionActivity(
 				difficultyNumber,
-				comment,
+				comment.trim(),
 				fullString,
 				this.splittedString,
 				this.correctAnswer,

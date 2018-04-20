@@ -2,7 +2,7 @@ export class SelectionActivity {
 	constructor(
 		public activity: string,
 		public difficulty: number,
-		public lastAttempt: number,
+		public lastAttempt: Date,
 		public reviewInterval: number,
 		public percentOverDue: number,
 		public correctAnswer?: any,

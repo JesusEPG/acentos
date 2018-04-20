@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { SelectionActivity } from './selectionActivity.model';
 import { ActivitiesService } from './activities.service';
-import { WORST, BEST, CORRECT, DAY_IN_MINISECONDS, calculate } from './sm2-plus.module';
+import { WORST, BEST, CORRECT, INCORRECT, review } from './sm2-plus.module';
 
 @Component({
 	selector: 'app-selection-component',
@@ -14,6 +14,9 @@ export class SelectionActivitiesComponent {
 	activities: SelectionActivity[];
 	updatedActivities: SelectionActivity[];
 	//Verificar si selectedAnswers será object o String
+	//En el html, si selectedAnswers[counter] está vació
+	//Se muestra la oración con una ralla en donde toque la respuesta correcta
+	//De no estar vacío se muestra lo que se haya seleccionado
 	selectedAnswers: any[] =[];
 	counter:number = 0;
 	loading = true;
@@ -26,7 +29,7 @@ export class SelectionActivitiesComponent {
 		console.log(WORST)
 		console.log(BEST)
 		console.log(CORRECT)
-		console.log(calculate)
+		//console.log(calculate)
 		this.activitiesService
 			.getSelectionActivities()
 			.then((activities: SelectionActivity[]) => {
@@ -81,16 +84,16 @@ export class SelectionActivitiesComponent {
 					//respuesta correcta
 					console.log('Correcto');
 					//calcular cambios del algoritmo
-					//const newValues = calculate(activity, CORRECT, Math.round(new Date().getTime() / DAY_IN_MINISECONDS))
-					//console.log(newValues);
+					const newValues = review(activity, CORRECT)
+					console.log(newValues);
 
 					//new values
 					return new SelectionActivity(
 						activity.activity,
-						activity.difficulty+1,
-						activity.lastAttempt,
-						activity.reviewInterval,
-						activity.percentOverDue
+						newValues.difficulty,
+						newValues.lastAttempt,
+						newValues.reviewInterval,
+						newValues.percentOverDue
 					);
 			/*		return {
 						activity: activity.activity ,
@@ -104,13 +107,15 @@ export class SelectionActivitiesComponent {
 					console.log('Incorrecto');
 					//const newValues = calculate(activity, WORST, Math.round(new Date().getTime() / DAY_IN_MINISECONDS))
 					//console.log(newValues);
+					const newValues = review(activity, INCORRECT)
+					console.log(newValues);
 					//new values
 					return new SelectionActivity(
 						activity.activity,
-						activity.difficulty+1,
-						activity.lastAttempt,
-						activity.reviewInterval,
-						activity.percentOverDue
+						newValues.difficulty,
+						newValues.lastAttempt,
+						newValues.reviewInterval,
+						newValues.percentOverDue
 					);
 					/*return {
 						activity: activity.activity ,

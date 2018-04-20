@@ -18,16 +18,16 @@ export default {
 		return User.aggregate(
 		    [
 				// Match the user id
-				{ "$match" : {
-					_id: id
-				}},
+				//{ $match: { $and: [ { "_id": id }, {"activities.type": "Seleccion Simple"} ] } }, { $eq: [ "$qty", 250 ]
+				//{ $match: { $and: [ {"_id": id }, {"activities.type": "Seleccion Simple" } ] } },
+				{ $match: {_id: id}},
+  				//{ $match: {"activities.$.type": 'Seleccion Simple'}},
+
 				// Separate the items array into a stream of documents
   				{ "$unwind" : "$activities" },
-  				{ "$match" : {
-					"activities.type": "Seleccion Simple"
-				}},
+  				{ $match: {"activities.type": 'Seleccion Simple'}},
   				// Sorting pipeline
-        		{ "$sort": { "activities.difficulty": -1 } },
+        		{ "$sort": { "activities.percentOverDue": -1 } },
         		// Optionally limit results
 		        { "$limit": 2 },
 		        {
@@ -38,7 +38,7 @@ export default {
 				},
 				{
 					$lookup: {
-			        	from: "simpleselectionactivities",
+			        	from: "selectionactivities",
 			        	localField: "activities.activity",    // field in the orders collection
 			        	foreignField: "_id",  // field in the items collection
 			        	as: "fromActivities"
