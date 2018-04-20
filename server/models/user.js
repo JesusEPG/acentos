@@ -9,11 +9,12 @@ const UserSchema = Schema({
 	//activities: [{}]
 	activities: [{ 
 		activity: { type: Schema.Types.ObjectId, ref: 'SimpleSelectionActivity', required: true },
+		type: {type: String, required: true},
 		difficulty: { type: Number, required: true, min: 0, max: 1 },
     	percentOverDue: {type: Number, required: true, default: 1 },
     	//dueDate: today + interval,
     	reviewInterval: {type: Number, required: true, default: 1 },
-    	lastAttempt: {type: Number, default: null }
+    	lastAttempt: {type: Date, default: new Date() }
 	}]
 
 })

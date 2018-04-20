@@ -2,7 +2,7 @@ import mongoose, { Schema } from 'mongoose'
 
 //const { ObjectId } = Schema.Types
 
-const SimpleSelectionActivitySchema = Schema({
+const SelectionActivitySchema = Schema({
 	difficulty: { type: Number, required: true },
 	comment: { type: String, required: true },
 	fullString: { type: String, required: true },
@@ -17,4 +17,4 @@ const SimpleSelectionActivitySchema = Schema({
 })
 
 
-export default mongoose.model('SimpleSelectionActivity', SimpleSelectionActivitySchema)
+export default mongoose.model('SelectionActivity', SelectionActivitySchema)

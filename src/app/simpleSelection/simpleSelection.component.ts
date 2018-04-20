@@ -25,10 +25,10 @@ export class SimpleSelectionComponent implements OnInit {
 
 	ngOnInit(){
 		this.activityForm = new FormGroup({
-			comment: new FormControl(null, [Validators.required, Validators.maxLength(10)]),
+			comment: new FormControl(null, [Validators.required, Validators.maxLength(50)]),
 			difficulty: new FormControl(null, Validators.required),
 			possibleAnswer: new FormControl(null), //Validar que solo acepte
-			fullString: new FormControl(null, [Validators.required, Validators.maxLength(10)])
+			fullString: new FormControl(null, [Validators.required, Validators.maxLength(50)])
 			/*fullString: new FormControl(null, [
 				Validators.required//,
 				Validators.pattern(/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)

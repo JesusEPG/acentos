@@ -1,17 +1,15 @@
 import Debug from 'debug'
 //import { Question, Answer } from '../models'
-import { SimpleSelectionActivity } from '../models'
-import { User } from '../models'
+import { SelectionActivity, User } from '../models'
 import mongoose from 'mongoose'
 
 const debug = new Debug('acentos:db-api:activities')
 
 export default {
 
-	findAll: () => {
+	findAllSelectionActivities: () => {
 		debug('Finding all activities')
-		//buscar populate
-		return SimpleSelectionActivity.find()
+		return SelectionActivity.find()
 
 	},
 
@@ -25,6 +23,9 @@ export default {
 				}},
 				// Separate the items array into a stream of documents
   				{ "$unwind" : "$activities" },
+  				{ "$match" : {
+					"activities.type": "Seleccion Simple"
+				}},
   				// Sorting pipeline
         		{ "$sort": { "activities.difficulty": -1 } },
         		// Optionally limit results
@@ -83,9 +84,9 @@ export default {
 			})
 	},*/
 
-	create: (actv) => {
+	createSelectionActivity: (actv) => {
 		debug(`Creating new simple selection activity ${actv}`)
-		const activity = new SimpleSelectionActivity(actv)
+		const activity = new SelectionActivity(actv)
 		return activity.save()
 	},
 
@@ -144,7 +145,7 @@ export default {
 		)
 	},
 
-	updateActivities: (_id, activity) => {
+	updateUserSelectionActivities: (_id, activity) => {
 	
 		return User.update({"_id": _id, "activities.activity": activity.activity }, { $set: { 
 					
@@ -156,9 +157,9 @@ export default {
 		})
 	},
 
-	updateUsers: (_id, difficulty) => {
+	updateSelectionActivities: (_id, difficulty) => {
 
-			/*SimpleSelectionActivity.
+			/*SelectionActivity.
 	  			find({ _id }).
 	  			select({ possibleAnswers: 1 }).
 	  			sort({ 'possibleAnswers.id': -1 }).
@@ -172,7 +173,7 @@ export default {
 	  				return docs
 	  			});*/
 
-	  		/*SimpleSelectionActivity.aggregate(
+	  		/*SelectionActivity.aggregate(
 		    [
 				// Match the document(s) of interest
 				{ "$match" : {
@@ -207,33 +208,14 @@ export default {
 		       return result
 		    }
 		);*/
-		/*User.updateMany({},
-			{ $push: { 
-				activities: { 
-					activity: _id,
-					difficulty: difficulty,
-					percentOverDue: 1,
-					reviewInterval: 1,
-					lastAttempt: null
-				} 
-			} 
-		}, function(err,result) {
-
-		       // Result is an array of documents
-		       if(err){
-		       		console.log(err)
-		       		return err
-		       }
-		       console.log(result)
-		       return result
-		})*/
 		return User.updateMany({}, { $push: { 
 				activities: { 
 					activity: _id,
+					type: "Seleccion Simple",
 					difficulty: difficulty,
 					percentOverDue: 1,
 					reviewInterval: 1,
-					lastAttempt: null
+					lastAttempt: new Date()
 				} 
 			} 
 		})

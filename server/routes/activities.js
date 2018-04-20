@@ -67,7 +67,7 @@ app.post('/updateSelectionActivities', required, async (req, res) => {
 	toUpdate.forEach( async function(activity, index) {
 		// statements
 		try {
-			const savedActivity = await activities.updateActivities(req.user._id, activity)
+			const savedActivity = await activities.updateUserSelectionActivities(req.user._id, activity)
 			console.log(savedActivity)
 		} catch (err){
 			console.log(err)
@@ -80,7 +80,7 @@ app.post('/updateSelectionActivities', required, async (req, res) => {
 
 //	POST  /api/simpleSelection
 //app.post('/', required, async (req, res) => {
-app.post('/simpleSelection', async (req, res) => {
+app.post('/newSelectionActivity', async (req, res) => {
 
 	console.log('Llegó a la ruta del server');
 
@@ -97,13 +97,11 @@ app.post('/simpleSelection', async (req, res) => {
 	}
 
 	try {
-		const savedActivity = await activities.create(activity)
-		console.log(savedActivity._id)
+		//El db api debe ser solo de selection
+		const savedActivity = await activities.createSelectionActivity(activity)
 		try {
 			//Hacer que updateUsers sea una promesa para poder validar errores
-			const test = await activities.updateUsers(savedActivity._id, savedActivity.difficulty)
-			console.log(`Testing ${test}`)
-			console.log(test)
+			const test = await activities.updateSelectionActivities(savedActivity._id, savedActivity.difficulty)
 			res.status(201).json(savedActivity)
 		} catch (err) {
 			console.log(err)

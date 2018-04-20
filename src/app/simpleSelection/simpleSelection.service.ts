@@ -16,7 +16,7 @@ export class SimpleSelectionService {
 	simpleSelectionUrl: string;
 
 	constructor(private http: Http){
-		this.simpleSelectionUrl = urljoin(environment.apiUrl, 'simpleSelection');
+		this.simpleSelectionUrl = urljoin(environment.apiUrl, 'activities');
 	}
 
 	getQuestions(): Promise<void | SimpleSelectionActivity[]>{
@@ -38,7 +38,7 @@ export class SimpleSelectionService {
 		const body = JSON.stringify(activity);
 		const headers = new Headers({'Content-Type': 'application/json'});
 		const token = this.getToken();
-		const url = this.simpleSelectionUrl + token;
+		const url = this.simpleSelectionUrl + '/newSelectionActivity' + token;
 		//  apiUrl: 'http://localhost:3000/api/simpleSelection?token=${token}'
 		return this.http.post(url, body, { headers })
 			.map((response: Response) => response.json())

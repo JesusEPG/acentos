@@ -1,2 +1,2 @@
 export { default as User } from './user'
-export { default as SimpleSelectionActivity } from './simpleSelection'
+export { default as SelectionActivity } from './selectionActivity'
