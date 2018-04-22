@@ -10,6 +10,7 @@ import { ActivitiesComponent } from './activities/activities.component';
 import { SimpleSelectionComponent } from './simpleSelection/simpleSelection.component';
 import { SelectionActivitiesComponent } from './activities/selectionActivities.component';
 import { ACTIVITIES_ROUTES } from './activities/activities.routing';
+import { ADMIN_ROUTES } from './admin/admin.routing';
 
 
 const APP_ROUTES: Routes = [
@@ -19,6 +20,7 @@ const APP_ROUTES: Routes = [
 	{ path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
 	//{ path: 'activities', component: ActivitiesComponent},
 	{ path: 'activities', children: ACTIVITIES_ROUTES },
+	{ path: 'admin', children: ADMIN_ROUTES },
 
 	//{ path: 'selection', component: SelectionActivitiesComponent},
 	{ path: 'simpleSelection', component: SimpleSelectionComponent}

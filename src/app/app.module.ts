@@ -15,6 +15,10 @@ import { ProfileComponent } from './profile/profile.component';
 import { ActivitiesComponent } from './activities/activities.component';
 import { SelectionActivitiesComponent } from './activities/selectionActivities.component';
 import { SimpleSelectionComponent } from './simpleSelection/simpleSelection.component';
+import { MistakesComponent } from './mistakes/mistakes.component';
+import { AdminDashboardComponent } from './admin/adminDashboard.component';
+import { AdminActivitiesComponent } from './admin/adminActivities.component';
+import { AdminSigninComponent } from './admin/adminSignin.component';
 
 
 //Services
@@ -36,7 +40,11 @@ import { Routing } from './app.routing';
     ProfileComponent,
     ActivitiesComponent,
     SelectionActivitiesComponent,
-    SimpleSelectionComponent
+    AdminDashboardComponent,
+    AdminActivitiesComponent,
+    SimpleSelectionComponent,
+    MistakesComponent,
+    AdminSigninComponent
   ],
   imports: [
     BrowserModule,

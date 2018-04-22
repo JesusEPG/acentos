@@ -1,0 +1,16 @@
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.submit-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container-fixed-footer
+{
+    margin-bottom:55px;
+}

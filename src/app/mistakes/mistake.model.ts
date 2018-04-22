@@ -1,4 +1,4 @@
-export class SimpleSelectionActivity {
+export class MistakeActivity {
 	constructor(
 		public difficulty: number,
 		public comment: string,
