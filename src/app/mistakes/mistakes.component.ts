@@ -81,22 +81,20 @@ export class MistakesComponent implements OnInit {
 		//Se debe agregar al arreglo de respuestas correctas y de respuestas posibles
 		//Analizar los casos en que se deben ocultar o no estas palabras
 		//O si se les puede hacer click
+		console.log(this.possibleAnswers.length)
+				console.log(this.possibleAnswers)
 
 		if(!word.hidden){
 			
-			this.addCorrectAnswer(word);
+			//this.addCorrectAnswer(word);
+			this.correctAnswer=word;
 			
 		} else {
-			this.deleteCorrectAnswer(word);
+			//this.deleteCorrectAnswer(word);
+			this.correctAnswer = null;
 		}
 		word.hidden = !word.hidden;
 		//De lo contrario se debe buscar el objeto en los arreglos y luego sacarlo
-	}
-
-	log(){
-		console.log(this.splittedString);
-		console.log(this.correctAnswer);
-		console.log(this.possibleAnswers);
 	}
 
 	addCorrectAnswer(word){
@@ -128,6 +126,8 @@ export class MistakesComponent implements OnInit {
 		let str = this.activityForm.value.possibleAnswer;
 		this.activityForm.patchValue({possibleAnswer: null});
 		console.log(str);
+		console.log(this.possibleAnswers.length)
+
 		const word = {
 				   	id: this.possibleAnswers.length,
 				   	word: str,
@@ -159,6 +159,7 @@ export class MistakesComponent implements OnInit {
 			console.log(difficulty)
 			const activity = new MistakeActivity(
 				difficultyNumber,
+				'Mistake',
 				comment.trim(),
 				fullString,
 				this.splittedString,
@@ -173,7 +174,7 @@ export class MistakesComponent implements OnInit {
 					this.authService.handleError
 				);
 			*/
-			this.mistakeService.addSimpleSelectionActivity(activity)
+			this.mistakeService.addMistakeActivity(activity)
 				.subscribe(
 					//( {_id} ) => this.router.navigate(['/questions', _id]),
 					//this.router.navigate(['/']),

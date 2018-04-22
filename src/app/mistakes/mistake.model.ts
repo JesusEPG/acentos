@@ -1,6 +1,7 @@
 export class MistakeActivity {
 	constructor(
 		public difficulty: number,
+		public type: string,
 		public comment: string,
 		public fullString: string,
 		public splittedString: any[],

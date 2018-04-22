@@ -159,6 +159,7 @@ export class SimpleSelectionComponent implements OnInit {
 			console.log(difficulty)
 			const activity = new SimpleSelectionActivity(
 				difficultyNumber,
+				'Selection',
 				comment.trim(),
 				fullString,
 				this.splittedString,

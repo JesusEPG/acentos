@@ -1,15 +1,15 @@
 import Debug from 'debug'
 //import { Question, Answer } from '../models'
-import { SelectionActivity, User } from '../models'
+import { Activity, User } from '../models'
 import mongoose from 'mongoose'
 
 const debug = new Debug('acentos:db-api:activities')
 
 export default {
 
-	findAllSelectionActivities: () => {
+	findAllActivities: () => {
 		debug('Finding all activities')
-		return SelectionActivity.find()
+		return Activity.find()
 
 	},
 
@@ -25,7 +25,7 @@ export default {
 
 				// Separate the items array into a stream of documents
   				{ "$unwind" : "$activities" },
-  				{ $match: {"activities.type": 'Seleccion Simple'}},
+  				{ $match: {"activities.type": 'Selection'}},
   				// Sorting pipeline
         		{ "$sort": { "activities.percentOverDue": -1 } },
         		// Optionally limit results
@@ -86,7 +86,7 @@ export default {
 
 	createSelectionActivity: (actv) => {
 		debug(`Creating new simple selection activity ${actv}`)
-		const activity = new SelectionActivity(actv)
+		const activity = new Activity(actv)
 		return activity.save()
 	},
 
@@ -157,7 +157,7 @@ export default {
 		})
 	},
 
-	updateSelectionActivities: (_id, difficulty) => {
+	updateSelectionActivities: (activity) => {
 
 			/*SelectionActivity.
 	  			find({ _id }).
@@ -210,9 +210,9 @@ export default {
 		);*/
 		return User.updateMany({}, { $push: { 
 				activities: { 
-					activity: _id,
-					type: "Seleccion Simple",
-					difficulty: difficulty,
+					activity: activity._id,
+					type: activity.type,
+					difficulty: activity.difficulty,
 					percentOverDue: 1,
 					reviewInterval: 1,
 					lastAttempt: new Date()

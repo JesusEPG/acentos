@@ -13,32 +13,32 @@ import 'rxjs/add/operator/catch';
 @Injectable()
 export class MistakeService {
 
-	simpleSelectionUrl: string;
+	mistakeUrl: string;
 
 	constructor(private http: Http){
-		this.simpleSelectionUrl = urljoin(environment.apiUrl, 'activities');
+		this.mistakeUrl = urljoin(environment.apiUrl, 'activities');
 	}
 
 	getQuestions(): Promise<void | MistakeActivity[]>{
-		return this.http.get(this.simpleSelectionUrl)
+		return this.http.get(this.mistakeUrl)
 			.toPromise()
 			.then(response => response.json() as MistakeActivity[])		//Exitoso
 			.catch(this.handleError);								//Error
 	}
 
 	getQuestion(id): Promise<void | MistakeActivity>{
-		const url = urljoin(this.simpleSelectionUrl, id);
+		const url = urljoin(this.mistakeUrl, id);
 		return this.http.get(url)
 			.toPromise()
 			.then(response => response.json() as MistakeActivity)
 			.catch(this.handleError);
 	}
 
-	addSimpleSelectionActivity(activity: MistakeActivity) {
+	addMistakeActivity(activity: MistakeActivity) {
 		const body = JSON.stringify(activity);
 		const headers = new Headers({'Content-Type': 'application/json'});
 		const token = this.getToken();
-		const url = this.simpleSelectionUrl + '/newSelectionActivity' + token;
+		const url = this.mistakeUrl + '/newMistakeActivity' + token;
 		//  apiUrl: 'http://localhost:3000/api/simpleSelection?token=${token}'
 		return this.http.post(url, body, { headers })
 			.map((response: Response) => response.json())

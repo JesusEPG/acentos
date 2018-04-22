@@ -22,6 +22,7 @@ app.get('/selection', required, async (req, res) => {
 		let result = simpleSelectionActivities.map(function(activity, index){
 			return {
 				activity: activity.activities.activity,
+				type: activity.activities.type,
 				difficulty: activity.activities.difficulty,
 				lastAttempt: activity.activities.lastAttempt,
 				reviewInterval: activity.activities.reviewInterval,
@@ -59,9 +60,6 @@ app.get('/selection', required, async (req, res) => {
 //app.post('/', required, async (req, res) => {
 app.post('/updateSelectionActivities', required, async (req, res) => {
 
-	console.log('Llegó al post del update');
-	console.log('GUARDANDOOOOOOOOOO');
-
 	const toUpdate = req.body
 
 	toUpdate.forEach( async function(activity, index) {
@@ -84,9 +82,46 @@ app.post('/newSelectionActivity', async (req, res) => {
 
 	console.log('Llegó a la ruta del server');
 
-	const {difficulty, comment, fullString, splittedString, correctAnswer, possibleAnswers, createdAt } = req.body
+	const {difficulty, type, comment, fullString, splittedString, correctAnswer, possibleAnswers, createdAt } = req.body
 	const activity = {
 		difficulty,
+		type,
+		comment,
+		fullString,
+		splittedString,
+		correctAnswer,
+		possibleAnswers,
+		createdAt
+		//user: req.user._id
+	}
+
+	try {
+		//El db api debe ser solo de selection
+		const savedActivity = await activities.createSelectionActivity(activity)
+		try {
+			//Hacer que updateUsers sea una promesa para poder validar errores
+			const test = await activities.updateSelectionActivities(savedActivity)
+			res.status(201).json(savedActivity)
+		} catch (err) {
+			console.log(err)
+			handleError(err, res)
+		}
+	} catch (err){
+		console.log(err)
+		handleError(err, res)
+	}
+})
+
+//	POST  /api/activities/newMistakeActivity
+//app.post('/', required, async (req, res) => {
+app.post('/newMistakeActivity', async (req, res) => {
+
+	console.log('Llegó a la ruta del server');
+
+	const {difficulty, type, comment, fullString, splittedString, correctAnswer, possibleAnswers, createdAt } = req.body
+	const activity = {
+		difficulty,
+		type,
 		comment,
 		fullString,
 		splittedString,
@@ -112,6 +147,7 @@ app.post('/newSelectionActivity', async (req, res) => {
 		handleError(err, res)
 	}
 })
+
 
 //	POST  /api/questions/:id/answers
 /*app.post('/:id/answers', required, simpleSelectionActivityMiddleware, async (req, res) => {
