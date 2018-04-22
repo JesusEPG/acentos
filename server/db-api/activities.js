@@ -38,7 +38,63 @@ export default {
 				},
 				{
 					$lookup: {
-			        	from: "selectionactivities",
+			        	from: "activities",
+			        	localField: "activities.activity",    // field in the orders collection
+			        	foreignField: "_id",  // field in the items collection
+			        	as: "fromActivities"
+			      	}
+			  	}
+				//{ $project: { fromItems: 0 } }
+		        // Grouping pipeline
+		        //{ "$group": { 
+		        //    "_id": '$roomId', 
+		        //    "recommendCount": { "$sum": 1 }
+		        //}},
+		        // Optionally limit results
+		        //{ "$limit": 5 }
+		    ],
+		    function(err,result) {
+
+		       // Result is an array of documents
+		       if(err){
+		       		console.log(err)
+		       		return err
+		       }
+
+		       console.log(result)
+		       //console.log(result[0].fromActivities[0])
+
+		       return result
+		    }
+		)
+	},
+
+	findMistakesActivities: (_id) => {
+		const id = mongoose.Types.ObjectId(_id)
+		return User.aggregate(
+		    [
+				// Match the user id
+				//{ $match: { $and: [ { "_id": id }, {"activities.type": "Seleccion Simple"} ] } }, { $eq: [ "$qty", 250 ]
+				//{ $match: { $and: [ {"_id": id }, {"activities.type": "Seleccion Simple" } ] } },
+				{ $match: {_id: id}},
+  				//{ $match: {"activities.$.type": 'Seleccion Simple'}},
+
+				// Separate the items array into a stream of documents
+  				{ "$unwind" : "$activities" },
+  				{ $match: {"activities.type": 'Mistake'}},
+  				// Sorting pipeline
+        		{ "$sort": { "activities.percentOverDue": -1 } },
+        		// Optionally limit results
+		        { "$limit": 2 },
+		        {
+		        	//Aquí van los campos que me voy a traer de cada activity
+					"$project" : { 
+						"_id": 0,
+						"activities":1 }
+				},
+				{
+					$lookup: {
+			        	from: "activities",
 			        	localField: "activities.activity",    // field in the orders collection
 			        	foreignField: "_id",  // field in the items collection
 			        	as: "fromActivities"
@@ -84,7 +140,7 @@ export default {
 			})
 	},*/
 
-	createSelectionActivity: (actv) => {
+	createActivity: (actv) => {
 		debug(`Creating new simple selection activity ${actv}`)
 		const activity = new Activity(actv)
 		return activity.save()
@@ -145,7 +201,7 @@ export default {
 		)
 	},
 
-	updateUserSelectionActivities: (_id, activity) => {
+	updateUserActivities: (_id, activity) => {
 	
 		return User.update({"_id": _id, "activities.activity": activity.activity }, { $set: { 
 					
@@ -157,7 +213,7 @@ export default {
 		})
 	},
 
-	updateSelectionActivities: (activity) => {
+	updateUsersActivities: (activity) => {
 
 			/*SelectionActivity.
 	  			find({ _id }).

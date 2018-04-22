@@ -10,7 +10,7 @@ const app = express.Router()
 
 //Estas rutas son un agregado a la ruta definida en app.js
 
-// 	GET	/api/activities
+// 	GET	/api/activities/selection
 app.get('/selection', required, async (req, res) => {
 
 	console.log(req.user._id)
@@ -44,6 +44,39 @@ app.get('/selection', required, async (req, res) => {
 })
 
 
+// 	GET	/api/activities/mistakes
+app.get('/mistakes', required, async (req, res) => {
+
+	console.log(req.user._id)
+	try {
+		const simpleSelectionActivities = await activities.findMistakesActivities(req.user._id)
+		//let result = await activities.testQuery(req.user._id)
+		console.log('Selection')
+		console.log(simpleSelectionActivities)
+		let result = simpleSelectionActivities.map(function(activity, index){
+			return {
+				activity: activity.activities.activity,
+				type: activity.activities.type,
+				difficulty: activity.activities.difficulty,
+				lastAttempt: activity.activities.lastAttempt,
+				reviewInterval: activity.activities.reviewInterval,
+				percentOverDue: activity.activities.percentOverDue,
+				correctAnswer: activity.fromActivities[0].correctAnswer,
+				possibleAnswers: activity.fromActivities[0].possibleAnswers,
+				splittedString: activity.fromActivities[0].splittedString,
+				comment: activity.fromActivities[0].comment,
+				fullString: activity.fromActivities[0].fullString
+			}
+		})
+		//console.log(simpleSelectionActivities)
+		console.log('Resultado')
+		console.log(result)
+		res.status(200).json(result)
+	} catch (err) {
+		handleError(err, res)
+	}
+})
+
 //	GET	/api/questions/:id
 /*app.get('/:id', simpleSelectionActivityMiddleware, async (req, res) => {
 
@@ -58,14 +91,14 @@ app.get('/selection', required, async (req, res) => {
 
 //	POST  /api/simpleSelection
 //app.post('/', required, async (req, res) => {
-app.post('/updateSelectionActivities', required, async (req, res) => {
+app.post('/updateActivities', required, async (req, res) => {
 
 	const toUpdate = req.body
 
 	toUpdate.forEach( async function(activity, index) {
 		// statements
 		try {
-			const savedActivity = await activities.updateUserSelectionActivities(req.user._id, activity)
+			const savedActivity = await activities.updateUserActivities(req.user._id, activity)
 			console.log(savedActivity)
 		} catch (err){
 			console.log(err)
@@ -97,10 +130,10 @@ app.post('/newSelectionActivity', async (req, res) => {
 
 	try {
 		//El db api debe ser solo de selection
-		const savedActivity = await activities.createSelectionActivity(activity)
+		const savedActivity = await activities.createActivity(activity)
 		try {
 			//Hacer que updateUsers sea una promesa para poder validar errores
-			const test = await activities.updateSelectionActivities(savedActivity)
+			const test = await activities.updateUsersActivities(savedActivity)
 			res.status(201).json(savedActivity)
 		} catch (err) {
 			console.log(err)
@@ -133,10 +166,10 @@ app.post('/newMistakeActivity', async (req, res) => {
 
 	try {
 		//El db api debe ser solo de selection
-		const savedActivity = await activities.createSelectionActivity(activity)
+		const savedActivity = await activities.createActivity(activity)
 		try {
 			//Hacer que updateUsers sea una promesa para poder validar errores
-			const test = await activities.updateSelectionActivities(savedActivity._id, savedActivity.difficulty)
+			const test = await activities.updateUsersActivities(savedActivity)
 			res.status(201).json(savedActivity)
 		} catch (err) {
 			console.log(err)

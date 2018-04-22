@@ -28,9 +28,9 @@ export class ActivitiesService {
 			.catch(this.handleError);								//Error
 	}*/
 
-	getSelectionActivities(): Promise<void | SelectionActivity[]>{
+	getMistakeActivities(): Promise<void | SelectionActivity[]>{
 		const token = this.getToken();
-		const url = this.activitiesUrl+ '/selection' + token;
+		const url = this.activitiesUrl+ '/mistakes' + token;
 		return this.http.get(url)
 			.toPromise()
 			.then(response => response.json() as SelectionActivity[])		//Exitoso
@@ -41,7 +41,7 @@ export class ActivitiesService {
 		const body = JSON.stringify(activities);
 		const headers = new Headers({'Content-Type': 'application/json'});
 		const token = this.getToken();
-		const url = this.activitiesUrl + '/updateSelectionActivities' + token;
+		const url = this.activitiesUrl + '/updateActivities' + token;
 		return this.http.post(url, body, { headers })
 			.map((response: Response) => response.json())
 			.catch((error: Response) => Observable.throw(error.json()));

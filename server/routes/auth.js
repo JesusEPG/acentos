@@ -61,14 +61,14 @@ app.post('/signup', async (req, res) => {
 	//Esto será selection activities
 	//Un for each para cada tipo de ejercicio
 	//Cada ejercicio estará en colecciones distintas
-	const result = await activities.findAllSelectionActivities()
+	const result = await activities.findAllActivities()
 
 	result.forEach(function(activity){
 		console.log('Agregando: ')
 		console.log(activity)
 		newActivities.push({ 
 					activity: activity._id,
-					type: "Seleccion Simple",
+					type: activity.type,
 					difficulty: activity.difficulty,
 					percentOverDue: 1,
 					reviewInterval: 1,

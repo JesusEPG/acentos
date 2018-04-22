@@ -14,6 +14,7 @@ import { SigninComponent } from './auth/signin.component';
 import { ProfileComponent } from './profile/profile.component';
 import { ActivitiesComponent } from './activities/activities.component';
 import { SelectionActivitiesComponent } from './activities/selectionActivities.component';
+import { MistakeActivitiesComponent } from './activities/mistakeActivities.component';
 import { SimpleSelectionComponent } from './simpleSelection/simpleSelection.component';
 import { MistakesComponent } from './mistakes/mistakes.component';
 import { AdminDashboardComponent } from './admin/adminDashboard.component';
@@ -40,6 +41,7 @@ import { Routing } from './app.routing';
     ProfileComponent,
     ActivitiesComponent,
     SelectionActivitiesComponent,
+    MistakeActivitiesComponent,
     AdminDashboardComponent,
     AdminActivitiesComponent,
     SimpleSelectionComponent,
