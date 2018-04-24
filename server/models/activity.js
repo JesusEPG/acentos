@@ -9,10 +9,10 @@ const ActivitySchema = Schema({
 	fullString: { type: String, required: true },
 	splittedString: [{}],
 	//correctAnswer: {type: Object, required: true},
-	correctAnswer: {id: Number, word: String, hidden: Boolean, clickeable: {type: Boolean, required: true}}, //correcto
+	correctAnswer: {id: Number, word: String, hidden: Boolean, clickeable: {type: Boolean, required: true}, selected: {type: Boolean}}, //correcto
 	//possibleAnswers: [{type: Object, required: true}],
 	possibleAnswers: [{}],
-	createdAt: { type: Date, required: true, default: Date.now}
+	createdAt: { type: Date, required: true, default: new Date()}
 	//user: {type: Schema.Types.ObjectId, ref: 'User', required: true },
 	//answers: [{ type: Schema.Types.ObjectId, ref: 'Answer', default: [] }]
 })

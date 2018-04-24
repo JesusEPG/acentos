@@ -32,6 +32,12 @@ export const review = (activity, performanceRating) => {
   *  Cuanto más alto el valor más atrasado
 */
 const getPercentOverDue = (activity) => {
+  
+  console.log(`Last attemp al llegar: ${activity.lastAttempt}`);
+
+  if(!activity.lastAttempt)
+    activity.lastAttempt = NOW();
+  console.log(`Last attemp luego: ${activity.lastAttempt}`);
   if (activity.lastAttempt && activity.reviewInterval) {
     let days = daysBetweenTodayAndAnotherDate(activity.lastAttempt);
     return Math.min(2, days / activity.reviewInterval);

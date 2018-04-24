@@ -5,7 +5,8 @@ import { WORST, BEST, CORRECT, INCORRECT, review } from './sm2-plus.module';
 
 @Component({
 	selector: 'app-selection-component',
-	templateUrl: 'mistakeActivities.component.html',
+	templateUrl: './mistakeActivities.component.html',
+	styleUrls: ['./mistakeActivities.component.css'],
 	providers: [ActivitiesService]
 })
 
@@ -45,10 +46,10 @@ export class MistakeActivitiesComponent {
 		//Debo recibir la respuesta, puede ser el string
 		//Si no se ha seleccionado se pushea
 		//Hago un push de la respuesta a selectedAnswers
-		if(word.clickeable){
+		if(!word.selected){
 			//push
 			if(this.selectedAnswers[this.counter]){
-				this.selectedAnswers[this.counter].clickeable = !this.selectedAnswers[this.counter].clickeable;
+				this.selectedAnswers[this.counter].selected = !this.selectedAnswers[this.counter].selected;
 				this.selectedAnswers.pop();
 			}
 
@@ -63,7 +64,7 @@ export class MistakeActivitiesComponent {
 			//this.selectedAnswers.splice(this.counter, 1);
 		}
 
-		word.clickeable = !word.clickeable
+		word.selected = !word.selected
 
 		//Si ya se había seleccionado
 		//Se elimina el elemento en la posición this.counter

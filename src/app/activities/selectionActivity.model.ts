@@ -1,11 +1,11 @@
 export class SelectionActivity {
 	constructor(
 		public activity: string,
-		public type: string,
 		public difficulty: number,
 		public lastAttempt: Date,
 		public reviewInterval: number,
 		public percentOverDue: number,
+		public type?: string,
 		public correctAnswer?: any,
 		public possibleAnswers?: any[],
 		public splittedString?: any[],

@@ -5,6 +5,10 @@ import { AppBootstrapModule } from './app-bootstrap.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
+//Angular Material
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MaterialModule } from './material.module';
+import 'hammerjs';
 
 //Components
 import { AppComponent } from './app.component';
@@ -26,6 +30,7 @@ import { AdminSigninComponent } from './admin/adminSignin.component';
 import { AuthService } from './auth/auth.service';
 import { AuthGuard } from './auth/auth-guard.service';
 import { SigninGuard } from './auth/signin-guard.service';
+import { AdminGuardService } from './auth/admin-guard.service';
 //import { JwtHelperService } from '@auth0/angular-jwt';
 
 //Routes
@@ -54,9 +59,11 @@ import { Routing } from './app.routing';
     Routing,
     FormsModule,
     ReactiveFormsModule,
-    HttpModule
+    HttpModule,
+    BrowserAnimationsModule,
+    MaterialModule
   ],
-  providers: [AuthService, AuthGuard, SigninGuard],
+  providers: [AuthService, AuthGuard, SigninGuard, AdminGuardService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

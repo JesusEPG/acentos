@@ -15,11 +15,23 @@ export class AppComponent {
 		return this.authService.isLoggedIn();
 	}
 
+	isAdminLoggedIn(){
+		return this.authService.isAdminLoggedIn();
+	}
+
 	fullName(){
 	 	return this.authService.currentUser.fullName();
 	}
 
+	fullAdminName(){
+	 	return this.authService.currentAdminUser.fullName();
+	}
+
 	logout(){
 	  	this.authService.logout();
+	}
+
+	adminLogout(){
+		return this.authService.adminLogout();
 	}
 }

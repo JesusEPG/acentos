@@ -1,7 +1,7 @@
 import express from 'express'
 import jwt from 'jsonwebtoken'
 import { secret } from '../config'
-import { User } from '../models'
+import { User, Admin } from '../models'
 import Debug from 'debug'
 import { activities } from '../db-api'
 
@@ -50,6 +50,38 @@ app.post('/signin', async (req, res, next) => {
 
 })
 
+app.post('/adminSignin', async (req, res, next) => {
+	const { email, password } = req.body
+	const admin = await Admin.findOne({ email }) //busca el que tenga ese email
+	console.log(admin._id)
+	//El usuario no existe
+	if(!admin){
+		debug(`Admin with email ${email} not found`)
+		return handleLoginFailed(res, 'Email not found')
+	}
+
+	//La contraseña ingresada es invalida
+	if(!comparePasswords(password, admin.password)){
+		debug(`Password ${password} does not match`)
+		return handleLoginFailed(res, 'Password doesn\'t match')
+	}
+
+	//Las credenciales son correctas
+	const adminToken = createToken(admin)
+	
+	//Se envía el usuario desglosado para no envíar la contraseña plana
+	res.status(200).json({
+		message: 'Login succeded',
+		adminToken,
+		userId: admin._id,
+		firstName: admin.firstName,
+		lastName: admin.lastName,
+		email: admin.email,
+		role: admin.role
+	})
+
+})
+
 app.post('/signup', async (req, res) => {
 
 	let newActivities = []
@@ -72,7 +104,7 @@ app.post('/signup', async (req, res) => {
 					difficulty: activity.difficulty,
 					percentOverDue: 1,
 					reviewInterval: 1,
-					lastAttempt: new Date()
+					lastAttempt: null
 				})
 	})
 
@@ -95,7 +127,21 @@ app.post('/signup', async (req, res) => {
 		password: hash(password, 10),
 		activities: newActivities
 	})
+
+	/*const a = new Admin({
+		firstName: 'Mervin',
+		lastName: 'Coello',
+		email: 'mahonricoello@gmail.com',
+		role: 'admin',
+		password: hash('123', 10)
+	})
 	
+	//const newUser = await u.save()
+	a.save(function (err, newAdmin) {
+	    if (err) return console.error(err); //Hacer handle error
+
+	    debug(`New admin ${newAdmin}`)
+	});*/
 
 	//const newUser = await u.save()
 	u.save(function (err, newUser) {

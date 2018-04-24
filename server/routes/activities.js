@@ -22,11 +22,11 @@ app.get('/selection', required, async (req, res) => {
 		let result = simpleSelectionActivities.map(function(activity, index){
 			return {
 				activity: activity.activities.activity,
-				type: activity.activities.type,
 				difficulty: activity.activities.difficulty,
 				lastAttempt: activity.activities.lastAttempt,
 				reviewInterval: activity.activities.reviewInterval,
 				percentOverDue: activity.activities.percentOverDue,
+				type: activity.activities.type,
 				correctAnswer: activity.fromActivities[0].correctAnswer,
 				possibleAnswers: activity.fromActivities[0].possibleAnswers,
 				splittedString: activity.fromActivities[0].splittedString,
@@ -56,11 +56,11 @@ app.get('/mistakes', required, async (req, res) => {
 		let result = simpleSelectionActivities.map(function(activity, index){
 			return {
 				activity: activity.activities.activity,
-				type: activity.activities.type,
 				difficulty: activity.activities.difficulty,
 				lastAttempt: activity.activities.lastAttempt,
 				reviewInterval: activity.activities.reviewInterval,
 				percentOverDue: activity.activities.percentOverDue,
+				type: activity.activities.type,
 				correctAnswer: activity.fromActivities[0].correctAnswer,
 				possibleAnswers: activity.fromActivities[0].possibleAnswers,
 				splittedString: activity.fromActivities[0].splittedString,

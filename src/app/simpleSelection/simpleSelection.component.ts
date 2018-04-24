@@ -38,6 +38,9 @@ export class SimpleSelectionComponent implements OnInit {
 	}
 
 	stringTokenizer(){
+
+		this.correctAnswer=null;
+		this.possibleAnswers=[];
 		
 		//Obtengo el texto del formulario
 		let str = this.activityForm.value.fullString;
@@ -81,6 +84,8 @@ export class SimpleSelectionComponent implements OnInit {
 		//Se debe agregar al arreglo de respuestas correctas y de respuestas posibles
 		//Analizar los casos en que se deben ocultar o no estas palabras
 		//O si se les puede hacer click
+
+		this.possibleAnswers=[];
 
 		if(!word.hidden){
 			

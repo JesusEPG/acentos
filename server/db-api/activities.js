@@ -271,7 +271,7 @@ export default {
 					difficulty: activity.difficulty,
 					percentOverDue: 1,
 					reviewInterval: 1,
-					lastAttempt: new Date()
+					lastAttempt: null
 				} 
 			} 
 		})

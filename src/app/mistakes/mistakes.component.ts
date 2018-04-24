@@ -39,6 +39,10 @@ export class MistakesComponent implements OnInit {
 
 	stringTokenizer(){
 		
+		this.correctAnswer=null;
+		this.possibleAnswers=[];
+
+
 		//Obtengo el texto del formulario
 		let str = this.activityForm.value.fullString;
 		str.trim();
@@ -61,7 +65,8 @@ export class MistakesComponent implements OnInit {
 				   	id: index,
 				   	word: token,
 				   	hidden: false,
-				   	clickeable: true
+				   	clickeable: true,
+				   	selected: false
 				}
 			}
 			return {
@@ -69,7 +74,8 @@ export class MistakesComponent implements OnInit {
 				id: index,
 				word: token,
 			   	hidden: false,
-			   	clickeable: false
+			   	clickeable: false,
+			   	selected: false
 			}   
 		});
 	}
@@ -132,7 +138,8 @@ export class MistakesComponent implements OnInit {
 				   	id: this.possibleAnswers.length,
 				   	word: str,
 				   	hidden: false,
-				   	clickeable: true
+				   	clickeable: true,
+				   	selected: false
 				};
 		this.possibleAnswers.push(word);
 	}
@@ -178,7 +185,7 @@ export class MistakesComponent implements OnInit {
 				.subscribe(
 					//( {_id} ) => this.router.navigate(['/questions', _id]),
 					//this.router.navigate(['/']),
-					( {_id} ) => this.router.navigate(['/']),
+					( {_id} ) => this.router.navigate(['/admin']),
 					this.authService.handleError
 				);//recibe dos funciones como parametros, la función de exito y la función de error
 		} else {

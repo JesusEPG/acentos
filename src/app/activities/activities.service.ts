@@ -37,6 +37,15 @@ export class ActivitiesService {
 			.catch(this.handleError);								//Error
 	}
 
+	getSelectionActivities(): Promise<void | SelectionActivity[]>{
+		const token = this.getToken();
+		const url = this.activitiesUrl+ '/selection' + token;
+		return this.http.get(url)
+			.toPromise()
+			.then(response => response.json() as SelectionActivity[])		//Exitoso
+			.catch(this.handleError);								//Error
+	}
+
 	updateActivities(activities: SelectionActivity[]) {
 		const body = JSON.stringify(activities);
 		const headers = new Headers({'Content-Type': 'application/json'});

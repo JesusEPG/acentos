@@ -1,8 +1,10 @@
 <div class="container mt-5">
 
-	<alert *ngIf="loading" type="info">
+	<!--<alert *ngIf="loading" type="info">
 	  <strong>Heads up!</strong> This alert needs your attention, but it's not super important.
-	</alert>
+	</alert>-->
+	<mat-spinner *ngIf="loading" class="spinner" style="margin:0 auto;" color='accent'>
+	</mat-spinner>
 
   <div *ngIf="!loading" class="row">
     <div class="col-sm-12 mb-3">
@@ -18,16 +20,15 @@
 						
 				</div>
 			</div>
-    		
-
-
-          <button class="btn btn-primary" type="button" (click)="next()">Siguiente</button>
+    	
+        <button *ngIf="selectedAnswers[counter]" class="btn btn-primary" type="button" (click)="next()">Siguiente</button>
+        <button *ngIf="!selectedAnswers[counter]" class="btn btn-primary" type="button" disabled>Siguiente</button>
         </div>
       </div>
     </div>
   </div>
 
-	<div class="row">
+	<!--<div class="row">
 	    <div class="col-sm-12 mb-3">
 	    	<div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
 				<div class="card-header">Header</div>
@@ -37,6 +38,6 @@
 				</div>
 			</div>
 	    </div>
-	</div>
+	</div>-->
     
 </div>

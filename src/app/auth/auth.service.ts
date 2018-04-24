@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import * as urljoin from 'url-join';
 import { environment } from '../../environments/environment';
 import { User } from './user.model';
+import { AdminUser } from './adminUser.model';
 import { Headers, Http, Response } from '@angular/http';
 //import { JwtHelperService } from '@auth0/angular-jwt';		<-- BORRAR del proyecto
 import * as jwt_decode from 'jwt-decode';
@@ -20,6 +21,8 @@ import { Router } from '@angular/router';
 export class AuthService {
 	usersURL: string;
 	currentUser?: User;
+	currentAdminUser?: AdminUser;
+
 	constructor(
 		private http: Http,
 		private router: Router,
@@ -32,6 +35,10 @@ export class AuthService {
 		if(this.isLoggedIn()){
 			const { userId, userName, firstName, lastName } = JSON.parse(localStorage.getItem('user'));
 			this.currentUser = new User(userName, null, firstName, lastName, userId);
+		}
+		if(this.isAdminLoggedIn()){
+			const { userId, email, firstName, lastName } = JSON.parse(localStorage.getItem('adminUser'));
+			this.currentAdminUser = new AdminUser(email, null, firstName, lastName, userId);
 		}
 	}
 
@@ -71,11 +78,37 @@ export class AuthService {
 			});
 	}
 
+	adminSignin(user: AdminUser){
+		const body = JSON.stringify(user);
+		const headers = new Headers({'Content-Type': 'application/json'});
+		const url = urljoin(this.usersURL, 'adminSignin');
+		//const url = urljoin(this.questionsUrl, answer.question._id, 'answers');
+
+		////'http://localhost:3000/api/auth' + signin
+		return this.http.post(url, body, { headers })
+			.map((response: Response) => {
+				const json = response.json(); //Lo que responde la ruta
+				this.adminLogin(json);
+				return json;
+			})
+			.catch((error: Response) => {
+				console.log(error);
+				return Observable.throw(error.json());
+			});
+	}
+
 	login = ({token, userId, firstName, lastName, userName }) => {
 		this.currentUser = new User(userName, null, firstName, lastName, userId)
 		localStorage.setItem('token', token);
 		localStorage.setItem('user', JSON.stringify({userId, firstName , lastName, userName}));
 		this.router.navigateByUrl('/');
+	}
+
+	adminLogin = ({adminToken, userId, firstName, lastName, email, role }) => {
+		this.currentAdminUser = new AdminUser(email, null, firstName, lastName, userId, role)
+		localStorage.setItem('adminToken', adminToken);
+		localStorage.setItem('adminUser', JSON.stringify({userId, firstName , lastName, email, role}));
+		this.router.navigateByUrl('/admin');
 	}
 
 
@@ -87,13 +120,45 @@ export class AuthService {
 
 	}
 
+	isAdminLoggedIn(){
+		
+		//console.log(this.isTokenExpired());
+		//return localStorage.getItem('token') !== null;
+
+		//const adminToken = this.getAdminToken();
+
+		// decode the token to get its payload
+    	//const tokenPayload = jwt_decode(adminToken);
+
+		//return !this.isAdminTokenExpired() && tokenPayload.role === 'admin'
+		return !this.isAdminTokenExpired()
+
+
+	}
+
 	logout(){
 		localStorage.clear();
 		this.currentUser = null;
 		this.router.navigateByUrl('/signin');
 	}
 
+	adminLogout(){
+		localStorage.clear();
+		this.currentAdminUser = null;
+		this.router.navigateByUrl('/admin/signin');
+	}
+
 	getTokenExpirationDate(token: string): Date {
+	    const decoded = jwt_decode(token);
+
+	    if (decoded.exp === undefined) return null;
+
+	    const date = new Date(0); 
+	    date.setUTCSeconds(decoded.exp);
+	    return date;
+	}
+
+	getAdminTokenExpirationDate(token: string): Date {
 	    const decoded = jwt_decode(token);
 
 	    if (decoded.exp === undefined) return null;
@@ -113,8 +178,22 @@ export class AuthService {
 	    return !(date.valueOf() > new Date().valueOf());
 	}
 
+	isAdminTokenExpired(token?: string): boolean {
+	    if(!token) token = this.getAdminToken();
+	    if(!token) return true;
+
+	    const date = this.getTokenExpirationDate(token);
+	    console.log(`La fecha de expiración es: ${date}`);
+	    if(date === undefined) return false;
+	    return !(date.valueOf() > new Date().valueOf());
+	}
+
 	getToken(): string {
 	    return localStorage.getItem('token');
+	}
+
+	getAdminToken(): string {
+	    return localStorage.getItem('adminToken');
 	}
 
 	showError(message) {
