@@ -21,6 +21,7 @@ export class MistakeActivitiesComponent {
 	selectedAnswers: any[] =[];
 	counter:number = 0;
 	loading = true;
+	result = false;
 
 	constructor(private activitiesService: ActivitiesService){
 
@@ -84,6 +85,9 @@ export class MistakeActivitiesComponent {
 				if(this.selectedAnswers[index].word === activity.correctAnswer.word){
 					//respuesta correcta
 					console.log('Correcto');
+
+					this.selectedAnswers[index].correct=true;
+
 					//calcular cambios del algoritmo
 					const newValues = review(activity, CORRECT)
 					console.log(newValues);
@@ -105,9 +109,10 @@ export class MistakeActivitiesComponent {
 					}*/
 				} else {
 					//respuesta erronea
-					console.log('Incorrecto');
 					//const newValues = calculate(activity, WORST, Math.round(new Date().getTime() / DAY_IN_MINISECONDS))
 					//console.log(newValues);
+					this.selectedAnswers[index].correct=false;
+
 					const newValues = review(activity, INCORRECT)
 					console.log(newValues);
 					//new values
@@ -133,7 +138,11 @@ export class MistakeActivitiesComponent {
 			this.activitiesService.updateActivities(this.updatedActivities)
 				.subscribe(
 					//( {_id} ) => this.router.navigate(['/', _id]),
-					() => console.log('Todo bien'),
+					() => {
+						this.result=true;
+						this.loading=false;
+						console.log(this.selectedAnswers);
+					},
 					this.activitiesService.handleError
 				);//recibe dos funciones como parametros, la función de exito y la función de error
 			//Cuando responda la bdd hacer loading = false
