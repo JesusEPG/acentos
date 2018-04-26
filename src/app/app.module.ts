@@ -4,6 +4,8 @@ import { NgModule } from '@angular/core';
 import { AppBootstrapModule } from './app-bootstrap.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
+import { ChartsModule } from 'ng2-charts/ng2-charts';
+import { NgPipesModule } from 'ngx-pipes'; //CAMBIAR!!
 
 //Angular Material
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -61,7 +63,9 @@ import { Routing } from './app.routing';
     ReactiveFormsModule,
     HttpModule,
     BrowserAnimationsModule,
-    MaterialModule
+    MaterialModule,
+    ChartsModule,
+    NgPipesModule
   ],
   providers: [AuthService, AuthGuard, SigninGuard, AdminGuardService],
   bootstrap: [AppComponent]

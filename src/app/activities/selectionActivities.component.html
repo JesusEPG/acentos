@@ -8,14 +8,17 @@
     <div class="col-sm-12 mb-3">
       <div class="card text-center">
         <div class="card-body">
-          <h5 class="card-title">Seleccione la respuesta correcta</h5>
-          <p class="card-text">{{activities[counter].fullString}}</p>
-          	<div *ngFor="let word of activities[counter].possibleAnswers" class="btn-group" role="group" aria-label="Basic example">
+        	<h5 class="card-title">Seleccione la respuesta correcta</h5>
+          	<p class="card-text">{{activities[counter].fullString}}</p>
+          	<div class="col-12">
+          		<div *ngFor="let word of activities[counter].possibleAnswers | shuffle" class="btn-group" role="group" aria-label="Basic example">
 						  	
-				<button type="button" class="btn btn-secondary submitButton mb-2" color="accent" (click)="selectAnswer(word)">{{ word.word }}</button>
+					<button type="button" class="btn btn-secondary submitButton mb-2" color="accent" (click)="selectAnswer(word)">{{ word.word }}</button>
 						
+				</div>
 			</div>
-          <button class="btn btn-primary" type="button" (click)="next()">Siguiente</button>
+          	<button *ngIf="selectedAnswers[counter]" class="btn btn-primary" type="button" (click)="next()">Siguiente</button>
+		    <button *ngIf="!selectedAnswers[counter]" class="btn btn-primary" type="button" disabled>Siguiente</button>
         </div>
       </div>
     </div>

@@ -19,9 +19,6 @@ app.post('/signin', async (req, res, next) => {
 	const { userName, password } = req.body
 	const user = await User.findOne({ userName }) //busca el que tenga ese userName
 	console.log(user._id)
-	let result = await activities.testQuery(user._id)
-	console.log(result)
-	console.log(result[0].fromActivities[0])
 
 	//El usuario no existe
 	if(!user){

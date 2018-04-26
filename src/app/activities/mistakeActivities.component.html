@@ -6,27 +6,27 @@
 	<mat-spinner *ngIf="loading" class="spinner" style="margin:0 auto;" color='accent'>
 	</mat-spinner>
 
-  <div *ngIf="!loading&&!result" class="row">
-    <div class="col-sm-12 mb-3">
-      <div class="card text-center">
-        <div class="card-body">
-          <h5 class="card-title">Seleccione la palabra incorrecta</h5>
-          <p class="card-text">{{activities[counter].fullString}}</p>
-          	
-			<div class="col-12">
-				<div *ngFor="let word of activities[counter].splittedString" class="btn-group" role="group" aria-label="Basic example">
-						  	
-					<button *ngIf="word.clickeable" type="button" class="btn btn-secondary submitButton mb-2" color="accent" (click)="selectAnswer(word)">{{ word.word }}</button>
-						
-				</div>
-			</div>
-    	
-        <button *ngIf="selectedAnswers[counter]" class="btn btn-primary" type="button" (click)="next()">Siguiente</button>
-        <button *ngIf="!selectedAnswers[counter]" class="btn btn-primary" type="button" disabled>Siguiente</button>
-        </div>
-      </div>
-    </div>
-  </div>
+  	<div *ngIf="!loading&&!result" class="row">
+    	<div class="col-sm-12 mb-3">
+      		<div class="card text-center">
+		        <div class="card-body">
+		          <h5 class="card-title">Seleccione la palabra incorrecta</h5>
+		          <p class="card-text">{{activities[counter].fullString}}</p>
+		          	
+					<div class="col-12">
+						<div *ngFor="let word of activities[counter].splittedString" class="btn-group" role="group" aria-label="Basic example">
+								  	
+							<button *ngIf="word.clickeable" type="button" class="btn btn-secondary submitButton mb-2" color="accent" (click)="selectAnswer(word)">{{ word.word }}</button>
+								
+						</div>
+					</div>
+		    	
+		        	<button *ngIf="selectedAnswers[counter]" class="btn btn-primary" type="button" (click)="next()">Siguiente</button>
+		        	<button *ngIf="!selectedAnswers[counter]" class="btn btn-primary" type="button" disabled>Siguiente</button>
+		        </div>
+      		</div>
+    	</div>
+	</div>
 
   	<!--<div class="list-group" *ngIf="!loading&&result">
 	  
@@ -36,36 +36,51 @@
 
 	<div *ngIf="!loading&&result">
 	
-
+		<div class="col-sm-12 mb-3">
 		<ul class="list-group" *ngFor="let activity of activities; let i = index">
 
-			<li *ngIf="selectedAnswers[i].correct" class="list-group-item list-group-item-success">This is a success list group item</li>
+			<li *ngIf="selectedAnswers[i].correct" class="list-group-item list-group-item-success">
+				<h5>Correcto!!!!!</h5>
+			</li>
 		  
-			<li *ngIf="!selectedAnswers[i].correct" class="list-group-item list-group-item-danger">This is a danger list group item</li>
+			<li *ngIf="!selectedAnswers[i].correct" class="list-group-item list-group-item-danger">
+				<div class="d-flex w-100 justify-content-between">
+		      		<!--<h5 class="mb-1">Respuesta: {{selectedAnswers[i].word}}</h5>-->
+		      		<small class="mb-1">Respuesta: {{selectedAnswers[i].word}}</small>
+
+		      		<small>Correct Answer: {{activity.possibleAnswers[0].word}}</small>
+		    	</div>
+		    	<p class="mb-1">Texto completo: {{activity.fullString}}</p>
+		    	<p class="mb-1">Nota importante: {{activity.comment}}</p>
+		    	<small>Donec id elit non mi porta.</small>
+			</li>
 
 		</ul>
-
-		<!--<div *ngFor="let activity of activities; let i = index">
-
-			<p *ngIf="i === 0"> Es 0</p>
-			<p *ngIf="i === 1"> Es 1</p>
-
-			
-		</div>-->
+		</div>
 		
 	</div>
-	
 
-	<!--<div class="row">
-	    <div class="col-sm-12 mb-3">
-	    	<div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
-				<div class="card-header">Header</div>
-			  	<div class="card-body">
-			    	<h5 class="card-title">Dark card title</h5>
-			    	<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-				</div>
-			</div>
-	    </div>
-	</div>-->
+	<div class="col-sm-12 mb-3">
+		<ul class="list-group" *ngFor="let activity of activities; let i = index">
+
+			<li *ngIf="selectedAnswers[i].correct" class="list-group-item list-group-item-success">
+				<h5>Correcto!!!!!</h5>
+			</li>
+		  
+			<li *ngIf="!selectedAnswers[i].correct" class="list-group-item list-group-item-danger">
+				<div class="d-flex w-100 justify-content-between">
+		      		<!--<h5 class="mb-1">Respuesta: {{selectedAnswers[i].word}}</h5>-->
+		      		<small class="mb-1">Respuesta: {{selectedAnswers[i].word}}</small>
+
+		      		<small>Correct Answer: {{activity.possibleAnswers[0].word}}</small>
+		    	</div>
+		    	<p class="mb-1">Texto completo: {{activity.fullString}}</p>
+		    	<p class="mb-1">Nota importante: {{activity.comment}}</p>
+		    	<small>Donec id elit non mi porta.</small>
+			</li>
+
+		</ul>
+		</div>
+	
     
 </div>
