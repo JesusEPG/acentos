@@ -6,6 +6,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { NgPipesModule } from 'ngx-pipes'; //CAMBIAR!!
+import { NgxPaginationModule } from 'ngx-pagination';
 
 //Angular Material
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -26,6 +27,10 @@ import { MistakesComponent } from './mistakes/mistakes.component';
 import { AdminDashboardComponent } from './admin/adminDashboard.component';
 import { AdminActivitiesComponent } from './admin/adminActivities.component';
 import { AdminSigninComponent } from './admin/adminSignin.component';
+import { UserListComponent } from  './admin/userList.component';
+import { ActivityListComponent } from './admin/activityList.component';
+import { UpdateMistakeActivityComponent } from './mistakes/updateMistakeActivity.component';
+
 
 
 //Services
@@ -53,7 +58,10 @@ import { Routing } from './app.routing';
     AdminActivitiesComponent,
     SimpleSelectionComponent,
     MistakesComponent,
-    AdminSigninComponent
+    AdminSigninComponent,
+    UserListComponent,
+    ActivityListComponent,
+    UpdateMistakeActivityComponent
   ],
   imports: [
     BrowserModule,
@@ -65,7 +73,8 @@ import { Routing } from './app.routing';
     BrowserAnimationsModule,
     MaterialModule,
     ChartsModule,
-    NgPipesModule
+    NgPipesModule,
+    NgxPaginationModule
   ],
   providers: [AuthService, AuthGuard, SigninGuard, AdminGuardService],
   bootstrap: [AppComponent]

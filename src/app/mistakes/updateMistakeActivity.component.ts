@@ -3,24 +3,27 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MistakeActivity } from './mistake.model';
 import { MistakeService } from './mistake.service';
 import { AuthService } from '../auth/auth.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
-	selector: 'app-mistakes-component',
-	templateUrl: './mistakes.component.html',
+	selector: 'app-update-mistake-activity-component',
+	templateUrl: './updateMistakeActivity.component.html',
 	styleUrls: ['./mistakes.component.css'],
 	providers: [MistakeService]
 })
 
-export class MistakesComponent implements OnInit {
+export class UpdateMistakeActivityComponent implements OnInit {
 	activityForm: FormGroup;
 	splittedString: any[];
 	correctAnswer: any;
 	possibleAnswers: any[]=[];
+	private activity?: MistakeActivity;
+	loading: boolean = true;
 
 	constructor(
 		private mistakeService: MistakeService,
 		private router: Router,
+		private route: ActivatedRoute,
 		private authService: AuthService){}
 
 	ngOnInit(){
@@ -35,11 +38,29 @@ export class MistakesComponent implements OnInit {
 			]),*/
 		});
 
-		this.activityForm.patchValue({
+		/*this.activityForm.patchValue({
 		  comment: 'Probando', 
 		  // formControlName2: myValue2 (can be omitted)
-		});
+		});*/
 
+		this.route.params.subscribe( params => 
+			this.mistakeService
+			.getMistakeActivity(params['_id'])
+			.then((activity: MistakeActivity) => {
+				this.activity = activity;
+				console.log(this.activity);
+				//console.log(this.activities.length);
+				this.activityForm.patchValue({
+				  difficulty: this.activity.difficulty, 
+				  comment: this.activity.comment,
+				  fullString: this.activity.fullString
+				});
+				
+				this.splittedString = this.activity.splittedString;
+				this.correctAnswer = this.activity.correctAnswer;
+				this.possibleAnswers = this.activity.possibleAnswers;
+				this.loading = false;
+			}))
 	}
 
 	stringTokenizer(){

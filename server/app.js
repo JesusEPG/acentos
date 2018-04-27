@@ -1,6 +1,6 @@
 import express from 'express'
 import bodyParser from 'body-parser'
-import { auth, activities } from './routes'
+import { auth, activities, admin } from './routes'
 
 const app = express();
 
@@ -21,6 +21,8 @@ if(process.env.NODE_ENV === 'development') {		//indica en que entorno estamos
 // se usa 'use' porque se pueden manejar distintos tipos de request, y es cuestion donde define cada tipo
 
 app.use('/api/activities', activities)
+
+app.use('/api/admin', admin)
 
 app.use('/api/auth', auth)
 

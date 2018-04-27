@@ -10,6 +10,34 @@ const app = express.Router()
 
 //Estas rutas son un agregado a la ruta definida en app.js
 
+// 	GET	/api/admin/users
+app.get('/users', async (req, res) => {
+
+	User.find({}, function(err, users){
+		if(err){
+			console.log(err)
+			handleError(err, res)
+		}
+		res.status(200).json(users)
+	})
+})
+
+// 	GET	/api/admin/activities
+app.get('/activities', async (req, res) => {
+
+	try {
+
+		const result = await activities.findAllActivities()
+		res.status(200).json(result)
+		
+	} catch(err) {
+		// statements
+		console.log(err);
+		handleError(err, res)
+	}
+})
+
+
 // 	GET	/api/activities/selection
 app.get('/selection', required, async (req, res) => {
 
@@ -88,19 +116,6 @@ app.get('/mistakes', required, async (req, res) => {
 	}
 
 })*/
-
-//	GET	/api/questions/:id
-app.get('/:id', async (req, res) => {
-
-	try{
-		const activity = await activities.findActivityById(req.params.id)
-		res.status(200).json(activity)
-
-	} catch (err) {
-		handleError(err, res)
-	}
-
-})
 
 //	POST  /api/simpleSelection
 //app.post('/', required, async (req, res) => {

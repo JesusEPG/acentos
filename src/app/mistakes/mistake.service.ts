@@ -26,8 +26,10 @@ export class MistakeService {
 			.catch(this.handleError);								//Error
 	}
 
-	getQuestion(id): Promise<void | MistakeActivity>{
+	getMistakeActivity(id): Promise<void | MistakeActivity>{
+		console.log(id);
 		const url = urljoin(this.mistakeUrl, id);
+		console.log(url);
 		return this.http.get(url)
 			.toPromise()
 			.then(response => response.json() as MistakeActivity)

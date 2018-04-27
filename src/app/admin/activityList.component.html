@@ -11,12 +11,13 @@
 		<ul class="list-group mb-3">
 		  <!--<li class="list-group-item" *ngFor="let a of array | paginate: { itemsPerPage: 10, currentPage: p }"> {{a}} </li>-->
 
-		  <li *ngFor="let a of array | paginate: { itemsPerPage: 10, currentPage: p }" class="list-group-item list-group-item-action flex-column align-items-start">
+		  <li *ngFor="let activity of activities | paginate: { itemsPerPage: 10, currentPage: p }" class="list-group-item list-group-item-action flex-column align-items-start">
+		    <h5 class="mb-1">{{activity.fullString}}</h5>
 		    <div class="d-flex w-100 justify-content-between">
-		      <h5 class="mb-1">{{a}}</h5>
+		      <h6 class="mt-2">Type: {{activity.type}}</h6>
 		      <div>
+			      <button [routerLink]="['updateMistakeActivity', activity._id]" class="btn btn-primary btn-sm">Modificar</button>
 			      <button class="btn btn-primary btn-sm">Eliminar</button>
-			      <button class="btn btn-primary btn-sm">Modificar</button>
 		      	
 		      </div>
 

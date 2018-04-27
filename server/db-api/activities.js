@@ -125,20 +125,10 @@ export default {
 		)
 	},
 
-	/*findById: (_id) => {
-		debug(`Finding question with id: ${_id}`)
-		return Question
-			.findOne({ _id })
-			.populate('user')
-			.populate({
-				path: 'answers',
-				options: { sort: '-createdAt'},
-				populate: {
-					path: 'user',
-					model: 'User'
-				}
-			})
-	},*/
+	findActivityById: (_id) => {
+		debug(`Finding activity with id: ${_id}`)
+		return Activity.findOne({ _id })
+	},
 
 	createActivity: (actv) => {
 		debug(`Creating new simple selection activity ${actv}`)

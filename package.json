@@ -41,6 +41,7 @@
     "mongoose-unique-validator": "^2.0.0",
     "ng2-charts": "^1.6.0",
     "ngx-bootstrap": "^2.0.2",
+    "ngx-pagination": "^3.1.1",
     "ngx-pipes": "^2.1.2",
     "nodemon": "^1.17.2",
     "rxjs": "^5.5.6",
