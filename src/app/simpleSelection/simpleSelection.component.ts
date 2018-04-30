@@ -98,12 +98,6 @@ export class SimpleSelectionComponent implements OnInit {
 		//De lo contrario se debe buscar el objeto en los arreglos y luego sacarlo
 	}
 
-	log(){
-		console.log(this.splittedString);
-		console.log(this.correctAnswer);
-		console.log(this.possibleAnswers);
-	}
-
 	addCorrectAnswer(word){
 		//word.clickeable = !word.clickeable;
 
@@ -157,10 +151,15 @@ export class SimpleSelectionComponent implements OnInit {
 	    }
 	}
 
+	round(value, precision) {
+	    var multiplier = Math.pow(10, precision || 0);
+	    return Math.round(value * multiplier) / multiplier;
+	}
+
 	onSubmit(){
 		if(this.activityForm.valid){
 			const {difficulty, comment, fullString} = this.activityForm.value;
-			const difficultyNumber = parseInt(difficulty, 10) * 0.1;
+			const difficultyNumber = this.round(parseInt(difficulty, 10) * 0.1, 1);
 			console.log(difficulty)
 			const activity = new SimpleSelectionActivity(
 				difficultyNumber,

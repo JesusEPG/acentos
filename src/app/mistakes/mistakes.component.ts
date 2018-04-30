@@ -95,6 +95,8 @@ export class MistakesComponent implements OnInit {
 		console.log(this.possibleAnswers.length)
 				console.log(this.possibleAnswers)
 
+		this.possibleAnswers=[];
+
 		if(!word.hidden){
 			
 			//this.addCorrectAnswer(word);
@@ -164,10 +166,15 @@ export class MistakesComponent implements OnInit {
 	    }
 	}
 
+	round(value, precision) {
+	    var multiplier = Math.pow(10, precision || 0);
+	    return Math.round(value * multiplier) / multiplier;
+	}
+
 	onSubmit(){
 		if(this.activityForm.valid){
 			const {difficulty, comment, fullString} = this.activityForm.value;
-			const difficultyNumber = parseInt(difficulty, 10) * 0.1;
+			const difficultyNumber = this.round(parseInt(difficulty, 10) * 0.1, 1);
 			console.log(difficulty)
 			const activity = new MistakeActivity(
 				difficultyNumber,

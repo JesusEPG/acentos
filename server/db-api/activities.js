@@ -136,6 +136,23 @@ export default {
 		return activity.save()
 	},
 
+
+	//findoneandupdate para que retorne la nueva actividad
+	updateActivity: (actv) => {
+
+		return Activity.findOneAndUpdate({"_id": actv._id}, { $set: { 
+					
+				"difficulty": actv.difficulty,
+				"correctAnswer": actv.correctAnswer,
+				"splittedString": actv.splittedString,
+ 				"possibleAnswers": actv.possibleAnswers,
+ 				"comment": actv.comment,
+ 				"fullString": actv.fullString
+
+			} 
+		}, {new: true})
+	},
+
 	testQuery: (_id) => {
 		return User.aggregate(
 		    [
@@ -191,6 +208,7 @@ export default {
 		)
 	},
 
+	//que sea findoneandupdate
 	updateUserActivities: (_id, activity) => {
 	
 		return User.update({"_id": _id, "activities.activity": activity.activity }, { $set: { 
@@ -203,57 +221,28 @@ export default {
 		})
 	},
 
+
+	//que sea findoneandupdate
+	prueba: (_id, activity) => {
+		
+		console.log('Prueba: ')
+		console.log(_id)
+		console.log(activity)
+
+		return User.findOneAndUpdate({"_id": _id, "activities.activity": activity._id }, { $set: { 
+					
+				"activities.$.difficulty": activity.difficulty,
+				"activities.$.lastAttempt": null,
+				"activities.$.reviewInterval": 1,
+				"activities.$.percentOverDue": 1
+			}
+		}, {new: true})
+	},
+
+
+	//inserta la nueva actividad a cada usuario
 	updateUsersActivities: (activity) => {
 
-			/*SelectionActivity.
-	  			find({ _id }).
-	  			select({ possibleAnswers: 1 }).
-	  			sort({ 'possibleAnswers.id': -1 }).
-	  			limit(2).	  			
-	  			exec(function (err, docs) {
-	  				if (err){
-	  					console.log(err)
-	  					return err
-	  				}
-	  				console.log(docs)
-	  				return docs
-	  			});*/
-
-	  		/*SelectionActivity.aggregate(
-		    [
-				// Match the document(s) of interest
-				{ "$match" : {
-					_id: _id
-				}},
-			
-				// Separate the items array into a stream of documents
-  				{ "$unwind" : "$possibleAnswers" },
-  				// Sorting pipeline
-        		{ "$sort": { "possibleAnswers.id": -1 } },
-        		// Optionally limit results
-		        { "$limit": 2 },
-		        {
-					"$project" : { _id: 0, possibleAnswers : 1}
-				}
-		        // Grouping pipeline
-		        //{ "$group": { 
-		        //    "_id": '$roomId', 
-		        //    "recommendCount": { "$sum": 1 }
-		        //}},
-		        // Optionally limit results
-		        //{ "$limit": 5 }
-		    ],
-		    function(err,result) {
-
-		       // Result is an array of documents
-		       if(err){
-		       		console.log(err)
-		       		return err
-		       }
-		       console.log(result)
-		       return result
-		    }
-		);*/
 		return User.updateMany({}, { $push: { 
 				activities: { 
 					activity: activity._id,
@@ -263,6 +252,30 @@ export default {
 					reviewInterval: 1,
 					lastAttempt: null
 				} 
+			} 
+		})
+	},
+
+	updateUsersActivity: (activity) => {
+
+		return User.updateMany({}, { $push: { 
+				activities: { 
+					activity: activity._id,
+					type: activity.type,
+					difficulty: activity.difficulty,
+					percentOverDue: 1,
+					reviewInterval: 1,
+					lastAttempt: null
+				} 
+			} 
+		})
+
+		return User.updateMany({"_id": _id, "activities.activity": activity.activity }, { $set: { 
+					
+				"activities.$.difficulty": activity.difficulty,
+				"activities.$.lastAttempt": activity.lastAttempt,
+				"activities.$.reviewInterval": activity.reviewInterval,
+				"activities.$.percentOverDue": activity.percentOverDue
 			} 
 		})
 	}

@@ -89,7 +89,7 @@ app.get('/mistakes', required, async (req, res) => {
 
 })*/
 
-//	GET	/api/questions/:id
+//	GET	/api/activities/:id
 app.get('/:id', async (req, res) => {
 
 	try{
@@ -107,17 +107,22 @@ app.get('/:id', async (req, res) => {
 app.post('/updateActivities', required, async (req, res) => {
 
 	const toUpdate = req.body
+	let errors = 0
 
 	toUpdate.forEach( async function(activity, index) {
 		// statements
 		try {
 			const savedActivity = await activities.updateUserActivities(req.user._id, activity)
 			console.log(savedActivity)
+			console.log(`Resultado del query ${savedActivity}`)
 		} catch (err){
 			console.log(err)
+			errors++
 			//handleError(err, res)
 		}
 	})
+
+	console.log(errors)
 
 	res.status(201).json({message: 'Todo Bien'})
 })
@@ -184,6 +189,74 @@ app.post('/newMistakeActivity', async (req, res) => {
 			//Hacer que updateUsers sea una promesa para poder validar errores
 			const test = await activities.updateUsersActivities(savedActivity)
 			res.status(201).json(savedActivity)
+		} catch (err) {
+			console.log(err)
+			handleError(err, res)
+		}
+	} catch (err){
+		console.log(err)
+		handleError(err, res)
+	}
+})
+
+//	POST  /api/activities/newMistakeActivity
+//app.post('/', required, async (req, res) => {
+app.post('/updateMistakeActivity', async (req, res) => {
+
+	const {difficulty, type, comment, fullString, splittedString, correctAnswer, possibleAnswers, createdAt, _id } = req.body
+	const activity = {
+		difficulty,
+		type,
+		comment,
+		fullString,
+		splittedString,
+		correctAnswer,
+		possibleAnswers,
+		createdAt,
+		_id
+		//user: req.user._id
+	}
+
+	try {
+		//El db api debe ser solo de selection
+		
+		const updatedActivity = await activities.updateActivity(activity)
+		console.log(updatedActivity)
+		try {
+			//Hacer que updateUsers sea una promesa para poder validar errores
+			const users = await User.find({})
+			try {
+				// statements
+
+				users.forEach(function(user, index) {
+					user.activities.forEach(async function(activity, index) {
+
+						if(activity.activity.equals(updatedActivity._id)){
+							//esta es la actividad en activities de user
+							//modifico
+							//if (dificultaded no cambió)
+							console.log('Es igual!!!')
+							const prueba = await activities.prueba(user._id, updatedActivity)
+							console.log(prueba)
+							/*activities.prueba(user._id, updatedActivity)
+							activity.difficulty= updatedActivity.difficulty,
+							activity.lastAttempt = updatedActivity.lastAttempt,
+							activity.reviewInterval = updatedActivity.reviewInterval,
+							activity.percentOverDue = updatedActivity.percentOverDue*/
+						}
+					});
+					//User.save(user)
+				});
+
+
+				//const test = await activities.updateUsersActivity(updated)
+				res.status(201).json({message: 'Actualización exitosa'})
+
+			} catch(err) {
+				// statements
+				console.log(err)
+				handleError(err, res)
+			}
 		} catch (err) {
 			console.log(err)
 			handleError(err, res)

@@ -38,10 +38,7 @@ export class UpdateMistakeActivityComponent implements OnInit {
 			]),*/
 		});
 
-		/*this.activityForm.patchValue({
-		  comment: 'Probando', 
-		  // formControlName2: myValue2 (can be omitted)
-		});*/
+		//Hacer que vaya a list si no consigue la actividad
 
 		this.route.params.subscribe( params => 
 			this.mistakeService
@@ -49,9 +46,10 @@ export class UpdateMistakeActivityComponent implements OnInit {
 			.then((activity: MistakeActivity) => {
 				this.activity = activity;
 				console.log(this.activity);
+				console.log((this.activity.difficulty/0.1).toString());
 				//console.log(this.activities.length);
 				this.activityForm.patchValue({
-				  difficulty: this.activity.difficulty, 
+				  difficulty: (this.activity.difficulty/0.1).toString(), 
 				  comment: this.activity.comment,
 				  fullString: this.activity.fullString
 				});
@@ -115,6 +113,8 @@ export class UpdateMistakeActivityComponent implements OnInit {
 		//O si se les puede hacer click
 		console.log(this.possibleAnswers.length)
 				console.log(this.possibleAnswers)
+
+		this.possibleAnswers=[];
 
 		if(!word.hidden){
 			
@@ -185,12 +185,17 @@ export class UpdateMistakeActivityComponent implements OnInit {
 	    }
 	}
 
+	round(value, precision) {
+	    var multiplier = Math.pow(10, precision || 0);
+	    return Math.round(value * multiplier) / multiplier;
+	}
+
 	onSubmit(){
 		if(this.activityForm.valid){
 			const {difficulty, comment, fullString} = this.activityForm.value;
-			const difficultyNumber = parseInt(difficulty, 10) * 0.1;
+			const difficultyNumber = this.round(parseInt(difficulty, 10) * 0.1, 1);
 			console.log(difficulty)
-			const activity = new MistakeActivity(
+			const newActivity = new MistakeActivity(
 				difficultyNumber,
 				'Mistake',
 				comment.trim(),
@@ -198,16 +203,17 @@ export class UpdateMistakeActivityComponent implements OnInit {
 				this.splittedString,
 				this.correctAnswer,
 				this.possibleAnswers,
-				new Date
+				new Date,
+				this.activity._id
 			);
-			console.log(activity);
+			console.log(newActivity);
 			/*this.mistakeService.signin(user)
 				.subscribe(
 					this.authService.login,
 					this.authService.handleError
 				);
 			*/
-			this.mistakeService.addMistakeActivity(activity)
+			this.mistakeService.updateMistakeActivity(newActivity)
 				.subscribe(
 					//( {_id} ) => this.router.navigate(['/questions', _id]),
 					//this.router.navigate(['/']),

@@ -47,6 +47,17 @@ export class MistakeService {
 			.catch((error: Response) => Observable.throw(error.json()));
 	}
 
+	updateMistakeActivity(activity: MistakeActivity) {
+		const body = JSON.stringify(activity);
+		const headers = new Headers({'Content-Type': 'application/json'});
+		//const token = this.getToken();
+		const url = this.mistakeUrl + '/updateMistakeActivity';
+		//  apiUrl: 'http://localhost:3000/api/simpleSelection?token=${token}'
+		return this.http.post(url, body, { headers })
+			.map((response: Response) => response.json())
+			.catch((error: Response) => Observable.throw(error.json()));
+	}
+
 	/*addAnswer(answer: Answer) {
 
 		const a = {
