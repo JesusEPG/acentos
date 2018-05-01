@@ -51,7 +51,7 @@ export class MistakeService {
 		const body = JSON.stringify(activity);
 		const headers = new Headers({'Content-Type': 'application/json'});
 		//const token = this.getToken();
-		const url = this.mistakeUrl + '/updateMistakeActivity';
+		const url = this.mistakeUrl + '/updateActivity';
 		//  apiUrl: 'http://localhost:3000/api/simpleSelection?token=${token}'
 		return this.http.post(url, body, { headers })
 			.map((response: Response) => response.json())

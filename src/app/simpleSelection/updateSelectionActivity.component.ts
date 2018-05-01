@@ -1,27 +1,27 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { MistakeActivity } from './mistake.model';
-import { MistakeService } from './mistake.service';
+import { SimpleSelectionActivity } from './simpleSelection.model';
+import { SimpleSelectionService } from './simpleSelection.service';
 import { AuthService } from '../auth/auth.service';
 import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
-	selector: 'app-update-mistake-activity-component',
-	templateUrl: './updateMistakeActivity.component.html',
-	styleUrls: ['./mistakes.component.css'],
-	providers: [MistakeService]
+	selector: 'app-update-selection-activity-component',
+	templateUrl: './updateSelectionActivity.component.html',
+	styleUrls: ['./simpleSelection.component.css'],
+	providers: [SimpleSelectionService]
 })
 
-export class UpdateMistakeActivityComponent implements OnInit {
+export class UpdateSelectionActivityComponent implements OnInit {
 	activityForm: FormGroup;
 	splittedString: any[];
 	correctAnswer: any;
 	possibleAnswers: any[]=[];
-	private activity?: MistakeActivity;
+	private activity?: SimpleSelectionActivity;
 	loading: boolean = true;
 
 	constructor(
-		private mistakeService: MistakeService,
+		private selectionService: SimpleSelectionService,
 		private router: Router,
 		private route: ActivatedRoute,
 		private authService: AuthService){}
@@ -41,13 +41,12 @@ export class UpdateMistakeActivityComponent implements OnInit {
 		//Hacer que vaya a list si no consigue la actividad
 
 		this.route.params.subscribe( params => 
-			this.mistakeService
-			.getMistakeActivity(params['_id'])
-			.then((activity: MistakeActivity) => {
+			this.selectionService
+			.getSelectionActivity(params['_id'])
+			.then((activity: SimpleSelectionActivity) => {
 				this.activity = activity;
 				console.log(this.activity);
 				console.log((this.activity.difficulty/0.1).toString());
-				console.log((Math.round(this.activity.difficulty/0.1)).toString());
 				//console.log(this.activities.length);
 				this.activityForm.patchValue({
 				  difficulty: (Math.round(this.activity.difficulty/0.1)).toString(), 
@@ -196,7 +195,7 @@ export class UpdateMistakeActivityComponent implements OnInit {
 			const {difficulty, comment, fullString} = this.activityForm.value;
 			const difficultyNumber = this.round(parseInt(difficulty, 10) * 0.1, 1);
 			console.log(difficulty)
-			const newActivity = new MistakeActivity(
+			const newActivity = new SimpleSelectionActivity(
 				difficultyNumber,
 				'Mistake',
 				comment.trim(),
@@ -214,7 +213,7 @@ export class UpdateMistakeActivityComponent implements OnInit {
 					this.authService.handleError
 				);
 			*/
-			this.mistakeService.updateMistakeActivity(newActivity)
+			this.selectionService.updateSelectionActivity(newActivity)
 				.subscribe(
 					//( {_id} ) => this.router.navigate(['/questions', _id]),
 					//this.router.navigate(['/']),

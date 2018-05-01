@@ -30,6 +30,8 @@ import { AdminSigninComponent } from './admin/adminSignin.component';
 import { UserListComponent } from  './admin/userList.component';
 import { ActivityListComponent } from './admin/activityList.component';
 import { UpdateMistakeActivityComponent } from './mistakes/updateMistakeActivity.component';
+import { UpdateSelectionActivityComponent } from './simpleSelection/updateSelectionActivity.component';
+
 
 
 
@@ -61,7 +63,8 @@ import { Routing } from './app.routing';
     AdminSigninComponent,
     UserListComponent,
     ActivityListComponent,
-    UpdateMistakeActivityComponent
+    UpdateMistakeActivityComponent,
+    UpdateSelectionActivityComponent
   ],
   imports: [
     BrowserModule,

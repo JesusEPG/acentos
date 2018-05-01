@@ -201,7 +201,75 @@ app.post('/newMistakeActivity', async (req, res) => {
 
 //	POST  /api/activities/newMistakeActivity
 //app.post('/', required, async (req, res) => {
-app.post('/updateMistakeActivity', async (req, res) => {
+/*app.post('/updateMistakeActivity', async (req, res) => {
+
+	const {difficulty, type, comment, fullString, splittedString, correctAnswer, possibleAnswers, createdAt, _id } = req.body
+	const activity = {
+		difficulty,
+		type,
+		comment,
+		fullString,
+		splittedString,
+		correctAnswer,
+		possibleAnswers,
+		createdAt,
+		_id
+		//user: req.user._id
+	}
+
+	try {
+		//El db api debe ser solo de selection
+		
+		const updatedActivity = await activities.updateActivity(activity)
+		console.log(updatedActivity)
+		try {
+			//Hacer que updateUsers sea una promesa para poder validar errores
+			const users = await User.find({})
+			try {
+				// statements
+
+				users.forEach(function(user, index) {
+					user.activities.forEach(async function(activity, index) {
+
+						if(activity.activity.equals(updatedActivity._id)){
+							//esta es la actividad en activities de user
+							//modifico
+							//if (dificultaded no cambió)
+							console.log('Es igual!!!')
+							const prueba = await activities.prueba(user._id, updatedActivity)
+							console.log(prueba)
+							//activities.prueba(user._id, updatedActivity)
+							//activity.difficulty= updatedActivity.difficulty,
+							//activity.lastAttempt = updatedActivity.lastAttempt,
+							//activity.reviewInterval = updatedActivity.reviewInterval,
+							//activity.percentOverDue = updatedActivity.percentOverDue
+						}
+					});
+					//User.save(user)
+				});
+
+
+				//const test = await activities.updateUsersActivity(updated)
+				res.status(201).json({message: 'Actualización exitosa'})
+
+			} catch(err) {
+				// statements
+				console.log(err)
+				handleError(err, res)
+			}
+		} catch (err) {
+			console.log(err)
+			handleError(err, res)
+		}
+	} catch (err){
+		console.log(err)
+		handleError(err, res)
+	}
+})*/
+
+//	POST  /api/activities/newMistakeActivity
+//app.post('/', required, async (req, res) => {
+app.post('/updateActivity', async (req, res) => {
 
 	const {difficulty, type, comment, fullString, splittedString, correctAnswer, possibleAnswers, createdAt, _id } = req.body
 	const activity = {

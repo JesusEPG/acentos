@@ -3,6 +3,7 @@ import { SimpleSelectionComponent } from '../simpleSelection/simpleSelection.com
 import { AdminActivitiesComponent } from './adminActivities.component';
 import { MistakesComponent } from '../mistakes/mistakes.component';
 import { UpdateMistakeActivityComponent } from '../mistakes/updateMistakeActivity.component';
+import { UpdateSelectionActivityComponent } from '../simpleSelection/updateSelectionActivity.component';
 import { AdminSigninComponent } from './adminSignin.component';
 import { AdminGuardService } from '../auth/admin-guard.service';
 import { UserListComponent } from './userList.component';
@@ -19,7 +20,8 @@ export const ADMIN_ROUTES = [
 	{ path: 'activities/newSelectionActivity', component: SimpleSelectionComponent, canActivate: [AdminGuardService]},
 	{ path: 'activities/mistakesActivity', component: MistakesComponent, canActivate: [AdminGuardService] },
 	{ path: 'activities/activityList', component: ActivityListComponent, canActivate:[AdminGuardService]},
-	{ path: 'activities/activityList/updateMistakeActivity/:_id', component: UpdateMistakeActivityComponent, canActivate:[AdminGuardService]}
+	{ path: 'activities/activityList/updateMistakeActivity/:_id', component: UpdateMistakeActivityComponent, canActivate:[AdminGuardService]},
+	{ path: 'activities/activityList/updateSelectionActivity/:_id', component: UpdateSelectionActivityComponent, canActivate:[AdminGuardService]}
 
 	//{ path: ':id', component: QuestionDetailComponent }
 ];

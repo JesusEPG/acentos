@@ -15,8 +15,14 @@
 		    <h5 class="mb-1">{{activity.fullString}}</h5>
 		    <div class="d-flex w-100 justify-content-between">
 		      <h6 class="mt-2">Type: {{activity.type}}</h6>
-		      <div>
+		      <div *ngIf="activity.type === 'Mistake'">
 			      <button [routerLink]="['updateMistakeActivity', activity._id]" class="btn btn-primary btn-sm">Modificar</button>
+			      <button class="btn btn-primary btn-sm">Eliminar</button>
+		      	
+		      </div>
+
+		      <div *ngIf="activity.type === 'Selection'">
+			      <button [routerLink]="['updateSelectionActivity', activity._id]" class="btn btn-primary btn-sm">Modificar</button>
 			      <button class="btn btn-primary btn-sm">Eliminar</button>
 		      	
 		      </div>

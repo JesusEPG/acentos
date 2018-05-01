@@ -182,7 +182,7 @@ export class SimpleSelectionComponent implements OnInit {
 				.subscribe(
 					//( {_id} ) => this.router.navigate(['/questions', _id]),
 					//this.router.navigate(['/']),
-					( {_id} ) => this.router.navigate(['/']),
+					( {_id} ) => this.router.navigate(['/admin']),
 					this.authService.handleError
 				);//recibe dos funciones como parametros, la función de exito y la función de error
 		} else {

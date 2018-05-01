@@ -26,7 +26,7 @@ export class SimpleSelectionService {
 			.catch(this.handleError);								//Error
 	}
 
-	getQuestion(id): Promise<void | SimpleSelectionActivity>{
+	getSelectionActivity(id): Promise<void | SimpleSelectionActivity>{
 		const url = urljoin(this.simpleSelectionUrl, id);
 		return this.http.get(url)
 			.toPromise()
@@ -39,6 +39,17 @@ export class SimpleSelectionService {
 		const headers = new Headers({'Content-Type': 'application/json'});
 		const token = this.getToken();
 		const url = this.simpleSelectionUrl + '/newSelectionActivity' + token;
+		//  apiUrl: 'http://localhost:3000/api/simpleSelection?token=${token}'
+		return this.http.post(url, body, { headers })
+			.map((response: Response) => response.json())
+			.catch((error: Response) => Observable.throw(error.json()));
+	}
+
+	updateSelectionActivity(activity: SimpleSelectionActivity) {
+		const body = JSON.stringify(activity);
+		const headers = new Headers({'Content-Type': 'application/json'});
+		//const token = this.getToken();
+		const url = this.simpleSelectionUrl + '/updateActivity';
 		//  apiUrl: 'http://localhost:3000/api/simpleSelection?token=${token}'
 		return this.http.post(url, body, { headers })
 			.map((response: Response) => response.json())
