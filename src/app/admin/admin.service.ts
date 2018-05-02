@@ -37,6 +37,26 @@ export class AdminService {
 			.catch(this.handleError);								//Error
 	}
 
+	/*deleteActivity(activityId): Promise<void | MistakeActivity>{
+		return this.http.delete(this.adminUrl+'/deleteActivity')
+			.toPromise()
+			.then(response => response.json() as MistakeActivity)
+			.catch(this.handleError)
+	}*/
+
+	deleteActivity(activityId) {
+		//Obtener adminToken y asignarlo al body
+		const body = JSON.stringify({_id: activityId});
+		const headers = new Headers({'Content-Type': 'application/json'});
+		//const token = this.getAdminToken();
+		//const url = this.activitiesUrl + '/updateActivities' + token;
+		const url = this.adminUrl + '/deleteActivity';
+
+		return this.http.post(url, body, { headers })
+			.map((response: Response) => response.json())
+			.catch((error: Response) => Observable.throw(error.json()));
+	}
+
 	/*getMistakeActivities(): Promise<void | SelectionActivity[]>{
 		const token = this.getToken();
 		const url = this.activitiesUrl+ '/mistakes' + token;
@@ -103,6 +123,11 @@ export class AdminService {
 
 	getToken(){
 		const token = localStorage.getItem('token');
+		return `?token=${token}`;
+	}
+
+	getAdminToken(){
+		const token = localStorage.getItem('adminToken');
 		return `?token=${token}`;
 	}
 

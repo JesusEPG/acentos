@@ -17,5 +17,13 @@ const ActivitySchema = Schema({
 	//answers: [{ type: Schema.Types.ObjectId, ref: 'Answer', default: [] }]
 })
 
+ActivitySchema.pre('remove', async function(next){
+
+	console.log('Se está triggeando el hook de pre remove')
+	await this.model('User').updateMany({}, {$pull: {activities: {activity: this._id}}})
+	//this.model('User').remove({}, next);
+	next()
+})
+
 
 export default mongoose.model('Activity', ActivitySchema)

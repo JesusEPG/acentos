@@ -2,7 +2,7 @@ import express from 'express'
 import { required, simpleSelectionActivityMiddleware } from '../middleware'
 import { activities} from '../db-api'
 import { handleError } from '../utils'
-import { User } from '../models'
+import { User, Activity } from '../models'
 
 
 const app = express.Router()
@@ -135,6 +135,57 @@ app.post('/updateActivities', required, async (req, res) => {
 	})
 
 	res.status(201).json({message: 'Todo Bien'})
+})
+
+//	POST  /api/admin/deleteActivity
+//app.post('/', required, async (req, res) => {
+app.post('/deleteActivity', async (req, res) => {
+
+	const toDelete = req.body._id
+
+	console.log(toDelete)
+
+	//const deletedActivity = await Activity.findOneAndRemove({_id: toDelete})
+
+	Activity.findOneAndRemove({_id: toDelete}, async function(err, activity){
+		if(err) handleError(err, res)
+
+		try {
+			// statements
+			await activity.remove()
+	 		console.log('Luego del hook')
+	 		res.status(201).json({message: 'Todo Bien', _id: '123'})
+		} catch(err) {
+			// statements
+			console.log(err)
+			handleError(err, res)
+		}
+	})
+
+
+	/*Activity.find({_id: toDelete}, async function(err, activity){
+		if(err){
+			handleError(err, res)
+		}
+		console.log(activity)
+		activity.remove()
+		console.log('Después del hook ')
+		res.status(201).json({message: 'Todo Bien', _id: '123'})
+	})*/
+
+	/*toUpdate.forEach( async function(activity, index) {
+		// statements
+		try {
+			const savedActivity = await activities.updateUserActivities(req.user._id, activity)
+			console.log(savedActivity)
+		} catch (err){
+			console.log(err)
+			//handleError(err, res)
+		}
+	})*/
+
+
+
 })
 
 //	POST  /api/simpleSelection

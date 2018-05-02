@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AdminService } from './admin.service';
 import { User } from '../auth/user.model';
 import { MistakeActivity } from '../mistakes/mistake.model';
+import { Router } from '@angular/router';
 
 @Component({
 	selector: 'app-activity-list-component',
@@ -17,7 +18,7 @@ export class ActivityListComponent implements OnInit {
     array: any[] = ['hola', 'como', 'estas', 'hola', 'como', 'estas', 'hola', 'como', 'estas', 'hola', 'como', 'estas'];
 	activities: MistakeActivity[];
 
-	constructor(private adminService: AdminService){}
+	constructor(private adminService: AdminService, private router: Router,){}
 
 	ngOnInit(){
 
@@ -29,5 +30,22 @@ export class ActivityListComponent implements OnInit {
 				console.log(this.activities.length);
 				this.loading = false;
 			});
+	}
+
+	deleteActivity(activityId){
+
+		console.log('Boton component list');
+		this.adminService.deleteActivity(activityId)
+				.subscribe(
+					//( {_id} ) => this.router.navigate(['/questions', _id]),
+					//this.router.navigate(['/']),
+					( {_id} ) => {
+						this.router.navigate(['/admin']);
+						console.log('Exitoso')
+						console.log(_id);
+					},
+					this.adminService.handleError
+				);
+
 	}
 } 
