@@ -26,11 +26,13 @@ import { SimpleSelectionComponent } from './simpleSelection/simpleSelection.comp
 import { MistakesComponent } from './mistakes/mistakes.component';
 import { AdminDashboardComponent } from './admin/adminDashboard.component';
 import { AdminActivitiesComponent } from './admin/adminActivities.component';
+import { AdminUsersComponent } from './admin/adminUsers.component';
 import { AdminSigninComponent } from './admin/adminSignin.component';
 import { UserListComponent } from  './admin/userList.component';
 import { ActivityListComponent } from './admin/activityList.component';
 import { UpdateMistakeActivityComponent } from './mistakes/updateMistakeActivity.component';
 import { UpdateSelectionActivityComponent } from './simpleSelection/updateSelectionActivity.component';
+import { UpdateUserComponent } from './admin/updateUser.component';
 
 
 
@@ -58,13 +60,15 @@ import { Routing } from './app.routing';
     MistakeActivitiesComponent,
     AdminDashboardComponent,
     AdminActivitiesComponent,
+    AdminUsersComponent,
     SimpleSelectionComponent,
     MistakesComponent,
     AdminSigninComponent,
     UserListComponent,
     ActivityListComponent,
     UpdateMistakeActivityComponent,
-    UpdateSelectionActivityComponent
+    UpdateSelectionActivityComponent,
+    UpdateUserComponent
   ],
   imports: [
     BrowserModule,

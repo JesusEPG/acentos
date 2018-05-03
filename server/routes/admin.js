@@ -22,6 +22,18 @@ app.get('/users', async (req, res) => {
 	})
 })
 
+// 	GET	/api/admin/user/:id
+app.get('/user/:id', async (req, res) => {
+
+	User.find({_id:req.params.id}, function(err, user){
+		if(err){
+			console.log(err)
+			handleError(err, res)
+		}
+		res.status(200).json(user)
+	})
+})
+
 // 	GET	/api/admin/activities
 app.get('/activities', async (req, res) => {
 
@@ -137,6 +149,71 @@ app.post('/updateActivities', required, async (req, res) => {
 	res.status(201).json({message: 'Todo Bien'})
 })
 
+//	POST  /api/admin/updateUser
+//app.post('/', required, async (req, res) => {
+app.post('/updateUser', async (req, res) => {
+
+	const { firstName, lastName, userName, password, _id } = req.body
+
+	if(userName){
+		//verificar que userName no este almacenado en base de datos
+		const user = await User.find({userName: userName})
+		if (user){
+			console.log(user)
+			return res.status(401).json({
+				message:'Actualización de usuario falló',
+				error: 'Nombre de usuario ingresado ya está en uso'
+			})
+		}
+		//si no está almacenado ese userName se actualiza
+		try {
+			// statements
+			const userUpdated = await User.findOneAndUpdate({"_id": _id}, { $set: { 
+					
+					"firstName": firstName,
+					"lastName": lastName,
+					"userName": userName
+				} 
+			}, {new: true})
+
+			res.status(201).json({
+				message: 'Usuario Actualizado',
+				userId: userUpdated._id,
+				firstName: userUpdated.firstName,
+				lastName: userUpdated.lastName,
+				userName: userUpdated.userName
+			})
+		} catch(err) {
+			// statements
+			console.log(err)
+			handleError(err, res)
+		}
+
+	} else {
+		//Update normal de nombre y apellido
+		try {
+			// statements
+			const userUpdated = await User.findOneAndUpdate({"_id": _id}, { $set: { 
+					
+					"firstName": firstName,
+					"lastName": lastName
+				} 
+			}, {new: true})
+
+			res.status(201).json({
+				message: 'Usuario Actualizado',
+				userId: userUpdated._id,
+				firstName: userUpdated.firstName,
+				lastName: userUpdated.lastName
+			})
+		} catch(err) {
+			// statements
+			console.log(err)
+			handleError(err, res)
+		}
+	}
+})
+
 //	POST  /api/admin/deleteActivity
 //app.post('/', required, async (req, res) => {
 app.post('/deleteActivity', async (req, res) => {
@@ -154,7 +231,7 @@ app.post('/deleteActivity', async (req, res) => {
 			// statements
 			await activity.remove()
 	 		console.log('Luego del hook')
-	 		res.status(201).json({message: 'Todo Bien', _id: '123'})
+	 		res.status(201).json({message: 'U eliminada exitosamente', _id: '123'})
 		} catch(err) {
 			// statements
 			console.log(err)
@@ -162,29 +239,31 @@ app.post('/deleteActivity', async (req, res) => {
 		}
 	})
 
+})
 
-	/*Activity.find({_id: toDelete}, async function(err, activity){
-		if(err){
+//	POST  /api/admin/deleteUser
+//app.post('/', required, async (req, res) => {
+app.post('/deleteActivity', async (req, res) => {
+
+	const toDelete = req.body._id
+
+	console.log(toDelete)
+
+	//const deletedActivity = await Activity.findOneAndRemove({_id: toDelete})
+
+	User.findOneAndRemove({_id: toDelete}, async function(err, user){
+		if(err) handleError(err, res)
+
+		try {
+			// statements
+			await user.remove()
+	 		res.status(201).json({message: 'Usuario eliminado exitosamente', _id: '123'})
+		} catch(err) {
+			// statements
+			console.log(err)
 			handleError(err, res)
 		}
-		console.log(activity)
-		activity.remove()
-		console.log('Después del hook ')
-		res.status(201).json({message: 'Todo Bien', _id: '123'})
-	})*/
-
-	/*toUpdate.forEach( async function(activity, index) {
-		// statements
-		try {
-			const savedActivity = await activities.updateUserActivities(req.user._id, activity)
-			console.log(savedActivity)
-		} catch (err){
-			console.log(err)
-			//handleError(err, res)
-		}
-	})*/
-
-
+	})
 
 })
 

@@ -26,6 +26,9 @@ app.get('/selection', required, async (req, res) => {
 				lastAttempt: activity.activities.lastAttempt,
 				reviewInterval: activity.activities.reviewInterval,
 				percentOverDue: activity.activities.percentOverDue,
+				correctCount: activity.activities.correctCount,
+    			incorrectCount: activity.activities.incorrectCount,
+    			lastAnswer: activity.activities.lastAnswer,
 				type: activity.activities.type,
 				correctAnswer: activity.fromActivities[0].correctAnswer,
 				possibleAnswers: activity.fromActivities[0].possibleAnswers,
@@ -60,6 +63,9 @@ app.get('/mistakes', required, async (req, res) => {
 				lastAttempt: activity.activities.lastAttempt,
 				reviewInterval: activity.activities.reviewInterval,
 				percentOverDue: activity.activities.percentOverDue,
+				correctCount: activity.activities.correctCount,
+    			incorrectCount: activity.activities.incorrectCount,
+    			lastAnswer: activity.activities.lastAnswer,
 				type: activity.activities.type,
 				correctAnswer: activity.fromActivities[0].correctAnswer,
 				possibleAnswers: activity.fromActivities[0].possibleAnswers,
@@ -108,6 +114,8 @@ app.post('/updateActivities', required, async (req, res) => {
 
 	const toUpdate = req.body
 	let errors = 0
+
+	console.log(toUpdate)
 
 	toUpdate.forEach( async function(activity, index) {
 		// statements

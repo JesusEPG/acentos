@@ -14,7 +14,10 @@ const UserSchema = Schema({
     	percentOverDue: {type: Number, required: true, default: 1 },
     	//dueDate: today + interval,
     	reviewInterval: {type: Number, required: true, default: 1 },
-    	lastAttempt: {type: Date, default: null }
+    	lastAttempt: {type: Date, default: null },
+    	correctCount: {type: Number, default: 0},
+    	incorrectCount: {type: Number, defaul: 0},
+    	lastAnswer: {type: Boolean, default: null}
 	}]
 
 })

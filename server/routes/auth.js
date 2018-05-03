@@ -101,7 +101,10 @@ app.post('/signup', async (req, res) => {
 					difficulty: activity.difficulty,
 					percentOverDue: 1,
 					reviewInterval: 1,
-					lastAttempt: null
+					lastAttempt: null,
+					correctCount: 0,
+    				incorrectCount: 0,
+    				lastAnswer: null
 				})
 	})
 

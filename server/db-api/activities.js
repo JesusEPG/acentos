@@ -216,7 +216,12 @@ export default {
 				"activities.$.difficulty": activity.difficulty,
 				"activities.$.lastAttempt": activity.lastAttempt,
 				"activities.$.reviewInterval": activity.reviewInterval,
-				"activities.$.percentOverDue": activity.percentOverDue
+				"activities.$.percentOverDue": activity.percentOverDue,
+				"activities.$.correctCount": activity.correctCount,
+				"activities.$.incorrectCount": activity.incorrectCount,
+				"activities.$.lastAnswer": activity.lastAnswer,
+
+
 			} 
 		})
 	},
@@ -250,7 +255,10 @@ export default {
 					difficulty: activity.difficulty,
 					percentOverDue: 1,
 					reviewInterval: 1,
-					lastAttempt: null
+					lastAttempt: null,
+					correctCount: 0,
+    				incorrectCount: 0,
+    				lastAnswer: null
 				} 
 			} 
 		})

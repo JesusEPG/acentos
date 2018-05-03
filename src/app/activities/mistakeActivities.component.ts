@@ -85,6 +85,10 @@ export class MistakeActivitiesComponent implements OnInit {
 				if(this.selectedAnswers[index].word === activity.correctAnswer.word){
 					//respuesta correcta
 					console.log('Correcto');
+					console.log(activity);
+					activity.correctCount++;
+					console.log(activity);
+
 
 					this.selectedAnswers[index].correct=true;
 
@@ -98,7 +102,10 @@ export class MistakeActivitiesComponent implements OnInit {
 						newValues.difficulty,
 						newValues.lastAttempt,
 						newValues.reviewInterval,
-						newValues.percentOverDue
+						newValues.percentOverDue,
+						activity.correctCount,
+						activity.incorrectCount,
+						true
 					);
 			/*		return {
 						activity: activity.activity ,
@@ -112,6 +119,8 @@ export class MistakeActivitiesComponent implements OnInit {
 					//const newValues = calculate(activity, WORST, Math.round(new Date().getTime() / DAY_IN_MINISECONDS))
 					//console.log(newValues);
 					this.selectedAnswers[index].correct=false;
+					activity.incorrectCount++;
+
 
 					const newValues = review(activity, INCORRECT)
 					console.log(newValues);
@@ -121,7 +130,10 @@ export class MistakeActivitiesComponent implements OnInit {
 						newValues.difficulty,
 						newValues.lastAttempt,
 						newValues.reviewInterval,
-						newValues.percentOverDue
+						newValues.percentOverDue,
+						activity.correctCount,
+						activity.incorrectCount,
+						false
 					);
 					/*return {
 						activity: activity.activity ,

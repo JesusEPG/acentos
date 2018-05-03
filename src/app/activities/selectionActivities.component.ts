@@ -93,7 +93,10 @@ export class SelectionActivitiesComponent implements OnInit {
 						newValues.difficulty,
 						newValues.lastAttempt,
 						newValues.reviewInterval,
-						newValues.percentOverDue
+						newValues.percentOverDue,
+						activity.correctCount++,
+						activity.incorrectCount,
+						true
 					);
 			/*		return {
 						activity: activity.activity ,
@@ -115,7 +118,10 @@ export class SelectionActivitiesComponent implements OnInit {
 						newValues.difficulty,
 						newValues.lastAttempt,
 						newValues.reviewInterval,
-						newValues.percentOverDue
+						newValues.percentOverDue,
+						activity.correctCount,
+						activity.incorrectCount++,
+						false
 					);
 					/*return {
 						activity: activity.activity ,

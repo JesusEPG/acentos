@@ -15,17 +15,28 @@
 		    <h5 class="mb-1">{{activity.fullString}}</h5>
 		    <div class="d-flex w-100 justify-content-between">
 		      <h6 class="mt-2">Type: {{activity.type}}</h6>
-		      <div *ngIf="activity.type === 'Mistake'">
-			      <button [routerLink]="['updateMistakeActivity', activity._id]" class="btn btn-primary btn-sm">Modificar</button>
-			      <button class="btn btn-primary btn-sm" (click)="deleteActivity(activity._id)">Eliminar</button>
+		      <div>
+			    	<button *ngIf="activity.type === 'Mistake'" [routerLink]="['updateMistakeActivity', activity._id]" class="btn btn-primary btn-sm mb-1">Modificar</button>
+			      
+			    	<button *ngIf="activity.type === 'Selection'" [routerLink]="['updateSelectionActivity', activity._id]" class="btn btn-primary btn-sm mb-1">Modificar</button>
+
+			    	<button type="button" class="btn btn-primary btn-sm mb-1" (click)="openModal(template)">Eliminar</button>
+				    <ng-template class="mt-5" #template>
+				      <div class="modal-body text-center">
+				        <p>¿Está seguro que desea eliminar la actividad?</p>
+				        <button type="button" class="btn btn-default" (click)="confirm(activity._id)" >Sí</button>
+				        <button type="button" class="btn btn-primary" (click)="decline()" >No</button>
+				      </div>
+				    </ng-template>
+
 		      	
 		      </div>
 
-		      <div *ngIf="activity.type === 'Selection'">
+		      <!--<div *ngIf="activity.type === 'Selection'">
 			      <button [routerLink]="['updateSelectionActivity', activity._id]" class="btn btn-primary btn-sm">Modificar</button>
 			      <button class="btn btn-primary btn-sm" (click)="deleteActivity(activity._id)">Eliminar</button>
 		      	
-		      </div>
+		      </div>-->
 
 		    </div>
 		    
