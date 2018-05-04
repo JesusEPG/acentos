@@ -25,7 +25,7 @@ export const ADMIN_ROUTES = [
 	{ path: 'activities/activityList/updateSelectionActivity/:_id', component: UpdateSelectionActivityComponent, canActivate:[AdminGuardService]},
 	{ path: 'users', component: AdminUsersComponent, canActivate: [AdminGuardService]},
 	{ path: 'users/userList', component: UserListComponent, canActivate:[AdminGuardService]},
-	{ path: 'users/userList/updateUser', component: UpdateUserComponent, canActivate:[AdminGuardService]}
+	{ path: 'users/userList/updateUser/:_id', component: UpdateUserComponent, canActivate:[AdminGuardService]}
 
 	//{ path: ':id', component: QuestionDetailComponent }
 ];

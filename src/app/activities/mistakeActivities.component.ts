@@ -28,17 +28,18 @@ export class MistakeActivitiesComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		console.log(WORST)
-		console.log(BEST)
-		console.log(CORRECT)
-		//console.log(calculate)
+		
 		this.activitiesService
 			.getMistakeActivities()
 			.then((activities: SelectionActivity[]) => {
 				this.activities = activities;
 				console.log(this.activities);
-				console.log(this.activities.length);
 				this.loading = false;
+			})
+			.catch((err: any) => {
+				console.log('Entre al error')
+				console.log('Error ' + err);
+				//this.loading = false;
 			});
 	}
 

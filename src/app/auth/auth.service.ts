@@ -215,6 +215,8 @@ export class AuthService {
 
 	public handleError = (error: any) => {
 
+		console.log('Entré al handler de auth')
+
 		const { error: {  name }, message } = error;
 		if(name === 'TokenExpiredError'){
 			this.showError('Your session has expired');

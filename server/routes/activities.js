@@ -312,13 +312,8 @@ app.post('/updateActivity', async (req, res) => {
 							//modifico
 							//if (dificultaded no cambió)
 							console.log('Es igual!!!')
-							const prueba = await activities.prueba(user._id, updatedActivity)
-							console.log(prueba)
-							/*activities.prueba(user._id, updatedActivity)
-							activity.difficulty= updatedActivity.difficulty,
-							activity.lastAttempt = updatedActivity.lastAttempt,
-							activity.reviewInterval = updatedActivity.reviewInterval,
-							activity.percentOverDue = updatedActivity.percentOverDue*/
+							const update = await activities.updateUsersActivity(user._id, updatedActivity)
+							console.log(update)
 						}
 					});
 					//User.save(user)

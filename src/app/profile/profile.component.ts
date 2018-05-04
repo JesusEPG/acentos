@@ -1,21 +1,45 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth/auth.service';
+import { ProfileService } from './profile.service';
 
 
 @Component({
 	selector: 'app-profile-component',
 	templateUrl: './profile.component.html',
+	providers: [ProfileService]
 
 })
 
-export class ProfileComponent {
+export class ProfileComponent implements OnInit {
 
 	// Doughnut
 	public doughnutChartLabels:string[] = ['Download Sales', 'In-Store Sales', 'Mail-Order Sales'];
-	public doughnutChartData:number[] = [350, 450, 100];
+	public doughnutChartData:number[] = [350, 450, 100, 200, 300];
+	public doughnutChartColors: any[] = [{ backgroundColor: ["#b8436d", "#00d9f9", "#a4c73c", "#a4add3", "#00cd00"] }];
+	//public colors:any[] = ['green', 'red', 'blue'];
 	public doughnutChartType:string = 'doughnut';
 
-	constructor(private authService: AuthService) {}
+
+	private loading = true;
+	private data:number[];
+
+	constructor(private authService: AuthService, private profileService: ProfileService) {}
+
+	ngOnInit(){
+
+		this.profileService
+			.getData()
+			.then((data: any[]) => {
+				this.data = data;
+				console.log(this.data);
+				this.loading = false;
+			})
+			.catch((err: any) => {
+				console.log('Entre al error')
+				console.log('Error ' + err);
+				//this.loading = false;
+			});
+	}
 
 	isLoggedIn() {
 		return this.authService.isLoggedIn();

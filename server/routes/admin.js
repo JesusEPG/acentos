@@ -25,13 +25,25 @@ app.get('/users', async (req, res) => {
 // 	GET	/api/admin/user/:id
 app.get('/user/:id', async (req, res) => {
 
-	User.find({_id:req.params.id}, function(err, user){
+	const id = req.params.id
+
+	User.findOne({ _id: id }, function(err, user){
+		if(err){
+			console.log(err)
+			handleError(err, res)
+		}
+
+		console.log(user)
+		res.status(200).json(user)
+	})
+
+	/*User.find({_id:req.params.id}, function(err, user){
 		if(err){
 			console.log(err)
 			handleError(err, res)
 		}
 		res.status(200).json(user)
-	})
+	})*/
 })
 
 // 	GET	/api/admin/activities
@@ -243,7 +255,7 @@ app.post('/deleteActivity', async (req, res) => {
 
 //	POST  /api/admin/deleteUser
 //app.post('/', required, async (req, res) => {
-app.post('/deleteActivity', async (req, res) => {
+app.post('/deleteUser', async (req, res) => {
 
 	const toDelete = req.body._id
 

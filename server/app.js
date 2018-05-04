@@ -1,6 +1,6 @@
 import express from 'express'
 import bodyParser from 'body-parser'
-import { auth, activities, admin } from './routes'
+import { auth, activities, admin, profile } from './routes'
 
 const app = express();
 
@@ -25,6 +25,8 @@ app.use('/api/activities', activities)
 app.use('/api/admin', admin)
 
 app.use('/api/auth', auth)
+
+app.use('/api/profile', profile)
 
 //app.get('/', (req, res) => res.send('Hola desde el servidor'))
 

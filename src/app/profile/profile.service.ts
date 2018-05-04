@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AuthService } from '../auth/auth.service';
-//Models
-import { Activity } from './activity.model';
-import { SelectionActivity } from './selectionActivity.model';
+//import { SimpleSelectionActivity } from './simpleSelection.model';
 //import { Answer } from '../answer/answer.model';
 import { Http, Headers, Response } from '@angular/http';
 import { environment } from '../../environments/environment';
@@ -14,68 +11,63 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 
 @Injectable()
-export class ActivitiesService {
+export class ProfileService {
 
-	activitiesUrl: string;
+	profileUrl: string;
 
-	constructor(private http: Http, private authService: AuthService){
-		this.activitiesUrl = urljoin(environment.apiUrl, 'activities');
+	constructor(private http: Http){
+		this.profileUrl = urljoin(environment.apiUrl, 'profile');
+		console.log(this.profileUrl)
 	}
 
-	/*getQuestions(): Promise<void | SelectionActivity[]>{
-		return this.http.get(this.activitiesUrl)
+	/*getQuestions(): Promise<void | SimpleSelectionActivity[]>{
+		return this.http.get(this.simpleSelectionUrl)
 			.toPromise()
-			.then(response => response.json() as SelectionActivity[])		//Exitoso
+			.then(response => response.json() as SimpleSelectionActivity[])		//Exitoso
 			.catch(this.handleError);								//Error
+	}
+
+
+	getSelectionActivity(id): Promise<void | SimpleSelectionActivity>{
+		const url = urljoin(this.simpleSelectionUrl, id);
+		return this.http.get(url)
+			.toPromise()
+			.then(response => response.json() as SimpleSelectionActivity)
+			.catch(this.handleError);
 	}*/
 
-	getMistakeActivities(): Promise<void | SelectionActivity[]>{
+	getData(): Promise<void | any[]>{
 		const token = this.getToken();
-		const url = this.activitiesUrl+ '/mistakes' + token;
+		const url = this.profileUrl + token;
 		return this.http.get(url)
 			.toPromise()
-			.then(response => response.json() as SelectionActivity[])		//Exitoso
-			.catch(this.authService.handleError);								//Error
-	}
-
-	getSelectionActivities(): Promise<void | SelectionActivity[]>{
-		const token = this.getToken();
-		const url = this.activitiesUrl+ '/selection' + token;
-		return this.http.get(url)
-			.toPromise()
-			.then(response => response.json() as SelectionActivity[])		//Exitoso
+			.then(response => response.json() as any[])		//Exitoso
 			.catch(this.handleError);								//Error
 	}
 
-	updateActivities(activities: SelectionActivity[]) {
-		const body = JSON.stringify(activities);
+	/*addSimpleSelectionActivity(activity: SimpleSelectionActivity) {
+		const body = JSON.stringify(activity);
 		const headers = new Headers({'Content-Type': 'application/json'});
 		const token = this.getToken();
-		const url = this.activitiesUrl + '/updateActivities' + token;
+		const url = this.simpleSelectionUrl + '/newSelectionActivity' + token;
+		//  apiUrl: 'http://localhost:3000/api/simpleSelection?token=${token}'
 		return this.http.post(url, body, { headers })
 			.map((response: Response) => response.json())
 			.catch((error: Response) => Observable.throw(error.json()));
 	}
 
-	/*getQuestion(id): Promise<void | Question>{
-		const url = urljoin(this.questionsUrl, id);
-		return this.http.get(url)
-			.toPromise()
-			.then(response => response.json() as Question)
-			.catch(this.handleError);
-	}
-
-	addQuestion(question: Question) {
-		const body = JSON.stringify(question);
+	updateSelectionActivity(activity: SimpleSelectionActivity) {
+		const body = JSON.stringify(activity);
 		const headers = new Headers({'Content-Type': 'application/json'});
-		const token = this.getToken();
-		const url = this.questionsUrl + token;
+		//const token = this.getToken();
+		const url = this.simpleSelectionUrl + '/updateActivity';
+		//  apiUrl: 'http://localhost:3000/api/simpleSelection?token=${token}'
 		return this.http.post(url, body, { headers })
 			.map((response: Response) => response.json())
 			.catch((error: Response) => Observable.throw(error.json()));
-	}
+	}*/
 
-	addAnswer(answer: Answer) {
+	/*addAnswer(answer: Answer) {
 
 		const a = {
 			description: answer.description,
@@ -100,12 +92,8 @@ export class ActivitiesService {
 
 	handleError(error: any) {
 		const errMsg = error.message ? error.message :
-		error.status ? `${error.status} - ${error.statusText}` : 'Server error';
-		console.log('Entre al handler')
-
+			error.status ? `${error.status} - ${error.statusText}` : 'Server error';
 
 		console.log(errMsg);
-
-		this.authService.logout()
 	}
 }

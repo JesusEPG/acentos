@@ -153,6 +153,69 @@ export default {
 		}, {new: true})
 	},
 
+	//que sea findoneandupdate
+	updateUserActivities: (_id, activity) => {
+	
+		return User.update({"_id": _id, "activities.activity": activity.activity }, { $set: { 
+					
+				"activities.$.difficulty": activity.difficulty,
+				"activities.$.lastAttempt": activity.lastAttempt,
+				"activities.$.reviewInterval": activity.reviewInterval,
+				"activities.$.percentOverDue": activity.percentOverDue,
+				"activities.$.correctCount": activity.correctCount,
+				"activities.$.incorrectCount": activity.incorrectCount,
+				"activities.$.lastAnswer": activity.lastAnswer
+
+
+			} 
+		})
+	},
+
+
+
+
+	//inserta la nueva actividad a cada usuario
+	updateUsersActivities: (activity) => {
+
+		return User.updateMany({}, { $push: { 
+				activities: { 
+					activity: activity._id,
+					type: activity.type,
+					difficulty: activity.difficulty,
+					percentOverDue: 1,
+					reviewInterval: 1,
+					lastAttempt: null,
+					correctCount: 0,
+    				incorrectCount: 0,
+    				lastAnswer: null
+				} 
+			} 
+		})
+	},
+
+	updateUsersActivity: (activity) => {
+
+		return User.findOneAndUpdate({"_id": _id, "activities.activity": activity._id }, { $set: { 
+					
+				"activities.$.difficulty": activity.difficulty,
+				"activities.$.lastAttempt": null,
+				"activities.$.reviewInterval": 1,
+				"activities.$.percentOverDue": 1,
+				"activities.$.correctCount": 0,
+				"activities.$.incorrectCount": 0,
+				"activities.$.lastAnswer": null
+			}
+		}, {new: true})
+	},
+
+	/*createAnswer: async (q, a) => {
+		const answer = new Answer(a)
+		const savedAnswer = await answer.save()
+		q.answers.push(savedAnswer)
+		await q.save()
+		return savedAnswer
+	}*/
+
 	testQuery: (_id) => {
 		return User.aggregate(
 		    [
@@ -209,91 +272,55 @@ export default {
 	},
 
 	//que sea findoneandupdate
-	updateUserActivities: (_id, activity) => {
-	
-		return User.update({"_id": _id, "activities.activity": activity.activity }, { $set: { 
-					
-				"activities.$.difficulty": activity.difficulty,
-				"activities.$.lastAttempt": activity.lastAttempt,
-				"activities.$.reviewInterval": activity.reviewInterval,
-				"activities.$.percentOverDue": activity.percentOverDue,
-				"activities.$.correctCount": activity.correctCount,
-				"activities.$.incorrectCount": activity.incorrectCount,
-				"activities.$.lastAnswer": activity.lastAnswer,
+	prueba: (_id) => {
+		const id = mongoose.Types.ObjectId(_id)
+		return User.aggregate(
+		    [
+				// Match the user id
+				{ "$match" : {
+					_id: id
+				}},
+				// Separate the items array into a stream of documents
+  				{ "$unwind" : "$activities" },
+
+        		{
+			    	$group : {
+			        	_id : null,
+			        	totalCorrect: { $sum: "$activities.correctCount" },
+			        	totalIncorrect: { $sum: "$activities.incorrectCount" },
+			        	count: { $sum: 1 }
+			    	}
+			    }
 
 
-			} 
-		})
-	},
+				//{
+				//	$replaceRoot: { newRoot: { $mergeObjects: [ { $arrayElemAt: [ "$fromItems", 0 ] }, "$$ROOT" ] } }
+				//},
+				//{ $project: { fromItems: 0 } }
+		        // Grouping pipeline
+		        //{ "$group": { 
+		        //    "_id": '$roomId', 
+		        //    "recommendCount": { "$sum": 1 }
+		        //}},
+		        // Optionally limit results
+		        //{ "$limit": 5 }
+		    ]/*,
+		    function(err,result) {
 
+		       // Result is an array of documents
+		       if(err){
+		       		console.log(err)
+		       		return err
+		       }
 
-	//que sea findoneandupdate
-	prueba: (_id, activity) => {
+		       console.log('Prueba del query de estadisticas')
+
+		       console.log(result)
 		
-		console.log('Prueba: ')
-		console.log(_id)
-		console.log(activity)
+		       return result
+		    }*/
+		)
 
-		return User.findOneAndUpdate({"_id": _id, "activities.activity": activity._id }, { $set: { 
-					
-				"activities.$.difficulty": activity.difficulty,
-				"activities.$.lastAttempt": null,
-				"activities.$.reviewInterval": 1,
-				"activities.$.percentOverDue": 1
-			}
-		}, {new: true})
+
 	},
-
-
-	//inserta la nueva actividad a cada usuario
-	updateUsersActivities: (activity) => {
-
-		return User.updateMany({}, { $push: { 
-				activities: { 
-					activity: activity._id,
-					type: activity.type,
-					difficulty: activity.difficulty,
-					percentOverDue: 1,
-					reviewInterval: 1,
-					lastAttempt: null,
-					correctCount: 0,
-    				incorrectCount: 0,
-    				lastAnswer: null
-				} 
-			} 
-		})
-	},
-
-	updateUsersActivity: (activity) => {
-
-		return User.updateMany({}, { $push: { 
-				activities: { 
-					activity: activity._id,
-					type: activity.type,
-					difficulty: activity.difficulty,
-					percentOverDue: 1,
-					reviewInterval: 1,
-					lastAttempt: null
-				} 
-			} 
-		})
-
-		return User.updateMany({"_id": _id, "activities.activity": activity.activity }, { $set: { 
-					
-				"activities.$.difficulty": activity.difficulty,
-				"activities.$.lastAttempt": activity.lastAttempt,
-				"activities.$.reviewInterval": activity.reviewInterval,
-				"activities.$.percentOverDue": activity.percentOverDue
-			} 
-		})
-	}
-
-	/*createAnswer: async (q, a) => {
-		const answer = new Answer(a)
-		const savedAnswer = await answer.save()
-		q.answers.push(savedAnswer)
-		await q.save()
-		return savedAnswer
-	}*/
-
 }

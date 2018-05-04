@@ -8,7 +8,8 @@ import { AdminService } from './admin.service';
 @Component({
 	selector: 'app-update-user-component',
 	templateUrl: './updateUser.component.html',
-	styleUrls: ['./updateUser.component.css']
+	styleUrls: ['./updateUser.component.css'],
+	providers: [AdminService]
 })
 
 export class UpdateUserComponent implements OnInit {
@@ -19,7 +20,7 @@ export class UpdateUserComponent implements OnInit {
 
 	constructor(private adminService: AdminService,
 				private router: Router,
-				private route: ActivatedRoute,){}
+				private route: ActivatedRoute){}
 
 	ngOnInit(){
 		this.userUpdateForm = new FormGroup({
@@ -37,6 +38,7 @@ export class UpdateUserComponent implements OnInit {
 			.getUser(params['_id'])
 			.then((user: User) => {
 				this.user = user;
+				console.log('User: ');
 				console.log(this.user);
 				//console.log(this.activities.length);
 				this.userUpdateForm.patchValue({
