@@ -203,7 +203,7 @@ export class UpdateSelectionActivityComponent implements OnInit {
 				this.splittedString,
 				this.correctAnswer,
 				this.possibleAnswers,
-				new Date,
+				null,
 				this.activity._id
 			);
 			console.log(newActivity);

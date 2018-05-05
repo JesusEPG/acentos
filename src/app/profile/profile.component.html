@@ -1,23 +1,43 @@
-<div *ngIf="!isLoggedIn()">
-	<h1>Not Logged In</h1>
-</div>
+<div class="container mt-5">
 
-<div *ngIf="isLoggedIn()">
-	<h1>Logged In</h1>
-	<h1>{{ fullName() }}</h1>
+    <!--<alert *ngIf="loading" type="info">
+      <strong>Heads up!</strong> This alert needs your attention, but it's not super important.
+    </alert>-->
+    <mat-spinner *ngIf="loading" class="spinner" style="margin:0 auto;" color='accent'>
+    </mat-spinner>
+
+    <div *ngIf="!loading" class="row">
+
+       
+
+        <div style="display: block" class="col col-md-6">
+            <canvas baseChart
+                    [data]="generalChartData"
+                    [labels]="generalChartLabels"
+                    [chartType]="generalChartType"
+                    [colors]="generalChartColors"
+                    (chartHover)="chartHovered($event)"
+                    (chartClick)="chartClicked($event)">
+                        
+            </canvas>
+        </div>
+
+        <div style="display: block" class="col col-md-6">
+            <canvas baseChart
+                    [data]="doughnutChartData"
+                    [labels]="doughnutChartLabels"
+                    [chartType]="doughnutChartType"
+                    [colors]="doughnutChartColors"
+                    (chartHover)="chartHovered($event)"
+                    (chartClick)="chartClicked($event)">
+                        
+            </canvas>
+        </div>
 
 
-    <div style="display: block">
-      	<canvas baseChart
-            [data]="doughnutChartData"
-            [labels]="doughnutChartLabels"
-            [chartType]="doughnutChartType"
-            [colors]="doughnutChartColors"
-            (chartHover)="chartHovered($event)"
-            (chartClick)="chartClicked($event)">
-                
-		</canvas>
+            
+        
+    
     </div>
-
-
+    
 </div>

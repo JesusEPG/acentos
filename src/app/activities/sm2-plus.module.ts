@@ -1,6 +1,8 @@
+import * as moment from 'moment';
+
 const DAY_MILLIS = 1000*60*60*24;
 const TEN_MINUTES_IN_DAYS = 0.007;
-const NOW = () => new Date();
+const NOW = () => moment().utc().toDate();
 
 export const WORST = 0;
 export const CORRECT = 0.6;
@@ -21,7 +23,7 @@ export const review = (activity, performanceRating) => {
     percentOverDue,
     difficulty,
     reviewInterval,
-    lastAttempt: NOW(),
+    lastAttempt: NOW(), //moment
   };
 };
 
@@ -63,7 +65,10 @@ const updateDifficulty = (prevDifficulty, percentOverDue, performanceRating) => 
   *  Retorna la cantidad de días entre hoy y la fecha recibida
 */
 const daysBetweenTodayAndAnotherDate = (date) => {
-  let newDate = new Date(date);
+  //let newDate = new Date(date);
+  let newDate = moment(date).utc().toDate();
+  console.log(newDate)
+  console.log(NOW())
   return (NOW().getTime() - newDate.getTime()) / DAY_MILLIS;
 };
 

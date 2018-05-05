@@ -19,9 +19,16 @@ export class ProfileComponent implements OnInit {
 	//public colors:any[] = ['green', 'red', 'blue'];
 	public doughnutChartType:string = 'doughnut';
 
+	// Doughnut
+	public generalChartLabels:string[] = ['Respuestas Correctas', 'Respuestas Incorrectas'];
+	public generalChartData:number[] = [];
+	public generalChartColors: any[] = [{ backgroundColor: ["#b8436d", "#00d9f9"/*, "#a4c73c", "#a4add3", "#00cd00"*/] }];
+	//public colors:any[] = ['green', 'red', 'blue'];
+	public generalChartType:string = 'doughnut';
+
 
 	private loading = true;
-	private data:number[];
+	private data:any[];
 
 	constructor(private authService: AuthService, private profileService: ProfileService) {}
 
@@ -32,6 +39,8 @@ export class ProfileComponent implements OnInit {
 			.then((data: any[]) => {
 				this.data = data;
 				console.log(this.data);
+				this.generalChartData.push(this.data[0].totalCorrect);
+				this.generalChartData.push(this.data[0].totalIncorrect);
 				this.loading = false;
 			})
 			.catch((err: any) => {

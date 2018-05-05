@@ -1,4 +1,5 @@
 import express from 'express'
+import moment from 'moment';
 import { required, simpleSelectionActivityMiddleware } from '../middleware'
 import { activities} from '../db-api'
 import { handleError } from '../utils'
@@ -141,7 +142,7 @@ app.post('/newSelectionActivity', async (req, res) => {
 
 	console.log('Llegó a la ruta del server');
 
-	const {difficulty, type, comment, fullString, splittedString, correctAnswer, possibleAnswers, createdAt } = req.body
+	const {difficulty, type, comment, fullString, splittedString, correctAnswer, possibleAnswers } = req.body
 	const activity = {
 		difficulty,
 		type,
@@ -150,7 +151,7 @@ app.post('/newSelectionActivity', async (req, res) => {
 		splittedString,
 		correctAnswer,
 		possibleAnswers,
-		createdAt
+		createdAt: moment().utc().toDate()
 		//user: req.user._id
 	}
 
@@ -177,7 +178,7 @@ app.post('/newMistakeActivity', async (req, res) => {
 
 	console.log('Llegó a la ruta del server');
 
-	const {difficulty, type, comment, fullString, splittedString, correctAnswer, possibleAnswers, createdAt } = req.body
+	const {difficulty, type, comment, fullString, splittedString, correctAnswer, possibleAnswers } = req.body
 	const activity = {
 		difficulty,
 		type,
@@ -186,7 +187,7 @@ app.post('/newMistakeActivity', async (req, res) => {
 		splittedString,
 		correctAnswer,
 		possibleAnswers,
-		createdAt
+		createdAt: moment().utc().toDate()
 		//user: req.user._id
 	}
 
@@ -288,15 +289,18 @@ app.post('/updateActivity', async (req, res) => {
 		splittedString,
 		correctAnswer,
 		possibleAnswers,
-		createdAt,
+		createdAt: moment().utc().toDate(),
 		_id
 		//user: req.user._id
 	}
+
+	console.log(activity)
 
 	try {
 		//El db api debe ser solo de selection
 		
 		const updatedActivity = await activities.updateActivity(activity)
+		console.log('Actualizado: ')
 		console.log(updatedActivity)
 		try {
 			//Hacer que updateUsers sea una promesa para poder validar errores

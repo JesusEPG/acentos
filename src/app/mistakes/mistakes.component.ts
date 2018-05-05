@@ -183,8 +183,7 @@ export class MistakesComponent implements OnInit {
 				fullString,
 				this.splittedString,
 				this.correctAnswer,
-				this.possibleAnswers,
-				new Date
+				this.possibleAnswers
 			);
 			console.log(activity);
 			/*this.mistakeService.signin(user)

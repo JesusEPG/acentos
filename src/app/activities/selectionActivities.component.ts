@@ -83,6 +83,7 @@ export class SelectionActivitiesComponent implements OnInit {
 				if(this.selectedAnswers[index].word === activity.correctAnswer.word){
 					//respuesta correcta
 					console.log('Correcto');
+					activity.correctCount++;
 					//calcular cambios del algoritmo
 					const newValues = review(activity, CORRECT)
 					console.log(newValues);
@@ -94,7 +95,7 @@ export class SelectionActivitiesComponent implements OnInit {
 						newValues.lastAttempt,
 						newValues.reviewInterval,
 						newValues.percentOverDue,
-						activity.correctCount++,
+						activity.correctCount,
 						activity.incorrectCount,
 						true
 					);
@@ -108,6 +109,7 @@ export class SelectionActivitiesComponent implements OnInit {
 				} else {
 					//respuesta erronea
 					console.log('Incorrecto');
+					activity.incorrectCount++;
 					//const newValues = calculate(activity, WORST, Math.round(new Date().getTime() / DAY_IN_MINISECONDS))
 					//console.log(newValues);
 					const newValues = review(activity, INCORRECT)
@@ -120,7 +122,7 @@ export class SelectionActivitiesComponent implements OnInit {
 						newValues.reviewInterval,
 						newValues.percentOverDue,
 						activity.correctCount,
-						activity.incorrectCount++,
+						activity.incorrectCount,
 						false
 					);
 					/*return {

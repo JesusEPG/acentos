@@ -193,9 +193,9 @@ export default {
 		})
 	},
 
-	updateUsersActivity: (activity) => {
+	updateUsersActivity: (userId, activity) => {
 
-		return User.findOneAndUpdate({"_id": _id, "activities.activity": activity._id }, { $set: { 
+		return User.findOneAndUpdate({"_id": userId, "activities.activity": activity._id }, { $set: { 
 					
 				"activities.$.difficulty": activity.difficulty,
 				"activities.$.lastAttempt": null,
@@ -272,11 +272,12 @@ export default {
 	},
 
 	//que sea findoneandupdate
-	prueba: (_id) => {
+	prueba: (_id, date) => {
 		const id = mongoose.Types.ObjectId(_id)
 		return User.aggregate(
 		    [
-				// Match the user id
+				// Funciona para todos los tiempos y sin restriccion de tipo. Solo correcto vs incorrecto
+				/*
 				{ "$match" : {
 					_id: id
 				}},
@@ -286,6 +287,66 @@ export default {
         		{
 			    	$group : {
 			        	_id : null,
+			        	totalCorrect: { $sum: "$activities.correctCount" },
+			        	totalIncorrect: { $sum: "$activities.incorrectCount" },
+			        	count: { $sum: 1 }
+			    	}
+			    }*/
+
+			    
+			    //Funciona para los todos los tiempos, con datos separados para Selection y Mistake
+			    /*
+			    { "$match" : {
+					_id: id
+				}},
+				// Separate the items array into a stream of documents
+  				{ "$unwind" : "$activities" },
+
+        		{
+			    	$group : {
+			        	_id : "$activities.type",
+			        	totalCorrect: { $sum: "$activities.correctCount" },
+			        	totalIncorrect: { $sum: "$activities.incorrectCount" },
+			        	count: { $sum: 1 }
+			    	}
+			    }*/
+
+			    //Funciona para el tiempo establecido, sin restricción de tipo
+			    /*
+			    { "$match" : {
+					_id: id
+				}},
+				// Separate the items array into a stream of documents
+  				{ "$unwind" : "$activities" },
+
+  				{ "$match" : {
+					"activities.lastAttempt": { $gt: date }
+				}},
+
+        		{
+			    	$group : {
+			        	_id : null,
+			        	totalCorrect: { $sum: "$activities.correctCount" },
+			        	totalIncorrect: { $sum: "$activities.incorrectCount" },
+			        	count: { $sum: 1 }
+			    	}
+			    }*/
+
+			    //Funciona para el tiempo establecido, con restricción de tipo
+			    
+			    { "$match" : {
+					_id: id
+				}},
+				// Separate the items array into a stream of documents
+  				{ "$unwind" : "$activities" },
+
+  				{ "$match" : {
+					"activities.lastAttempt": { $gt: date }
+				}},
+
+        		{
+			    	$group : {
+			        	_id : "$activities.type",
 			        	totalCorrect: { $sum: "$activities.correctCount" },
 			        	totalIncorrect: { $sum: "$activities.incorrectCount" },
 			        	count: { $sum: 1 }
@@ -304,7 +365,7 @@ export default {
 		        //}},
 		        // Optionally limit results
 		        //{ "$limit": 5 }
-		    ]/*,
+		    ],
 		    function(err,result) {
 
 		       // Result is an array of documents
@@ -318,7 +379,7 @@ export default {
 		       console.log(result)
 		
 		       return result
-		    }*/
+		    }
 		)
 
 

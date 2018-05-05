@@ -3,6 +3,7 @@ import { required, simpleSelectionActivityMiddleware } from '../middleware'
 import { activities} from '../db-api'
 import { handleError } from '../utils'
 import { User, Activity } from '../models'
+import moment from 'moment';
 
 
 const app = express.Router()
@@ -67,8 +68,18 @@ app.get('/user/:id', async (req, res) => {
 //	GET	/api/profile
 app.get('/', required, async (req, res) => {
 
+	/*const dateJs = new Date()
+	console.log(dateJs)
+
+	const dateTest = moment(dateJs).utc().format()
+	console.log(dateTest)*/
+
+	let dates = generateDate(30, 'minutes')
+
+	console.log(dates)
+
 	try{
-		const data = await activities.prueba(req.user._id)
+		const data = await activities.prueba(req.user._id, dates.pastDate)
 		console.log(data)
 		res.status(200).json(data)
 
@@ -77,6 +88,21 @@ app.get('/', required, async (req, res) => {
 	}
 
 })
+
+function generateDate(number, period){
+
+	let currentDate = moment().utc()
+	let pastDate = moment(currentDate).utc().subtract(number, period)
+
+	let test = {
+		currentDate: currentDate.toDate(),
+		pastDate: pastDate.toDate()
+	}
+
+	console.log(test)
+
+	return test
+}
 
 
 // Aqui van las rutas

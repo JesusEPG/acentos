@@ -168,8 +168,7 @@ export class SimpleSelectionComponent implements OnInit {
 				fullString,
 				this.splittedString,
 				this.correctAnswer,
-				this.possibleAnswers,
-				new Date
+				this.possibleAnswers
 			);
 			console.log(activity);
 			/*this.simpleSelectionService.signin(user)

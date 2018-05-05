@@ -33,7 +33,8 @@ app.post('/signin', async (req, res, next) => {
 		return handleLoginFailed(res, 'Password doesn\'t match')
 	}
 
-	await activities.prueba(user._id)
+	//const prueba = await activities.prueba(user._id)
+	//console.log(prueba)
 
 	//Las credenciales son correctas
 	const token = createToken(user)
