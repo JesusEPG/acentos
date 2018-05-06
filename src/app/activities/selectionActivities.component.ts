@@ -97,7 +97,8 @@ export class SelectionActivitiesComponent implements OnInit {
 						newValues.percentOverDue,
 						activity.correctCount,
 						activity.incorrectCount,
-						true
+						true,
+						activity._id
 					);
 			/*		return {
 						activity: activity.activity ,
@@ -123,7 +124,8 @@ export class SelectionActivitiesComponent implements OnInit {
 						newValues.percentOverDue,
 						activity.correctCount,
 						activity.incorrectCount,
-						false
+						false,
+						activity._id
 					);
 					/*return {
 						activity: activity.activity ,

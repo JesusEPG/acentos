@@ -164,7 +164,8 @@ export default {
 				"activities.$.percentOverDue": activity.percentOverDue,
 				"activities.$.correctCount": activity.correctCount,
 				"activities.$.incorrectCount": activity.incorrectCount,
-				"activities.$.lastAnswer": activity.lastAnswer
+				"activities.$.lastAnswer": activity.lastAnswer,
+				"activities.$.modified": activity.modified
 
 
 			} 
@@ -187,12 +188,14 @@ export default {
 					lastAttempt: null,
 					correctCount: 0,
     				incorrectCount: 0,
-    				lastAnswer: null
+    				lastAnswer: null,
+    				modified: false
 				} 
 			} 
 		})
 	},
 
+	//Actualiza los datos user-activity luego de que el admin modifica un ejercicio
 	updateUsersActivity: (userId, activity) => {
 
 		return User.findOneAndUpdate({"_id": userId, "activities.activity": activity._id }, { $set: { 
@@ -203,7 +206,8 @@ export default {
 				"activities.$.percentOverDue": 1,
 				"activities.$.correctCount": 0,
 				"activities.$.incorrectCount": 0,
-				"activities.$.lastAnswer": null
+				"activities.$.lastAnswer": null,
+				"activities.$.modified": true
 			}
 		}, {new: true})
 	},

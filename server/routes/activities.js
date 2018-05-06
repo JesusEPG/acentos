@@ -30,6 +30,7 @@ app.get('/selection', required, async (req, res) => {
 				correctCount: activity.activities.correctCount,
     			incorrectCount: activity.activities.incorrectCount,
     			lastAnswer: activity.activities.lastAnswer,
+    			_id: activity.activities._id,
 				type: activity.activities.type,
 				correctAnswer: activity.fromActivities[0].correctAnswer,
 				possibleAnswers: activity.fromActivities[0].possibleAnswers,
@@ -67,6 +68,7 @@ app.get('/mistakes', required, async (req, res) => {
 				correctCount: activity.activities.correctCount,
     			incorrectCount: activity.activities.incorrectCount,
     			lastAnswer: activity.activities.lastAnswer,
+    			_id: activity.activities._id,
 				type: activity.activities.type,
 				correctAnswer: activity.fromActivities[0].correctAnswer,
 				possibleAnswers: activity.fromActivities[0].possibleAnswers,
@@ -116,19 +118,63 @@ app.post('/updateActivities', required, async (req, res) => {
 	const toUpdate = req.body
 	let errors = 0
 
-	console.log(toUpdate)
+	//console.log(toUpdate)
 
 	toUpdate.forEach( async function(activity, index) {
+		console.log(activity)
 		// statements
-		try {
-			const savedActivity = await activities.updateUserActivities(req.user._id, activity)
-			console.log(savedActivity)
-			console.log(`Resultado del query ${savedActivity}`)
-		} catch (err){
-			console.log(err)
-			errors++
-			//handleError(err, res)
-		}
+		/*User.findOne({_id: req.user._id, "activities.activity": activity.activity}, function(err, subdoc){
+			if(err) console.log('Error')
+
+			console.log('Probando subdoc')
+			console.log(subdoc)
+		})*/
+
+		User.findById({_id:req.user._id}, async function(err, user) {
+			if (err){
+				console.log(err)
+				handleError(err, res)
+			}
+			console.log(`User: ${user}`)
+		  	var subDoc = user.activities.id(activity._id);
+		  	console.log(`Subdocument: ${subDoc}`)
+
+			if(!subDoc.modified){
+				console.log('No modificó')
+			  	//setear a false el campo modified y se debe enviar junto con la actividad
+			  	try {
+					const savedActivity = await activities.updateUserActivities(req.user._id, activity)
+					console.log(savedActivity)
+					console.log(`Resultado del query ${savedActivity}`)
+				} catch (err){
+					//console.log(err)
+					errors++
+					handleError(err, res)
+				}
+			} else {
+			  	console.log('Se modificó')
+			  	//subDoc.set(req.body);
+			  	subDoc.set({modified: false})
+
+			  	try {
+					const savedActivity = await user.save()
+					console.log(savedActivity)
+					console.log(`Resultado del query ${savedActivity}`)
+				} catch (err){
+					//console.log(err)
+					errors++
+					handleError(err, res)
+				}
+
+				// Using a promise rather than a callback
+				/*post.save().then(function(savedPost) {
+				  res.send(savedPost);
+				}).catch(function(err) {
+				   res.status(500).send(err);
+				});*/
+			}
+		});
+
 	})
 
 	console.log(errors)

@@ -8,6 +8,7 @@ export class SelectionActivity {
 		public correctCount: number,
     	public incorrectCount: number,
     	public lastAnswer: boolean,
+    	public _id?: string,
 		public type?: string,
 		public correctAnswer?: any,
 		public possibleAnswers?: any[],

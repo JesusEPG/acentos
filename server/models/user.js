@@ -17,10 +17,20 @@ const UserSchema = Schema({
     	lastAttempt: {type: Date, default: null, index: true },
     	correctCount: {type: Number, default: 0},
     	incorrectCount: {type: Number, defaul: 0},
-    	lastAnswer: {type: Boolean, default: null}
+    	lastAnswer: {type: Boolean, default: null},
+    	modified: {type: Boolean, default: false}
 	}]
 
 })
+
+UserSchema.post('aggregate', function(docs, next) {
+  
+	console.log('Triggeando el middleware de aggregate!!!')
+	console.log(docs[0])
+  	//docs.forEach(doc => { doc.taken = true; });
+  	next();
+});
+
 
 UserSchema.plugin(uniqueValidator)
 
