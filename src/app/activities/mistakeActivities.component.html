@@ -1,4 +1,4 @@
-<div class="container mt-5">
+<div class="container mt-5 container-fixed-footer">
 
 	<!--<alert *ngIf="loading" type="info">
 	  <strong>Heads up!</strong> This alert needs your attention, but it's not super important.
@@ -34,28 +34,28 @@
 		<a href="#" class="list-group-item list-group-item-action list-group-item-danger">This is a danger list group item</a>
 	</div>-->
 
-	<div *ngIf="!loading&&result">
+	<div *ngIf="!loading&&result" class="row">
 	
 		<div class="col-sm-12 mb-3">
-		<ul class="list-group" *ngFor="let activity of activities; let i = index">
+			<ul class="list-group" *ngFor="let activity of activities; let i = index">
 
-			<li *ngIf="selectedAnswers[i].correct" class="list-group-item list-group-item-success">
-				<h5>Correcto!!!!!</h5>
-			</li>
-		  
-			<li *ngIf="!selectedAnswers[i].correct" class="list-group-item list-group-item-danger">
-				<div class="d-flex w-100 justify-content-between">
-		      		<!--<h5 class="mb-1">Respuesta: {{selectedAnswers[i].word}}</h5>-->
-		      		<small class="mb-1">Respuesta: {{selectedAnswers[i].word}}</small>
+				<li *ngIf="selectedAnswers[i].correct" class="list-group-item list-group-item-success">
+					<h5>Correcto!!!!!</h5>
+				</li>
+			  
+				<li *ngIf="!selectedAnswers[i].correct" class="list-group-item list-group-item-danger">
+					<div class="d-flex w-100 justify-content-between">
+			      		<!--<h5 class="mb-1">Respuesta: {{selectedAnswers[i].word}}</h5>-->
+			      		<small class="mb-1">Respuesta: {{selectedAnswers[i].word}}</small>
 
-		      		<small>Correct Answer: {{activity.possibleAnswers[0].word}}</small>
-		    	</div>
-		    	<p class="mb-1">Texto completo: {{activity.fullString}}</p>
-		    	<p class="mb-1">Nota importante: {{activity.comment}}</p>
-		    	<small>Donec id elit non mi porta.</small>
-			</li>
+			      		<small>Correct Answer: {{activity.possibleAnswers[0].word}}</small>
+			    	</div>
+			    	<p class="mb-1">Texto completo: {{activity.fullString}}</p>
+			    	<p class="mb-1">Nota importante: {{activity.comment}}</p>
+			    	<small>Donec id elit non mi porta.</small>
+				</li>
 
-		</ul>
+			</ul>
 		</div>
 		
 	</div>
@@ -82,23 +82,22 @@
 		</ul>
 		</div>-->
 
-	<div class="row mt-5 links">
-		<p class="mt-3 col message">
-			<a color="primary" [routerLink]="['/activities']">Volver a actividades</a>
-		</p>
-		<p class="mt-3 col message">
-			<a color="primary" [routerLink]="['/profile']">Ir al perfil</a>
-		</p>
-	</div>
+		<div *ngIf="!loading&&result" class="row mt-5 links">
+			<p class="mt-3 col message">
+				<a color="primary" [routerLink]="['/activities']">Volver a actividades</a>
+			</p>
+			<p class="mt-3 col message">
+				<a color="primary" [routerLink]="['/profile']">Ir al perfil</a>
+			</p>
+		</div>
 
-	<div class="row mt-5">
-		<div class="col links">
-			<button [routerLink]="['/activities']" class="btn btn-primary message" type="button">Volver a actividades</button>
+		<div *ngIf="!loading&&result" class="row mt-5">
+			<div class="col links">
+				<button [routerLink]="['/activities']" class="btn btn-primary message" type="button">Volver a actividades</button>
+			</div>
+			<div class="col links">
+				<button [routerLink]="['/profile']" class="btn btn-primary message" type="button">Ir a perfil</button>		
+			</div>
 		</div>
-		<div class="col links">
-			<button [routerLink]="['/profile']" class="btn btn-primary message" type="button">Ir a perfil</button>		
-		</div>
-	</div>
-	
-    
+	    
 </div>

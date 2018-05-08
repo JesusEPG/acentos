@@ -76,7 +76,7 @@ export default {
 		    [
 				// Funciona para todos los tiempos y sin restriccion de tipo. Solo correcto vs incorrecto
 				
-				{ "$match" : {
+				/*{ "$match" : {
 					_id: id
 				}},
 				// Separate the items array into a stream of documents
@@ -89,11 +89,11 @@ export default {
 			        	totalIncorrect: { $sum: "$activities.incorrectCount" },
 			        	count: { $sum: 1 }
 			    	}
-			    }
+			    }*/
 
 			    
 			    //Funciona para los todos los tiempos, con datos separados para Selection y Mistake
-			    /*
+			    
 			    { "$match" : {
 					_id: id
 				}},
@@ -107,7 +107,7 @@ export default {
 			        	totalIncorrect: { $sum: "$activities.incorrectCount" },
 			        	count: { $sum: 1 }
 			    	}
-			    }*/
+			    }
 		    ]/*,
 		    function(err,result) {
 

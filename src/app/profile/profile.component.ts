@@ -27,7 +27,9 @@ export class ProfileComponent implements OnInit {
 	//public colors:any[] = ['green', 'red', 'blue'];
 	public generalChartType:string = 'doughnut';
 
-
+	private numberOfActivities:number = 0;
+	private numberOfMistakesActivities:number = 0;
+	private numberOfSelectionActivities:number = 0;
 	private loading = true;
 	private data:any[];
 
@@ -40,12 +42,73 @@ export class ProfileComponent implements OnInit {
 			.then((data: any[]) => {
 				//this.data = data;
 				//console.log(this.data);
-				if(data.length>0){
+				/*if(data.length>0){
 					//Si hay ejercicios
-					if(this.data[0].totalCorrect>0||this.data[0].totalIncorrect>0){
+					if(data[0].totalCorrect>0||data[0].totalIncorrect>0){
 						//El usuario ha tenido actividad
-						this.generalChartData.push(this.data[0].totalCorrect);
-						this.generalChartData.push(this.data[0].totalIncorrect);
+						this.generalChartData.push(data[0].totalCorrect);
+						this.generalChartData.push(data[0].totalIncorrect);
+						this.numberOfActivities = data[0].count;
+					}
+
+				}*/
+
+				if(data.length===1){
+
+					//Si hay ejercicios de un tipo
+					if(data[0].totalCorrect>0||data[0].totalIncorrect>0){
+						//El usuario ha tenido actividad en un tipo de actividad
+						if(data[0]._id==='Mistake'){
+							this.numberOfMistakesActivities = data[0].count;
+						} else {
+							this.numberOfSelectionActivities = data[0].count;
+						}
+						this.generalChartData.push(data[0].totalCorrect);
+						this.generalChartData.push(data[0].totalIncorrect);
+						this.numberOfActivities = data[0].count;
+					}
+
+				} else if(data.length===2) {
+
+					//Si hay ejercicios de los dos tipos
+					if((data[0].totalCorrect>0||data[0].totalIncorrect>0)&&(data[0].totalCorrect>0||data[0].totalIncorrect>0)) {
+						//El usuario ha tenido actividad
+						data.forEach(function(dataset, index){
+							if(data[index]._id==='Mistake'){
+								this.numberOfMistakesActivities = data[index].count;
+							} else {
+								this.numberOfSelectionActivities = data[index].count;
+							}
+						})
+						
+						this.generalChartData.push(data[0].totalCorrect + data[1].totalCorrect);
+						this.generalChartData.push(data[0].totalIncorrect + data[1].totalIncorrect);
+						this.numberOfActivities = data[0].count + data[1].count;
+					} else {
+
+						//Solo hay ejercicios de un tipo
+						if(data[0].totalCorrect>0||data[0].totalIncorrect>0){
+							//El usuario ha tenido actividad en un tipo de actividad
+							if(data[0]._id==='Mistake'){
+								this.numberOfMistakesActivities = data[0].count;
+							} else {
+								this.numberOfSelectionActivities = data[0].count;
+							}
+							this.generalChartData.push(data[0].totalCorrect);
+							this.generalChartData.push(data[0].totalIncorrect);
+							this.numberOfActivities = data[0].count;
+						}else {
+							//El usuario ha tenido actividad en un tipo de actividad
+							if(data[1]._id==='Mistake'){
+								this.numberOfMistakesActivities = data[1].count;
+							} else {
+								this.numberOfSelectionActivities = data[1].count;
+							}
+							this.generalChartData.push(data[1].totalCorrect);
+							this.generalChartData.push(data[1].totalIncorrect);
+							this.numberOfActivities = data[1].count;
+						}
+
 					}
 
 				}
@@ -73,6 +136,10 @@ export class ProfileComponent implements OnInit {
 
 	fullName() {
 		return this.authService.currentUser.fullName();
+	}
+
+	username() {
+		return this.authService.currentUser.userName;
 	}
 
 	// events
