@@ -34,8 +34,8 @@ export class UserListComponent implements OnInit {
 			.getUsers()
 			.then((users: User[]) => {
 				this.users = users;
-				console.log(this.users);
-				console.log(this.users.length);
+				//console.log(this.users);
+				//console.log(this.users.length);
 				this.loading = false;
 			});
 	}

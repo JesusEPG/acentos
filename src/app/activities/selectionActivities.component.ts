@@ -20,6 +20,7 @@ export class SelectionActivitiesComponent implements OnInit {
 	selectedAnswers: any[] =[];
 	counter:number = 0;
 	loading = true;
+	result = false;
 
 	constructor(private activitiesService: ActivitiesService){
 
@@ -142,7 +143,11 @@ export class SelectionActivitiesComponent implements OnInit {
 			this.activitiesService.updateActivities(this.updatedActivities)
 				.subscribe(
 					//( {_id} ) => this.router.navigate(['/', _id]),
-					() => console.log('Todo bien'),
+					() => {
+						this.result=true;
+						this.loading=false;
+						console.log(this.selectedAnswers);
+					},
 					this.activitiesService.handleError
 				);//recibe dos funciones como parametros, la función de exito y la función de error
 			//Cuando responda la bdd hacer loading = false

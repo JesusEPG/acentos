@@ -18,18 +18,35 @@ const UserSchema = Schema({
     	correctCount: {type: Number, default: 0},
     	incorrectCount: {type: Number, defaul: 0},
     	lastAnswer: {type: Boolean, default: null},
-    	modified: {type: Boolean, default: false}
+    	modified: {type: Boolean, default: false},
+    	taken: {type: Boolean, default: false}
 	}]
 
 })
 
-UserSchema.post('aggregate', function(docs, next) {
+/*UserSchema.post('aggregate', async function(docs, next) {
   
 	console.log('Triggeando el middleware de aggregate!!!')
-	console.log(docs[0])
-  	//docs.forEach(doc => { doc.taken = true; });
+	//console.log(await this._model)
+	// this now works
+    this.constructor.findOne({}, function(err, doc) {
+        console.log(err);
+        console.log(doc);
+        //next(err, doc);
+    });
+	//console.log(docs[0])
+  	docs.forEach(doc => { doc.activities.taken = true; });
   	next();
-});
+});*/
+
+
+/*ActivitySchema.pre('remove', async function(next){
+
+	console.log('Se está triggeando el hook de pre remove')
+	await this.model('User').updateMany({}, {$pull: {activities: {activity: this._id}}})
+	//this.model('User').remove({}, next);
+	next()
+})*/
 
 
 UserSchema.plugin(uniqueValidator)

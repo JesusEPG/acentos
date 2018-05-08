@@ -1,6 +1,6 @@
 import express from 'express'
 import { required, simpleSelectionActivityMiddleware } from '../middleware'
-import { activities} from '../db-api'
+import { activities, statistics} from '../db-api'
 import { handleError } from '../utils'
 import { User, Activity } from '../models'
 import moment from 'moment';
@@ -12,7 +12,7 @@ const app = express.Router()
 //Estas rutas son un agregado a la ruta definida en app.js
 
 // 	GET	/api/admin/users
-app.get('/users', async (req, res) => {
+/*app.get('/users', async (req, res) => {
 
 	User.find({}, function(err, users){
 		if(err){
@@ -21,10 +21,10 @@ app.get('/users', async (req, res) => {
 		}
 		res.status(200).json(users)
 	})
-})
+})*/
 
 // 	GET	/api/admin/user/:id
-app.get('/user/:id', async (req, res) => {
+/*app.get('/user/:id', async (req, res) => {
 
 	const id = req.params.id
 
@@ -37,15 +37,7 @@ app.get('/user/:id', async (req, res) => {
 		console.log(user)
 		res.status(200).json(user)
 	})
-
-	/*User.find({_id:req.params.id}, function(err, user){
-		if(err){
-			console.log(err)
-			handleError(err, res)
-		}
-		res.status(200).json(user)
-	})*/
-})
+})*/
 
 // 	GET	/api/admin/activities
 /*app.get('/activities', async (req, res) => {
@@ -74,12 +66,13 @@ app.get('/', required, async (req, res) => {
 	const dateTest = moment(dateJs).utc().format()
 	console.log(dateTest)*/
 
-	let dates = generateDate(30, 'minutes')
+	//let dates = generateDate(7, 'days')
 
-	console.log(dates)
+	//console.log(dates)
 
 	try{
-		const data = await activities.prueba(req.user._id, dates.pastDate)
+		//const data = await activities.prueba(req.user._id, dates.pastDate)
+		const data = await statistics.getProfileStatistics(req.user._id)
 		console.log(data)
 		res.status(200).json(data)
 
@@ -98,8 +91,6 @@ function generateDate(number, period){
 		currentDate: currentDate.toDate(),
 		pastDate: pastDate.toDate()
 	}
-
-	console.log(test)
 
 	return test
 }

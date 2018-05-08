@@ -6,6 +6,7 @@ import { ProfileService } from './profile.service';
 @Component({
 	selector: 'app-profile-component',
 	templateUrl: './profile.component.html',
+	styleUrls: ['./profile.component.css'],
 	providers: [ProfileService]
 
 })
@@ -13,13 +14,13 @@ import { ProfileService } from './profile.service';
 export class ProfileComponent implements OnInit {
 
 	// Doughnut
-	public doughnutChartLabels:string[] = ['Download Sales', 'In-Store Sales', 'Mail-Order Sales'];
-	public doughnutChartData:number[] = [350, 450, 100, 200, 300];
-	public doughnutChartColors: any[] = [{ backgroundColor: ["#b8436d", "#00d9f9", "#a4c73c", "#a4add3", "#00cd00"] }];
+	public doughnutChartLabels:string[] = ['Respuestas Correctas', 'Respuestas Incorrectas'];
+	public doughnutChartData:number[] = [];
+	public doughnutChartColors: any[] = [{ backgroundColor: [/*"#b8436d", "#00d9f9", "#a4c73c",*/"#a4add3", "#00cd00"] }];
 	//public colors:any[] = ['green', 'red', 'blue'];
 	public doughnutChartType:string = 'doughnut';
 
-	// Doughnut
+	// General Doughnut
 	public generalChartLabels:string[] = ['Respuestas Correctas', 'Respuestas Incorrectas'];
 	public generalChartData:number[] = [];
 	public generalChartColors: any[] = [{ backgroundColor: ["#b8436d", "#00d9f9"/*, "#a4c73c", "#a4add3", "#00cd00"*/] }];
@@ -37,10 +38,26 @@ export class ProfileComponent implements OnInit {
 		this.profileService
 			.getData()
 			.then((data: any[]) => {
-				this.data = data;
-				console.log(this.data);
-				this.generalChartData.push(this.data[0].totalCorrect);
-				this.generalChartData.push(this.data[0].totalIncorrect);
+				//this.data = data;
+				//console.log(this.data);
+				if(data.length>0){
+					//Si hay ejercicios
+					if(this.data[0].totalCorrect>0||this.data[0].totalIncorrect>0){
+						//El usuario ha tenido actividad
+						this.generalChartData.push(this.data[0].totalCorrect);
+						this.generalChartData.push(this.data[0].totalIncorrect);
+					}
+
+				}
+				//Si correctos en incorrectos es 0 (no se ha intententado), no genera error pero hay que validar
+				//Si no hay ejercicios devuelve un arreglo vacio
+				//Validar si hay ejercicios, de haberlos, verificar que hayan sido intentados
+				//es decir, si hay algun correcto o incorrecto
+				//this.generalChartData.push(this.data[0].totalCorrect);
+				//this.generalChartData.push(this.data[0].totalIncorrect);
+				/*this.doughnutChartData.push(this.data[1].totalCorrect);
+				this.doughnutChartData.push(this.data[1].totalIncorrect);*/
+
 				this.loading = false;
 			})
 			.catch((err: any) => {

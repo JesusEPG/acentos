@@ -25,7 +25,7 @@ export class MistakesComponent implements OnInit {
 
 	ngOnInit(){
 		this.activityForm = new FormGroup({
-			comment: new FormControl(null, [Validators.required, Validators.maxLength(50)]),
+			comment: new FormControl(null, [Validators.required, Validators.maxLength(15)]),
 			difficulty: new FormControl(null, Validators.required),
 			possibleAnswer: new FormControl(null), //Validar que solo acepte
 			fullString: new FormControl(null, [Validators.required, Validators.maxLength(50)])

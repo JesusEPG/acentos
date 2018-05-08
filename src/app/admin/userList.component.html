@@ -2,7 +2,7 @@
 	<mat-spinner *ngIf="loading" class="spinner" style="margin:0 auto;" color='accent'>
 	</mat-spinner>
 
-	<div *ngIf="!loading">
+	<div *ngIf="!loading&&users.length>0">
 		
 		<!--<ul class="list-group">
 		  <li class="list-group-item" *ngFor="let user of users | paginate: { itemsPerPage: 10, currentPage: p }"> {{user.userName}} </li>
@@ -37,5 +37,10 @@
 		</ul>
 		               
 		<pagination-controls (pageChange)="p = $event"></pagination-controls>
+	</div>
+
+	<div *ngIf="!loading&&users.length<1" class="alert alert-info" role="alert">
+		No hay usuarios registrados!!!
+
 	</div>
 </div>

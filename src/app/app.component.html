@@ -1,8 +1,8 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <!--Verificar de que si (no) hay sesión iniciada por usuario admin se muestre un nav distinto-->
 
-<nav *ngIf="isAdminLoggedIn()" class="navbar navbar-expand-md navbar-dark bg-dark">
-  <a class="navbar-brand" [routerLink]="['/']">Acentos</a>
+<nav *ngIf="isAdminLoggedIn()" class="navbar navbar-expand-md navbar-dark bg-primary">
+  <a class="navbar-brand" [routerLink]="['/admin']">Acentos</a>
   
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" (click)="isCollapsed =!isCollapsed">
     <span class="navbar-toggler-icon"></span>
@@ -11,11 +11,14 @@
   <div class="collapse navbar-collapse" [collapse]="isCollapsed" id="navbarSupportedContent">
     
     <ul class="navbar-nav mr-auto">
+      <!--<li class="nav-item" routerLinkActive="active">
+        <a class="nav-link" [routerLink]="['/admin']">Dashboard</a>
+      </li>-->
       <li class="nav-item" routerLinkActive="active">
-        <a class="nav-link" [routerLink]="['/activities']">Activities</a>
+        <a class="nav-link" [routerLink]="['/admin/activities']">Actividades</a>
       </li>
       <li class="nav-item" routerLinkActive="active">
-        <a class="nav-link" [routerLink]="['/contact']">Contacto</a>
+        <a class="nav-link" [routerLink]="['/admin/users']">Usuarios</a>
       </li>
       <li class="nav-item dropdown" dropdown>
         <a class="nav-link dropdown-toggle" dropdownToggle href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -45,7 +48,7 @@
             </a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown" *dropdownMenu>
                 <button class="dropdown-item" type="button" [routerLink]="['/profile']">Perfil</button>
-                <button class="dropdown-item" type="button">Estadistica</button>
+                <button class="dropdown-item" type="button" [routerLink]="['/statistics']">Estadistica</button>
                 <div class="dropdown-divider"></div>
                 <button class="dropdown-item" type="button" (click)="adminLogout()">Cerrar Sesión</button>
             </div>
@@ -54,7 +57,7 @@
   </div>
 </nav>
 
-<nav *ngIf="!isAdminLoggedIn()" class="navbar navbar-expand-md navbar-dark bg-dark">
+<nav *ngIf="!isAdminLoggedIn()" class="navbar navbar-expand-md navbar-dark bg-primary">
   <a class="navbar-brand" [routerLink]="['/']">Acentos</a>
   
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" (click)="isCollapsed =!isCollapsed">
@@ -98,7 +101,7 @@
             </a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown" *dropdownMenu>
                 <button class="dropdown-item" type="button" [routerLink]="['/profile']">Perfil</button>
-                <button class="dropdown-item" type="button">Estadistica</button>
+                <button class="dropdown-item" type="button" [routerLink]="['/statistics']">Estadistica</button>
                 <div class="dropdown-divider"></div>
                 <button class="dropdown-item" type="button" (click)="logout()">Cerrar Sesión</button>
             </div>
@@ -201,4 +204,4 @@
 </nav>-->
 <router-outlet></router-outlet>
 
-<footer class="card-footer fixed-bottom bg-dark text-white"><div>Jesús Pernía, 2018</div></footer>
+<footer class="card-footer fixed-bottom bg-primary text-white"><div>Jesús Pernía, 2018</div></footer>

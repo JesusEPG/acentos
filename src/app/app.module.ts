@@ -33,6 +33,7 @@ import { ActivityListComponent } from './admin/activityList.component';
 import { UpdateMistakeActivityComponent } from './mistakes/updateMistakeActivity.component';
 import { UpdateSelectionActivityComponent } from './simpleSelection/updateSelectionActivity.component';
 import { UpdateUserComponent } from './admin/updateUser.component';
+import { StatisticsComponent } from './statistics/statistics.component';
 
 
 
@@ -68,7 +69,8 @@ import { Routing } from './app.routing';
     ActivityListComponent,
     UpdateMistakeActivityComponent,
     UpdateSelectionActivityComponent,
-    UpdateUserComponent
+    UpdateUserComponent,
+    StatisticsComponent
   ],
   imports: [
     BrowserModule,

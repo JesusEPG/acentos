@@ -1,4 +1,4 @@
-<div class="container mt-5">
+<div class="container mt-5 container-fixed-footer">
 
     <!--<alert *ngIf="loading" type="info">
       <strong>Heads up!</strong> This alert needs your attention, but it's not super important.
@@ -6,11 +6,10 @@
     <mat-spinner *ngIf="loading" class="spinner" style="margin:0 auto;" color='accent'>
     </mat-spinner>
 
-    <div *ngIf="!loading" class="row">
-
-       
+    <div *ngIf="!loading&&generalChartData.length>0" class="row">
 
         <div style="display: block" class="col col-md-6">
+            <label class="mb-3">Historial de Correctas e Incorrectas</label>
             <canvas baseChart
                     [data]="generalChartData"
                     [labels]="generalChartLabels"
@@ -22,7 +21,7 @@
             </canvas>
         </div>
 
-        <div style="display: block" class="col col-md-6">
+        <!--<div style="display: block" class="col col-md-6">
             <canvas baseChart
                     [data]="doughnutChartData"
                     [labels]="doughnutChartLabels"
@@ -32,12 +31,12 @@
                     (chartClick)="chartClicked($event)">
                         
             </canvas>
-        </div>
-
-
-            
+        </div>-->        
         
-    
     </div>
+
+    <div *ngIf="!loading&&generalChartData.length<1" class="alert alert-info" role="alert">
+        ¡Aún no hay disponible datos de actividad!
+    </div>   
     
 </div>

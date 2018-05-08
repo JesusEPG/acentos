@@ -34,8 +34,6 @@ export class ActivityListComponent implements OnInit {
 			.getMistakeActivities()
 			.then((activities: MistakeActivity[]) => {
 				this.activities = activities;
-				console.log(this.activities);
-				console.log(this.activities.length);
 				this.loading = false;
 			});
 	}

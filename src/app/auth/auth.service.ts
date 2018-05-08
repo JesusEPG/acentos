@@ -13,7 +13,7 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 
 import { Router } from '@angular/router';
-//import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 //import { AlertComponent } from 'ngx-bootstrap/alert/alert.component';
 
 
@@ -26,6 +26,7 @@ export class AuthService {
 	constructor(
 		private http: Http,
 		private router: Router,
+		public snackBar: MatSnackBar
 		/*,	public snackBar: MatSnackBar*/
 	){
 
@@ -196,26 +197,30 @@ export class AuthService {
 	    return localStorage.getItem('adminToken');
 	}
 
-	showError(message) {
-		//recibe el mensaje, luego lo que queramos colocar para cerrar el mensaje, y las opciones
-		//this.snackBar.open(message, 'x', { duration: 2500 });
-		console.log(message);
-	}
-
 	/*showError(message) {
 		//recibe el mensaje, luego lo que queramos colocar para cerrar el mensaje, y las opciones
 		//this.snackBar.open(message, 'x', { duration: 2500 });
 		console.log(message);
-		return {
+	}*/
+
+	showError(message) {
+		//recibe el mensaje, luego lo que queramos colocar para cerrar el mensaje, y las opciones
+		this.snackBar.open(message, 'x', { duration: 2500, verticalPosition: 'top'});
+		console.log(message);
+		/*return {
 					type: 'warning',
 				    msg: message,
 				    timeout: 2500
-				};
-	}*/
+				};*/
+	}
 
 	public handleError = (error: any) => {
 
-		console.log('Entré al handler de auth')
+		console.log('Entré al handler de auth');
+
+		this.snackBar.open('Test', 'x', { duration: 2500 });
+
+		console.log(error);
 
 		const { error: {  name }, message } = error;
 		if(name === 'TokenExpiredError'){

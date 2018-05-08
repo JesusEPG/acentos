@@ -19,7 +19,6 @@ app.post('/signin', async (req, res, next) => {
 
 	const { userName, password } = req.body
 	const user = await User.findOne({ userName }) //busca el que tenga ese userName
-	console.log(user._id)
 
 	//El usuario no existe
 	if(!user){
@@ -32,6 +31,8 @@ app.post('/signin', async (req, res, next) => {
 		debug(`Password ${password} does not match`)
 		return handleLoginFailed(res, 'Password doesn\'t match')
 	}
+
+	console.log(user._id)
 
 	//const prueba = await activities.prueba(user._id)
 	//console.log(prueba)

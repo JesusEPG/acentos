@@ -30,7 +30,7 @@ export class UpdateSelectionActivityComponent implements OnInit {
 		this.activityForm = new FormGroup({
 			comment: new FormControl(null, [Validators.required, Validators.maxLength(50)]),
 			difficulty: new FormControl(null, Validators.required),
-			possibleAnswer: new FormControl(null), //Validar que solo acepte
+			possibleAnswer: new FormControl(null, Validators.pattern(/^\S*$/) ), //Validar que solo acepte
 			fullString: new FormControl(null, [Validators.required, Validators.maxLength(50)])
 			/*fullString: new FormControl(null, [
 				Validators.required//,

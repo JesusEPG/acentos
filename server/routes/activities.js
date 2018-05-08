@@ -14,35 +14,53 @@ const app = express.Router()
 // 	GET	/api/activities/selection
 app.get('/selection', required, async (req, res) => {
 
-	console.log(req.user._id)
 	try {
-		const simpleSelectionActivities = await activities.findSelectionActivities(req.user._id)
-		//let result = await activities.testQuery(req.user._id)
-		console.log('Selection')
-		console.log(simpleSelectionActivities)
-		let result = simpleSelectionActivities.map(function(activity, index){
-			return {
-				activity: activity.activities.activity,
-				difficulty: activity.activities.difficulty,
-				lastAttempt: activity.activities.lastAttempt,
-				reviewInterval: activity.activities.reviewInterval,
-				percentOverDue: activity.activities.percentOverDue,
-				correctCount: activity.activities.correctCount,
-    			incorrectCount: activity.activities.incorrectCount,
-    			lastAnswer: activity.activities.lastAnswer,
-    			_id: activity.activities._id,
-				type: activity.activities.type,
-				correctAnswer: activity.fromActivities[0].correctAnswer,
-				possibleAnswers: activity.fromActivities[0].possibleAnswers,
-				splittedString: activity.fromActivities[0].splittedString,
-				comment: activity.fromActivities[0].comment,
-				fullString: activity.fromActivities[0].fullString
-			}
+
+		const fetchedActivities = await activities.findMistakesActivities(req.user._id)
+		
+		fetchedActivities.forEach( async function(activity, index) {
+		
+			User.findById({_id: req.user._id}, async function(err, user) {
+				if (err){
+					console.log(err)
+					handleError(err, res)
+				}
+				console.log(`User: ${user}`)
+			  	var subDoc = user.activities.id(activity.activities._id);
+			  	console.log(`Subdocument: ${subDoc}`)
+				subDoc.set({taken: true})
+
+				try {
+					const savedActivity = await user.save()
+					console.log(savedActivity)
+					console.log(`Resultado del query-taken ${savedActivity}`)
+					let result = fetchedActivities.map(function(activity, index){
+						return {
+							activity: activity.activities.activity,
+							difficulty: activity.activities.difficulty,
+							lastAttempt: activity.activities.lastAttempt,
+							reviewInterval: activity.activities.reviewInterval,
+							percentOverDue: activity.activities.percentOverDue,
+							correctCount: activity.activities.correctCount,
+			    			incorrectCount: activity.activities.incorrectCount,
+			    			lastAnswer: activity.activities.lastAnswer,
+			    			_id: activity.activities._id,
+							type: activity.activities.type,
+							correctAnswer: activity.fromActivities[0].correctAnswer,
+							possibleAnswers: activity.fromActivities[0].possibleAnswers,
+							splittedString: activity.fromActivities[0].splittedString,
+							comment: activity.fromActivities[0].comment,
+							fullString: activity.fromActivities[0].fullString
+						}
+					})
+					res.status(200).json(result)
+				} catch (err){
+						console.log(err)
+						handleError(err, res)
+				}
+			})
+
 		})
-		//console.log(simpleSelectionActivities)
-		console.log('Resultado')
-		console.log(result)
-		res.status(200).json(result)
 	} catch (err) {
 		handleError(err, res)
 	}
@@ -52,35 +70,53 @@ app.get('/selection', required, async (req, res) => {
 // 	GET	/api/activities/mistakes
 app.get('/mistakes', required, async (req, res) => {
 
-	console.log(req.user._id)
 	try {
-		const simpleSelectionActivities = await activities.findMistakesActivities(req.user._id)
-		//let result = await activities.testQuery(req.user._id)
-		console.log('Selection')
-		console.log(simpleSelectionActivities)
-		let result = simpleSelectionActivities.map(function(activity, index){
-			return {
-				activity: activity.activities.activity,
-				difficulty: activity.activities.difficulty,
-				lastAttempt: activity.activities.lastAttempt,
-				reviewInterval: activity.activities.reviewInterval,
-				percentOverDue: activity.activities.percentOverDue,
-				correctCount: activity.activities.correctCount,
-    			incorrectCount: activity.activities.incorrectCount,
-    			lastAnswer: activity.activities.lastAnswer,
-    			_id: activity.activities._id,
-				type: activity.activities.type,
-				correctAnswer: activity.fromActivities[0].correctAnswer,
-				possibleAnswers: activity.fromActivities[0].possibleAnswers,
-				splittedString: activity.fromActivities[0].splittedString,
-				comment: activity.fromActivities[0].comment,
-				fullString: activity.fromActivities[0].fullString
-			}
+
+		const fetchedActivities = await activities.findMistakesActivities(req.user._id)
+		
+		fetchedActivities.forEach( async function(activity, index) {
+		
+			User.findById({_id: req.user._id}, async function(err, user) {
+				if (err){
+					console.log(err)
+					handleError(err, res)
+				}
+				console.log(`User: ${user}`)
+			  	var subDoc = user.activities.id(activity.activities._id);
+			  	console.log(`Subdocument: ${subDoc}`)
+				subDoc.set({taken: true})
+
+				try {
+					const savedActivity = await user.save()
+					console.log(savedActivity)
+					console.log(`Resultado del query-taken ${savedActivity}`)
+					let result = fetchedActivities.map(function(activity, index){
+						return {
+							activity: activity.activities.activity,
+							difficulty: activity.activities.difficulty,
+							lastAttempt: activity.activities.lastAttempt,
+							reviewInterval: activity.activities.reviewInterval,
+							percentOverDue: activity.activities.percentOverDue,
+							correctCount: activity.activities.correctCount,
+			    			incorrectCount: activity.activities.incorrectCount,
+			    			lastAnswer: activity.activities.lastAnswer,
+			    			_id: activity.activities._id,
+							type: activity.activities.type,
+							correctAnswer: activity.fromActivities[0].correctAnswer,
+							possibleAnswers: activity.fromActivities[0].possibleAnswers,
+							splittedString: activity.fromActivities[0].splittedString,
+							comment: activity.fromActivities[0].comment,
+							fullString: activity.fromActivities[0].fullString
+						}
+					})
+					res.status(200).json(result)
+				} catch (err){
+						console.log(err)
+						handleError(err, res)
+				}
+			})
+
 		})
-		//console.log(simpleSelectionActivities)
-		console.log('Resultado')
-		console.log(result)
-		res.status(200).json(result)
 	} catch (err) {
 		handleError(err, res)
 	}
@@ -96,6 +132,61 @@ app.get('/mistakes', required, async (req, res) => {
 		handleError(err, res)
 	}
 
+})*/
+
+//para traer actividades
+/*app.get('/', required, async (req, res) => {
+
+	try {
+
+		const fetchedActivities = await activities.findMistakesActivities(req.user._id)
+		
+		fetchedActivities.forEach( async function(activity, index) {
+		
+			User.findById({_id: req.user._id}, async function(err, user) {
+				if (err){
+					console.log(err)
+					handleError(err, res)
+				}
+				console.log(`User: ${user}`)
+			  	var subDoc = user.activities.id(activity.activities._id);
+			  	console.log(`Subdocument: ${subDoc}`)
+				subDoc.set({taken: true})
+
+				try {
+					const savedActivity = await user.save()
+					console.log(savedActivity)
+					console.log(`Resultado del query-taken ${savedActivity}`)
+					let result = fetchedActivities.map(function(activity, index){
+						return {
+							activity: activity.activities.activity,
+							difficulty: activity.activities.difficulty,
+							lastAttempt: activity.activities.lastAttempt,
+							reviewInterval: activity.activities.reviewInterval,
+							percentOverDue: activity.activities.percentOverDue,
+							correctCount: activity.activities.correctCount,
+			    			incorrectCount: activity.activities.incorrectCount,
+			    			lastAnswer: activity.activities.lastAnswer,
+			    			_id: activity.activities._id,
+							type: activity.activities.type,
+							correctAnswer: activity.fromActivities[0].correctAnswer,
+							possibleAnswers: activity.fromActivities[0].possibleAnswers,
+							splittedString: activity.fromActivities[0].splittedString,
+							comment: activity.fromActivities[0].comment,
+							fullString: activity.fromActivities[0].fullString
+						}
+					})
+					res.status(200).json(result)
+				} catch (err){
+						console.log(err)
+						handleError(err, res)
+				}
+			})
+
+		})
+	} catch (err) {
+		handleError(err, res)
+	}
 })*/
 
 //	GET	/api/activities/:id
@@ -154,7 +245,7 @@ app.post('/updateActivities', required, async (req, res) => {
 			} else {
 			  	console.log('Se modificó')
 			  	//subDoc.set(req.body);
-			  	subDoc.set({modified: false})
+			  	subDoc.set({modified: false, taken: false})
 
 			  	try {
 					const savedActivity = await user.save()
@@ -165,13 +256,6 @@ app.post('/updateActivities', required, async (req, res) => {
 					errors++
 					handleError(err, res)
 				}
-
-				// Using a promise rather than a callback
-				/*post.save().then(function(savedPost) {
-				  res.send(savedPost);
-				}).catch(function(err) {
-				   res.status(500).send(err);
-				});*/
 			}
 		});
 
