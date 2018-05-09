@@ -4,6 +4,7 @@ import { secret } from '../config'
 import { User, Admin } from '../models'
 import Debug from 'debug'
 import { activities } from '../db-api'
+import { handleError } from '../utils'
 
 import {
 	hashSync as hash,
@@ -55,7 +56,6 @@ app.post('/signin', async (req, res, next) => {
 app.post('/adminSignin', async (req, res, next) => {
 	const { email, password } = req.body
 	const admin = await Admin.findOne({ email }) //busca el que tenga ese email
-	console.log(admin._id)
 	//El usuario no existe
 	if(!admin){
 		debug(`Admin with email ${email} not found`)
@@ -98,8 +98,7 @@ app.post('/signup', async (req, res) => {
 	const result = await activities.findAllActivities()
 
 	result.forEach(function(activity){
-		console.log('Agregando: ')
-		console.log(activity)
+		
 		newActivities.push({ 
 					activity: activity._id,
 					type: activity.type,
@@ -113,18 +112,6 @@ app.post('/signup', async (req, res) => {
 				})
 	})
 
-	console.log(newActivities)
-
-	/*result.map(function(activity){
-		newActivities.push({ 
-					activity: activity._id,
-					difficulty: activity.difficulty,
-					percentOverDue: 1,
-					reviewInterval: 1,
-					lastAttempt: null
-				})
-	})*/
-
 	const u = new User({
 		firstName,
 		lastName,
@@ -133,24 +120,16 @@ app.post('/signup', async (req, res) => {
 		activities: newActivities
 	})
 
-	/*const a = new Admin({
-		firstName: 'Mervin',
-		lastName: 'Coello',
-		email: 'mahonricoello@gmail.com',
-		role: 'admin',
-		password: hash('123', 10)
-	})
-	
-	//const newUser = await u.save()
-	a.save(function (err, newAdmin) {
-	    if (err) return console.error(err); //Hacer handle error
-
-	    debug(`New admin ${newAdmin}`)
-	});*/
-
 	//const newUser = await u.save()
 	u.save(function (err, newUser) {
-	    if (err) return console.error(err); //Hacer handle error
+	    if (err){
+	    	console.log(err)
+	    	return handleError(err, res)
+	    	/*return res.status(401).json({
+				message:'Ha ocurrido un error al crear el usuario',
+				error: err
+			})*/
+	    } 
 
 	    debug(`Creating new user ${newUser}`)
 		const token = createToken(newUser)

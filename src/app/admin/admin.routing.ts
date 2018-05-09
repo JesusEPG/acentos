@@ -10,6 +10,7 @@ import { AdminGuardService } from '../auth/admin-guard.service';
 import { UserListComponent } from './userList.component';
 import { ActivityListComponent } from './activityList.component';
 import { UpdateUserComponent } from './updateUser.component';
+import { AdminUserSignupComponent } from './adminUserSignup.component';
 //import { ActivitiesComponent } from './activities.component';
 //import { SelectionActivitiesComponent } from './selectionActivities.component';
 //import { QuestionFormComponent } from './question-form.component';
@@ -24,6 +25,7 @@ export const ADMIN_ROUTES = [
 	{ path: 'activities/activityList/updateMistakeActivity/:_id', component: UpdateMistakeActivityComponent, canActivate:[AdminGuardService]},
 	{ path: 'activities/activityList/updateSelectionActivity/:_id', component: UpdateSelectionActivityComponent, canActivate:[AdminGuardService]},
 	{ path: 'users', component: AdminUsersComponent, canActivate: [AdminGuardService]},
+	{ path: 'users/signup', component: AdminUserSignupComponent, canActivate: [AdminGuardService]},
 	{ path: 'users/userList', component: UserListComponent, canActivate:[AdminGuardService]},
 	{ path: 'users/userList/updateUser/:_id', component: UpdateUserComponent, canActivate:[AdminGuardService]}
 

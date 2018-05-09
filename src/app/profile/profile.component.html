@@ -1,13 +1,15 @@
-<h3 class="mt-2 ml-3">Perfil</h3>
-<hr>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item active" aria-current="page">Perfil</li>
+    </ol>
+</nav>
 
-<div class="container mt-3 container-fixed-footer">
+
+<div class="container mt-5 container-fixed-footer">
 
     <!--<alert *ngIf="loading" type="info">
       <strong>Heads up!</strong> This alert needs your attention, but it's not super important.
     </alert>-->
-    <mat-spinner *ngIf="loading" class="spinner" style="margin:0 auto;" color='accent'>
-    </mat-spinner>
 
     <!--<div *ngIf="!loading&&generalChartData.length>0" class="row">
 
@@ -54,7 +56,7 @@
     
 
     <div class="card bg-light mb-3">
-        <div class="card-header">Perfil</div>
+        <!--<div class="card-header">Perfil</div>-->
         <div class="card-body">
             <h5 class="card-title">Jesus Pernia</h5>
             <h6 class="card-subtitle mb-2 text-muted">QuiqueJPG</h6>
@@ -70,25 +72,39 @@
                 <div class="col col-md-6 align-self-center">
                     <!--<label class="mb-3">Historial de Correctas e Incorrectas</label>-->
                     <ul class="list-group">
-                        <li class="list-group-item list-group-item-light">Actividades disponibles: {{numberOfActivities}}</li>
-                        <li class="list-group-item list-group-item-light">Actividades de errores disponibles: {{numberOfMistakesActivities}}</li>
-                        <li class="list-group-item list-group-item-light">Actividades de selección disponibles: {{numberOfSelectionActivities}}</li>
-                        <li class="list-group-item list-group-item-light">Repasos realizados: {{generalChartData[0]+generalChartData[1]}}</li>
+                        <li class="list-group-item list-group-item-light text-dark">Actividades disponibles: {{numberOfActivities}}</li>
+                        <li class="list-group-item list-group-item-light text-dark">Actividades de errores disponibles: {{numberOfMistakesActivities}}</li>
+                        <li class="list-group-item list-group-item-light text-dark">Actividades de selección disponibles: {{numberOfSelectionActivities}}</li>
+                        <li class="list-group-item list-group-item-light text-dark">Repasos realizados: {{generalChartData[0]+generalChartData[1]}}</li>
                     </ul>
                 </div>
-                <div style="display: block" class="col col-md-6">
-                        <canvas baseChart
-                                [data]="generalChartData"
-                                [labels]="generalChartLabels"
-                                [chartType]="generalChartType"
-                                [colors]="generalChartColors"
-                                (chartHover)="chartHovered($event)"
-                                (chartClick)="chartClicked($event)">
-                                    
-                        </canvas>
-                </div>   
+
+                <div class="col col-md-6 align-self-center">
+                    <!--<label class="mb-3">Historial de Correctas e Incorrectas</label>-->
+                    <ul class="">
+                        <li style="list-style: none" class="text-dark">Actividades disponibles: {{numberOfActivities}}</li>
+                        <li style="list-style: none" class="text-dark">Actividades de errores disponibles: {{numberOfMistakesActivities}}</li>
+                        <li style="list-style: none" class="text-dark">Actividades de selección disponibles: {{numberOfSelectionActivities}}</li>
+                        <li style="list-style: none" class="text-dark">Repasos realizados: {{generalChartData[0]+generalChartData[1]}}</li>
+                    </ul>
+                </div>
+                
                     
             </div>
+
+            <div *ngIf="!loading&&generalChartData.length>0" class="row align-items-center">
+                    <div style="display: block" class="col-md-8 offset-md-2">
+                        <canvas baseChart
+                            [data]="generalChartData"
+                            [labels]="generalChartLabels"
+                            [chartType]="generalChartType"
+                            [colors]="generalChartColors"
+                            (chartHover)="chartHovered($event)"
+                            (chartClick)="chartClicked($event)">
+                                    
+                        </canvas>
+                    </div>  
+                </div> 
 
             <div *ngIf="!loading&&generalChartData.length<1" class="alert alert-info" role="alert">
                 ¡Aún no hay disponible datos de actividad!

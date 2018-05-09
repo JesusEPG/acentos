@@ -70,6 +70,10 @@ app.get('/selection', required, async (req, res) => {
 // 	GET	/api/activities/mistakes
 app.get('/mistakes', required, async (req, res) => {
 
+	/*const test = [];
+
+	return res.status(200).json(test)*/
+	
 	try {
 
 		const fetchedActivities = await activities.findMistakesActivities(req.user._id)

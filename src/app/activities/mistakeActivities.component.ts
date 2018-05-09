@@ -3,6 +3,9 @@ import { SelectionActivity } from './selectionActivity.model';
 import { ActivitiesService } from './activities.service';
 import { WORST, BEST, CORRECT, INCORRECT, review } from './sm2-plus.module';
 
+import { MatSnackBar } from '@angular/material/snack-bar';
+
+
 @Component({
 	selector: 'app-selection-component',
 	templateUrl: './mistakeActivities.component.html',
@@ -23,7 +26,7 @@ export class MistakeActivitiesComponent implements OnInit {
 	loading = true;
 	result = false;
 
-	constructor(private activitiesService: ActivitiesService){
+	constructor(private activitiesService: ActivitiesService, public snackBar: MatSnackBar){
 
 	}
 

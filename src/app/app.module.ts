@@ -28,6 +28,7 @@ import { AdminDashboardComponent } from './admin/adminDashboard.component';
 import { AdminActivitiesComponent } from './admin/adminActivities.component';
 import { AdminUsersComponent } from './admin/adminUsers.component';
 import { AdminSigninComponent } from './admin/adminSignin.component';
+import { AdminUserSignupComponent } from './admin/adminUserSignup.component';
 import { UserListComponent } from  './admin/userList.component';
 import { ActivityListComponent } from './admin/activityList.component';
 import { UpdateMistakeActivityComponent } from './mistakes/updateMistakeActivity.component';
@@ -62,6 +63,7 @@ import { Routing } from './app.routing';
     AdminDashboardComponent,
     AdminActivitiesComponent,
     AdminUsersComponent,
+    AdminUserSignupComponent,
     SimpleSelectionComponent,
     MistakesComponent,
     AdminSigninComponent,

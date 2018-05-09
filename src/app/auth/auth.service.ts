@@ -54,7 +54,6 @@ export class AuthService {
 				return json;
 			})
 			.catch((error: Response) => {
-				console.log(error);
 				return Observable.throw(error.json());
 
 			});
@@ -174,7 +173,6 @@ export class AuthService {
 	    if(!token) return true;
 
 	    const date = this.getTokenExpirationDate(token);
-	    console.log(`La fecha de expiración es: ${date}`);
 	    if(date === undefined) return false;
 	    return !(date.valueOf() > new Date().valueOf());
 	}
@@ -184,7 +182,6 @@ export class AuthService {
 	    if(!token) return true;
 
 	    const date = this.getTokenExpirationDate(token);
-	    console.log(`La fecha de expiración es: ${date}`);
 	    if(date === undefined) return false;
 	    return !(date.valueOf() > new Date().valueOf());
 	}
@@ -218,20 +215,37 @@ export class AuthService {
 
 		console.log('Entré al handler de auth');
 
-		this.snackBar.open('Test', 'x', { duration: 2500 });
+		console.log(error);
+
+		const { error: {  name }, message } = error;
+		if(name === 'TokenExpiredError'){
+			this.showError('Tu sesión ha expirado. Por favor inicia sesión nuevamente');
+		} else if (name === 'JsonWebTokenError'){
+			this.showError('Ha ocurrido un problema con tu sesión');
+		} else {
+			this.showError(message || 'Ha ocurrido un error. Intenta de nuevo más tarde');
+		}
+
+		this.logout();
+
+	}
+
+	public handleAdminError = (error: any) => {
+
+		console.log('Entré al handler de auth');
 
 		console.log(error);
 
 		const { error: {  name }, message } = error;
 		if(name === 'TokenExpiredError'){
-			this.showError('Your session has expired');
+			this.showError('Tu sesión ha expirado. Por favor inicia sesión nuevamente');
 		} else if (name === 'JsonWebTokenError'){
-			this.showError('A problem has occurred with your session');
+			this.showError('Ha ocurrido un problema con tu sesión');
 		} else {
-			this.showError(message || 'An error has occurred. Try again');
+			this.showError(message || 'Ha ocurrido un error. Intenta de nuevo más tarde');
 		}
 
-		this.logout();
+		this.router.navigateByUrl('/admin');
 
 	}
 }

@@ -6,7 +6,7 @@
 	<mat-spinner *ngIf="loading" class="spinner" style="margin:0 auto;" color='accent'>
 	</mat-spinner>
 
-  	<div *ngIf="!loading&&!result" class="row">
+  	<div *ngIf="!loading&&!result&&activities.length>0" class="row">
     	<div class="col-sm-12 mb-3">
       		<div class="card text-center">
 		        <div class="card-body">
@@ -27,6 +27,12 @@
       		</div>
     	</div>
 	</div>
+
+	<dir *ngIf="!loading&&!result&&activities.length<1">
+
+		No hay actividades de errores disponible
+		
+	</dir>
 
   	<!--<div class="list-group" *ngIf="!loading&&result">
 	  

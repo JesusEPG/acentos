@@ -6,6 +6,8 @@ import { SelectionActivity } from './selectionActivity.model';
 //import { Answer } from '../answer/answer.model';
 import { Http, Headers, Response } from '@angular/http';
 import { environment } from '../../environments/environment';
+import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 //import urljoin from 'url-join';
 import * as urljoin from 'url-join';
 import { Observable } from 'rxjs/Observable';
@@ -18,7 +20,10 @@ export class ActivitiesService {
 
 	activitiesUrl: string;
 
-	constructor(private http: Http, private authService: AuthService){
+	constructor(private http: Http,
+				private authService: AuthService,
+				public snackBar: MatSnackBar,
+				private router: Router,){
 		this.activitiesUrl = urljoin(environment.apiUrl, 'activities');
 	}
 
@@ -35,7 +40,16 @@ export class ActivitiesService {
 		return this.http.get(url)
 			.toPromise()
 			.then(response => response.json() as SelectionActivity[])		//Exitoso
-			.catch(this.authService.handleError);								//Error
+			.catch((response) => {
+				console.log('Catch del activities.service');
+				const res = response.json();
+				console.log(res);
+				console.log(res.error.name);
+				this.snackBar.open(`${res.error.error}. ${res.error.message}`, 'x', { duration: 2500, verticalPosition: 'top'});
+				this.router.navigateByUrl('/');
+				//this.authService.logout()
+			});
+			//.catch((error: Response) => Observable.throw(error.json()));							//Error
 	}
 
 	getSelectionActivities(): Promise<void | SelectionActivity[]>{
@@ -101,11 +115,16 @@ export class ActivitiesService {
 	handleError(error: any) {
 		const errMsg = error.message ? error.message :
 		error.status ? `${error.status} - ${error.statusText}` : 'Server error';
-		console.log('Entre al handler')
+		console.log('Entre al handler');
 
 
 		console.log(errMsg);
 
-		this.authService.logout()
+				console.log(this)
+
+
+		this.router.navigateByUrl('/');
+
+		//this.authService.logout()
 	}
 }

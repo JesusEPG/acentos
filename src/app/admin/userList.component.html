@@ -21,7 +21,7 @@
 			    	<button type="button" class="btn btn-primary btn-sm mb-1" (click)="openModal(template)">Eliminar</button>
 				    <ng-template class="mt-5" #template>
 				      <div class="modal-body text-center">
-				        <p>¿Está seguro que desea eliminar la actividad?</p>
+				        <p>¿Está seguro que desea eliminar al usuario {{user.userName}}?</p>
 				        <button type="button" class="btn btn-default" (click)="confirm(user._id)" >Sí</button>
 				        <button type="button" class="btn btn-primary" (click)="decline()" >No</button>
 				      </div>

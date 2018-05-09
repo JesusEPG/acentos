@@ -31,8 +31,8 @@ export const required = (req, res, next) => {
 				/*err es null si no consigue nada*/
 
 				return res.status(401).json({
-					message: 'Unauthorized',
-					error: 'Usuario no disponible. Contactar al profesor'
+					message: 'Sin autorización',
+					error: {error: 'Usuario no disponible', message: 'Contactar al profesor', name: 'User no longer available' }
 				})
 			}
 		})
