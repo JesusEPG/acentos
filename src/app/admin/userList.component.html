@@ -8,10 +8,17 @@
 		  <li class="list-group-item" *ngFor="let user of users | paginate: { itemsPerPage: 10, currentPage: p }"> {{user.userName}} </li>
 		</ul>-->
 
+		<div class="mb-2">
+	        
+	        <input type="text" class="form-control" placeholder="filter" [(ngModel)]="filter">
+	        
+	        
+	    </div>
+
 		<ul class="list-group mb-3">
 		  <!--<li class="list-group-item" *ngFor="let a of array | paginate: { itemsPerPage: 10, currentPage: p }"> {{a}} </li>-->
 
-		  <li *ngFor="let user of users | paginate: { itemsPerPage: 10, currentPage: p }" class="list-group-item list-group-item-action flex-column align-items-start">
+		  <li *ngFor="let user of users | filterBy: ['firstName', 'lastName' ,'userName']: filter | paginate: { itemsPerPage: 10, currentPage: p }" class="list-group-item list-group-item-action flex-column align-items-start">
 		    <h5 class="mb-1">{{user.firstName}} {{user.lastName}}</h5>
 		    <div class="d-flex w-100 justify-content-between">
 		      <h6 class="mt-2">Username: {{user.userName}}</h6>

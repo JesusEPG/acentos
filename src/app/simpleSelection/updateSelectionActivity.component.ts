@@ -4,6 +4,7 @@ import { SimpleSelectionActivity } from './simpleSelection.model';
 import { SimpleSelectionService } from './simpleSelection.service';
 import { AuthService } from '../auth/auth.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
 	selector: 'app-update-selection-activity-component',
@@ -20,11 +21,11 @@ export class UpdateSelectionActivityComponent implements OnInit {
 	private activity?: SimpleSelectionActivity;
 	loading: boolean = true;
 
-	constructor(
-		private selectionService: SimpleSelectionService,
-		private router: Router,
-		private route: ActivatedRoute,
-		private authService: AuthService){}
+	constructor(private selectionService: SimpleSelectionService,
+				private router: Router,
+				private route: ActivatedRoute,
+				private authService: AuthService,
+				public snackBar: MatSnackBar){}
 
 	ngOnInit(){
 		this.activityForm = new FormGroup({
@@ -217,12 +218,22 @@ export class UpdateSelectionActivityComponent implements OnInit {
 				.subscribe(
 					//( {_id} ) => this.router.navigate(['/questions', _id]),
 					//this.router.navigate(['/']),
-					( {_id} ) => this.router.navigate(['/admin']),
+					( {_id} ) =>{ 
+						this.snackBar.open(`Se ha actualizado la actividad exitosamente`,
+											'x',
+											{ duration: 2500, verticalPosition: 'top'}
+						);
+
+						this.router.navigate(['/admin'])
+					},
 					this.authService.handleError
 				);//recibe dos funciones como parametros, la función de exito y la función de error
 		} else {
-			//snackbar con mensaje 'Verificar los datos ingresados e intentar de nuevo'
-			console.log('Not valid');
+			//Not valid
+			this.snackBar.open(`Verificar los datos e intentar nuevamente!`,
+								'x',
+								{ duration: 2500, verticalPosition: 'top'}
+			);
 		}
 	}
 

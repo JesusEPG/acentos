@@ -52,6 +52,12 @@ export class AdminUserSignupComponent implements OnInit {
 					this.authService.handleAdminError
 				);
 			this.signupForm.reset();
+		} else {
+
+			this.snackBar.open(`Verificar los datos e intentar nuevamente!`,
+								'x',
+								{ duration: 5000,verticalPosition: 'top' }
+			);
 		}
 	}
 }

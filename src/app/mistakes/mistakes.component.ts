@@ -4,6 +4,7 @@ import { MistakeActivity } from './mistake.model';
 import { MistakeService } from './mistake.service';
 import { AuthService } from '../auth/auth.service';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
 	selector: 'app-mistakes-component',
@@ -18,10 +19,10 @@ export class MistakesComponent implements OnInit {
 	correctAnswer: any;
 	possibleAnswers: any[]=[];
 
-	constructor(
-		private mistakeService: MistakeService,
-		private router: Router,
-		private authService: AuthService){}
+	constructor(private mistakeService: MistakeService,
+				private router: Router,
+				private authService: AuthService,
+				public snackBar: MatSnackBar){}
 
 	ngOnInit(){
 		this.activityForm = new FormGroup({
@@ -196,12 +197,21 @@ export class MistakesComponent implements OnInit {
 				.subscribe(
 					//( {_id} ) => this.router.navigate(['/questions', _id]),
 					//this.router.navigate(['/']),
-					( {_id} ) => this.router.navigate(['/admin']),
+					(  ) => {
+						this.router.navigate(['/admin']);
+						this.snackBar.open(`Se ha creado la actividad exitosamente`,
+											'x',
+											{ duration: 2500, verticalPosition: 'top'}
+						);
+					},
 					this.authService.handleError
 				);//recibe dos funciones como parametros, la función de exito y la función de error
 		} else {
-			//snackbar con mensaje 'Verificar los datos ingresados e intentar de nuevo'
-			console.log('Not valid');
+			//Not valid
+			this.snackBar.open(`Verificar los datos e intentar nuevamente!`,
+								'x',
+								{ duration: 2500, verticalPosition: 'top'}
+			);
 		}
 	}
 

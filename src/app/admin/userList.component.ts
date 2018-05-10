@@ -22,6 +22,7 @@ export class UserListComponent implements OnInit {
 	users: User[];
 	modalRef: BsModalRef;
   	message: string;
+  	public filter: string = '';
 
 	constructor(private adminService: AdminService,
 				private router: Router,

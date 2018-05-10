@@ -12,7 +12,7 @@ const app = express.Router()
 //Estas rutas son un agregado a la ruta definida en app.js
 
 // 	GET	/api/activities/selection
-app.get('/selection', required, async (req, res) => {
+/*app.get('/selection', required, async (req, res) => {
 
 	try {
 
@@ -64,8 +64,7 @@ app.get('/selection', required, async (req, res) => {
 	} catch (err) {
 		handleError(err, res)
 	}
-})
-
+})*/
 
 // 	GET	/api/activities/mistakes
 app.get('/mistakes', required, async (req, res) => {
@@ -74,28 +73,37 @@ app.get('/mistakes', required, async (req, res) => {
 
 	return res.status(200).json(test)*/
 	
+	var result = []
+
 	try {
 
+		//Obtengo las actividades
 		const fetchedActivities = await activities.findMistakesActivities(req.user._id)
-		
-		fetchedActivities.forEach( async function(activity, index) {
-		
-			User.findById({_id: req.user._id}, async function(err, user) {
-				if (err){
-					console.log(err)
-					handleError(err, res)
-				}
-				console.log(`User: ${user}`)
-			  	var subDoc = user.activities.id(activity.activities._id);
-			  	console.log(`Subdocument: ${subDoc}`)
+
+		//Para cada actividad en fetchedactivities debo marcarlas como taken
+		//y debo crear el objeto con todos los datos para devolver al client
+
+		console.log('Fetched: ')
+		console.log(fetchedActivities)
+
+
+		User.findById({_id: req.user._id}, async function(err, user){
+
+			if (err) {
+				console.log(err)
+				handleError(err, res)
+			}
+
+			fetchedActivities.forEach(async function(activity, index) {
+				// statements
+				//Para cada actividad en fetchedactivities debo marcarlas como taken
+				//y debo crear el objeto con todos los datos para devolver al client
+
+				var subDoc = user.activities.id(activity.activities._id);
+			  	//console.log(`Subdocument: ${subDoc}`)
 				subDoc.set({taken: true})
 
-				try {
-					const savedActivity = await user.save()
-					console.log(savedActivity)
-					console.log(`Resultado del query-taken ${savedActivity}`)
-					let result = fetchedActivities.map(function(activity, index){
-						return {
+				result.push({
 							activity: activity.activities.activity,
 							difficulty: activity.activities.difficulty,
 							lastAttempt: activity.activities.lastAttempt,
@@ -111,20 +119,91 @@ app.get('/mistakes', required, async (req, res) => {
 							splittedString: activity.fromActivities[0].splittedString,
 							comment: activity.fromActivities[0].comment,
 							fullString: activity.fromActivities[0].fullString
-						}
-					})
-					res.status(200).json(result)
-				} catch (err){
-						console.log(err)
-						handleError(err, res)
-				}
+				})
+
 			})
+			const newUser = await user.save()
+			console.log(`New User ${newUser}`)
+			console.log('Result')
+			console.log(result)
+			res.status(200).json(result)
+
 
 		})
 	} catch (err) {
 		handleError(err, res)
 	}
 })
+
+// 	GET	/api/activities/mistakes
+app.get('/selection', required, async (req, res) => {
+
+	/*const test = [];
+
+	return res.status(200).json(test)*/
+	
+	var result = []
+
+	try {
+
+		//Obtengo las actividades
+		const fetchedActivities = await activities.findSelectionActivities(req.user._id)
+
+		//Para cada actividad en fetchedactivities debo marcarlas como taken
+		//y debo crear el objeto con todos los datos para devolver al client
+
+		console.log('Fetched: ')
+		console.log(fetchedActivities)
+
+
+		User.findById({_id: req.user._id}, async function(err, user){
+
+			if (err) {
+				console.log(err)
+				handleError(err, res)
+			}
+
+			fetchedActivities.forEach(async function(activity, index) {
+				// statements
+				//Para cada actividad en fetchedactivities debo marcarlas como taken
+				//y debo crear el objeto con todos los datos para devolver al client
+
+				var subDoc = user.activities.id(activity.activities._id);
+			  	//console.log(`Subdocument: ${subDoc}`)
+				subDoc.set({taken: true})
+
+				result.push({
+							activity: activity.activities.activity,
+							difficulty: activity.activities.difficulty,
+							lastAttempt: activity.activities.lastAttempt,
+							reviewInterval: activity.activities.reviewInterval,
+							percentOverDue: activity.activities.percentOverDue,
+							correctCount: activity.activities.correctCount,
+			    			incorrectCount: activity.activities.incorrectCount,
+			    			lastAnswer: activity.activities.lastAnswer,
+			    			_id: activity.activities._id,
+							type: activity.activities.type,
+							correctAnswer: activity.fromActivities[0].correctAnswer,
+							possibleAnswers: activity.fromActivities[0].possibleAnswers,
+							splittedString: activity.fromActivities[0].splittedString,
+							comment: activity.fromActivities[0].comment,
+							fullString: activity.fromActivities[0].fullString
+				})
+
+			})
+			const newUser = await user.save()
+			console.log(`New User ${newUser}`)
+			console.log('Result')
+			console.log(result)
+			res.status(200).json(result)
+
+
+		})
+	} catch (err) {
+		handleError(err, res)
+	}
+})
+
 
 //	GET	/api/questions/:id
 /*app.get('/:id', simpleSelectionActivityMiddleware, async (req, res) => {

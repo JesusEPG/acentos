@@ -4,6 +4,7 @@ import { AuthService } from '../auth/auth.service';
 import { User } from '../auth/user.model';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AdminService } from './admin.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
 	selector: 'app-update-user-component',
@@ -20,7 +21,8 @@ export class UpdateUserComponent implements OnInit {
 
 	constructor(private adminService: AdminService,
 				private router: Router,
-				private route: ActivatedRoute){}
+				private route: ActivatedRoute,
+				public snackBar: MatSnackBar){}
 
 	ngOnInit(){
 		this.userUpdateForm = new FormGroup({
@@ -60,11 +62,24 @@ export class UpdateUserComponent implements OnInit {
 			console.log(`Nombre Completo: ${firstName} ${lastName}, Username: ${userName}, Contraseña: ${password}`);
 			this.adminService.updateUser(user)
 				.subscribe(
-					() => this.router.navigate(['/admin']),
+					( {_id} ) =>{ 
+						this.snackBar.open(`Se ha actualizado el usuario exitosamente`,
+											'x',
+											{ duration: 2500, verticalPosition: 'top'}
+						);
+
+						this.router.navigate(['/admin'])
+					},
 					//err => console.log(err)
 					this.adminService.handleError
 				);
 			this.userUpdateForm.reset();
+		} else {
+			this.snackBar.open(`Verificar los datos e intentar nuevamente!`,
+								'x',
+								{ duration: 2500, verticalPosition: 'top'}
+			);
 		}
+
 	}
 }

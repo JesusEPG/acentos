@@ -43,11 +43,20 @@ export class ActivitiesService {
 			.catch((response) => {
 				console.log('Catch del activities.service');
 				const res = response.json();
+
 				console.log(res);
-				console.log(res.error.name);
-				this.snackBar.open(`${res.error.error}. ${res.error.message}`, 'x', { duration: 2500, verticalPosition: 'top'});
-				this.router.navigateByUrl('/');
-				//this.authService.logout()
+				console.log(res.error);
+
+				if(res){
+					if(res.error){
+						this.snackBar.open(`${res.error.error}. ${res.error.message}`, 'x', { duration: 2500, verticalPosition: 'top'});
+						//this.authService.logout()
+						this.router.navigateByUrl('/');
+					} else {
+						this.snackBar.open(`Presentamos problema con el servidor. Intentar más tarde`, 'x', { duration: 2500, verticalPosition: 'top'});
+						this.router.navigateByUrl('/');
+					}
+				}
 			});
 			//.catch((error: Response) => Observable.throw(error.json()));							//Error
 	}
