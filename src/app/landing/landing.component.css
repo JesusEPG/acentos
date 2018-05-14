@@ -14,7 +14,7 @@ hr {
 	padding: 75px 0;
 }
 
-.jumbotro, h1, .lead {
+.jumbotron, h1, .lead {
 	color: #fff;
 }
 
@@ -32,10 +32,10 @@ hr {
 .btn-primary {
 	background: #1096fc;
 	border: 0;
- 
-	&:hover {
-  		background: darken(#1096fc, 7%);
- 	}
+}
+
+a.btn-primary:hover {
+	background: darken(#1096fc, 7%);
 }
 
 
@@ -60,11 +60,15 @@ hr {
 
 	margin-top: 160px;
 
-	margin-bottom: 100px;
+	margin-bottom: 5px;
 }
 
 .feature-icon {
 
-	max-width: 150px;
+	max-width: 200px;
+}
+
+.activities {
+	color: black;
 }
 

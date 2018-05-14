@@ -527,10 +527,16 @@ app.post('/updateActivity', async (req, res) => {
 						if(activity.activity.equals(updatedActivity._id)){
 							//esta es la actividad en activities de user
 							//modifico
-							//if (dificultaded no cambió)
-							console.log('Es igual!!!')
-							const update = await activities.updateUsersActivity(user._id, updatedActivity)
-							console.log(update)
+							if (activity.taken){
+								console.log('Fue tomado en sesión')
+								const update = await activities.updateUsersTakenActivity(user._id, updatedActivity)
+								console.log(update)
+							} else {
+
+								console.log('Es igual!!!')
+								const update = await activities.updateUsersActivity(user._id, updatedActivity)
+								console.log(update)
+							}
 						}
 					});
 					//User.save(user)

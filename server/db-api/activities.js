@@ -193,7 +193,7 @@ export default {
 	},
 
 	//Actualiza los datos user-activity luego de que el admin modifica un ejercicio
-	updateUsersActivity: (userId, activity) => {
+	updateUsersTakenActivity: (userId, activity) => {
 
 		return User.findOneAndUpdate({"_id": userId, "activities.activity": activity._id }, { $set: { 
 					
@@ -205,6 +205,22 @@ export default {
 				"activities.$.incorrectCount": 0,
 				"activities.$.lastAnswer": null,
 				"activities.$.modified": true
+			}
+		}, {new: true})
+	},
+
+	//Actualiza los datos user-activity si la activity no está taken luego de que el admin modifica un ejercicio
+	updateUsersActivity: (userId, activity) => {
+
+		return User.findOneAndUpdate({"_id": userId, "activities.activity": activity._id }, { $set: { 
+					
+				"activities.$.difficulty": activity.difficulty,
+				"activities.$.lastAttempt": null,
+				"activities.$.reviewInterval": 1,
+				"activities.$.percentOverDue": 1,
+				"activities.$.correctCount": 0,
+				"activities.$.incorrectCount": 0,
+				"activities.$.lastAnswer": null,
 			}
 		}, {new: true})
 	},

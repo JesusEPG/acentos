@@ -1,3 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
 @import '~bootstrap/dist/css/bootstrap.min.css';
 @import '~@angular/material/prebuilt-themes/indigo-pink.css';
+
+.snackbar-color{
+	/*background-color: #1096fc;*/
+	background-color: #f5fffa; /* #97ffff #f8f9fa; #dcdcdc*/ /* Usando DarkSlateGray1 #f8f9fa*/
+  	color: black;
+  	margin-top: 100px;
+
+  button {
+    color: black;
+  }
+}

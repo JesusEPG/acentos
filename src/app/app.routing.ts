@@ -21,7 +21,7 @@ const APP_ROUTES: Routes = [
 	{ path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
 	{ path: 'statistics', component: StatisticsComponent, canActivate: [AuthGuard]},
 	//{ path: 'activities', component: ActivitiesComponent},
-	{ path: 'activities', children: ACTIVITIES_ROUTES },
+	{ path: 'activities', children: ACTIVITIES_ROUTES, canActivate: [AuthGuard] },
 	{ path: 'admin', children: ADMIN_ROUTES },
 
 	//{ path: 'selection', component: SelectionActivitiesComponent},

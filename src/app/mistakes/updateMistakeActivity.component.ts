@@ -234,7 +234,7 @@ export class UpdateMistakeActivityComponent implements OnInit {
 			console.log('Not valid');
 			this.snackBar.open(`Verificar los datos e intentar nuevamente!`,
 								'x',
-								{ duration: 2500, verticalPosition: 'top'}
+								{ duration: 80500, verticalPosition: 'top', panelClass:['snackbar-color']}
 			);
 		}
 	}

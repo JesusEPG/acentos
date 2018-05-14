@@ -100,6 +100,10 @@ export default {
 				// Separate the items array into a stream of documents
   				{ "$unwind" : "$activities" },
 
+  				{ "$match" : {
+					'activities.lastAttempt': { $ne: null }
+				}},
+
         		{
 			    	$group : {
 			        	_id : "$activities.type",
@@ -108,7 +112,7 @@ export default {
 			        	count: { $sum: 1 }
 			    	}
 			    }
-		    ]/*,
+		    ],
 		    function(err,result) {
 
 		       // Result is an array of documents
@@ -122,7 +126,7 @@ export default {
 		       console.log(result)
 		
 		       return result
-		    }*/
+		    }
 		)
 
 
