@@ -45,6 +45,24 @@ export class ProfileService {
 			.catch(this.handleError);								//Error
 	}
 
+	getWeeklyData(): Promise<void | any[]>{
+		const token = this.getToken();
+		const url = this.profileUrl + '/weekly' + token;
+		return this.http.get(url)
+			.toPromise()
+			.then(response => response.json() as any[])		//Exitoso
+			.catch(this.handleError);								//Error
+	}
+
+	getMonthlyData(): Promise<void | any[]>{
+		const token = this.getToken();
+		const url = this.profileUrl + '/monthly' + token;
+		return this.http.get(url)
+			.toPromise()
+			.then(response => response.json() as any[])		//Exitoso
+			.catch(this.handleError);								//Error
+	}
+
 	/*addSimpleSelectionActivity(activity: SimpleSelectionActivity) {
 		const body = JSON.stringify(activity);
 		const headers = new Headers({'Content-Type': 'application/json'});

@@ -82,6 +82,40 @@ app.get('/', required, async (req, res) => {
 
 })
 
+//	GET	/api/profile/weekly
+app.get('/weekly', required, async (req, res) => {
+
+	let date = generateDate(1, 'weeks')
+
+	try{
+		//const data = await activities.prueba(req.user._id, dates.pastDate)
+		const data = await statistics.getProfileDateStatistics(req.user._id, date.pastDate)
+		console.log(data)
+		res.status(200).json(data)
+
+	} catch (err) {
+		handleError(err, res)
+	}
+
+})
+
+//	GET	/api/profile/monthly
+app.get('/monthly', required, async (req, res) => {
+
+	let date = generateDate(1, 'months')
+
+	try{
+		//const data = await activities.prueba(req.user._id, dates.pastDate)
+		const data = await statistics.getProfileDateStatistics(req.user._id, date.pastDate)
+		console.log(data)
+		res.status(200).json(data)
+
+	} catch (err) {
+		handleError(err, res)
+	}
+
+})
+
 function generateDate(number, period){
 
 	let currentDate = moment().utc()

@@ -68,24 +68,12 @@
 
             <h5 class="card-title">Historial de Actividad</h5>
 
-            <mat-spinner *ngIf="loading" class="spinner" style="margin:0 auto;" color='accent'>
-            </mat-spinner>
+            <!--<div *ngIf="!loading&&generalChartData.length>0" class="row align-items-center">
+                
 
-            <div *ngIf="!loading&&generalChartData.length>0" class="row align-items-center">
-                <!--<div class="col col-md-6 align-self-center">
-                    <label class="mb-3">Historial de Correctas e Incorrectas</label>
-                    <label>Gráfica </label>
-                    <ul class="list-group">
-                        <li class="list-group-item list-group-item-light text-dark">Actividades Repasadas: {{numberOfActivities}}</li>
-                        <li class="list-group-item list-group-item-light text-dark">Actividades de errores repasadas: {{numberOfMistakesActivities}}</li>
-                        <li class="list-group-item list-group-item-light text-dark">Actividades de selección repasadas: {{numberOfSelectionActivities}}</li>
-                        <li class="list-group-item list-group-item-light text-dark">Repasos realizados: {{generalChartData[0]+generalChartData[1]}}</li>
-                    </ul>
-                </div>-->
-
-                <div class="col col-md-6">
+                <div class="col col-md-6">-->
                     <!--<label class="mb-3">Historial de Correctas e Incorrectas</label>-->
-                    <ul class=" mb-2">
+                    <!--<ul class=" mb-2">
                         <li style="list-style: none" class="text-dark">Actividades repasadas: {{numberOfActivities}}</li>
                         <li style="list-style: none" class="text-dark mt-4">Actividades de errores repasadas: {{numberOfMistakesActivities}}</li>
                         <li style="list-style: none" class="text-dark mt-4">Actividades de selección repasadas: {{numberOfSelectionActivities}}</li>
@@ -94,105 +82,13 @@
                 </div>
                 
                     
-            </div>
+            </div>-->
 
             <!--<hr>-->
 
-            <!--<div *ngIf="!loading&&generalChartData.length>0" class="row align-items-center mb-5">
-                <div style="display: block" class="col-md-8 offset-md-2">
-                    <h5 style="text-align: center;">Historial de respuestas</h5>
-                    <canvas baseChart
-                        [data]="generalChartData"
-                        [labels]="generalChartLabels"
-                        [chartType]="generalChartType"
-                        [colors]="generalChartColors"
-                        (chartHover)="chartHovered($event)"
-                        (chartClick)="chartClicked($event)">
-                                    
-                    </canvas>
-                </div>  
-            </div> 
-
-            <div *ngIf="!loading&&mistakesChartData.length>0" class="row align-items-center">
-                    
-                    <div class="col-md-6">
-                        <h5 style="text-align: center;">Historial de actividades de error</h5>
-                        <div style="display: block"> 
-                            <canvas baseChart
-                                [data]="mistakesChartData"
-                                [labels]="mistakesChartLabels"
-                                [chartType]="mistakesChartType"
-                                [colors]="mistakesChartColors"
-                                (chartHover)="chartHovered($event)"
-                                (chartClick)="chartClicked($event)">
-                                        
-                            </canvas>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <h5 style="text-align: center;">Historial de actividades de selección</h5>
-                        <div style="display: block"> 
-                            <canvas baseChart
-                                [data]="mistakesChartData"
-                                [labels]="mistakesChartLabels"
-                                [chartType]="mistakesChartType"
-                                [colors]="mistakesChartColors"
-                                (chartHover)="chartHovered($event)"
-                                (chartClick)="chartClicked($event)">
-                                        
-                            </canvas>
-                        </div>
-                    </div>
-                </div> 
-
-            <div *ngIf="!loading&&selectionChartData.length>0" class="row align-items-center">
-                    <div style="display: block" class="col-md-8 offset-md-2">
-                        <canvas baseChart
-                            [data]="selectionChartData"
-                            [labels]="selectionChartLabels"
-                            [chartType]="selectionChartType"
-                            [colors]="selectionChartColors"
-                            (chartHover)="chartHovered($event)"
-                            (chartClick)="chartClicked($event)">
-                                    
-                        </canvas>
-                    </div>
-
-                    <div style="display: block" class="col-md-8 offset-md-2">
-                        <canvas baseChart
-                            [data]="mistakesChartData"
-                            [labels]="mistakesChartLabels"
-                            [chartType]="mistakesChartType"
-                            [colors]="mistakesChartColors"
-                            (chartHover)="chartHovered($event)"
-                            (chartClick)="chartClicked($event)">
-                                    
-                        </canvas>
-                    </div>  
-                </div> -->
-
-            <!--<div *ngIf="!loading&&mistakesChartData.length>0" class="row align-items-center">
-                    <div style="display: block" class="col-md-8 offset-md-2">
-                        <canvas baseChart
-                            [data]="mistakesChartData"
-                            [labels]="mistakesChartLabels"
-                            [chartType]="mistakesChartType"
-                            [colors]="mistakesChartColors"
-                            (chartHover)="chartHovered($event)"
-                            (chartClick)="chartClicked($event)">
-                                    
-                        </canvas>
-                    </div>  
-                </div> -->
-
-
             <div>
-                <div class="mb-3">
-                    <pre class="card card-block card-header" *ngIf="value">Event select is fired. The heading of the selected tab is: {{value}}</pre>
-                </div>
                 <tabset>
-                    <tab heading="First tab" class="mt-2" (select)="onSelect($event)">
+                    <tab heading="Datos generales" class="mt-2" (select)="onSelect($event)">
 
                         <mat-spinner *ngIf="loading" class="spinner" style="margin:0 auto;" color='accent'>
                         </mat-spinner>
@@ -210,9 +106,123 @@
                                                 
                                 </canvas>
                             </div>  
+                        </div>
+
+                        <div *ngIf="!loading&&(mistakesChartData.length>0&&selectionChartData.length<1)" class="row align-items-center mb-5">
+                            <div style="display: block" class="col-md-8 offset-md-2">
+                                <h5 style="text-align: center;">Historial de actividades de error</h5>
+                                <canvas baseChart
+                                    [data]="mistakesChartData"
+                                    [labels]="mistakesChartLabels"
+                                    [chartType]="mistakesChartType"
+                                    [colors]="mistakesChartColors"
+                                    (chartHover)="chartHovered($event)"
+                                    (chartClick)="chartClicked($event)">
+                                                
+                                </canvas>
+                            </div>  
+                        </div>
+
+                        <div *ngIf="!loading&&(mistakesChartData.length<1&&selectionChartData.length>0)" class="row align-items-center mb-5">
+                            <div style="display: block" class="col-md-8 offset-md-2">
+                                <h5 style="text-align: center;">Historial de actividades de completación</h5>
+                                <canvas baseChart
+                                    [data]="selectionChartData"
+                                    [labels]="selectionChartLabels"
+                                    [chartType]="selectionChartType"
+                                    [colors]="selectionChartColors"
+                                    (chartHover)="chartHovered($event)"
+                                    (chartClick)="chartClicked($event)">
+                                                
+                                </canvas>
+                            </div>  
                         </div> 
 
-                        <div *ngIf="!loading&&mistakesChartData.length>0" class="row align-items-center">
+                        <div *ngIf="!loading&&(mistakesChartData.length>0&&selectionChartData.length>0)" class="row align-items-center">
+                                
+                                <div class="col-md-6 mb-3">
+                                    <h5 style="text-align: center;">Actividades de error</h5>
+                                    <div style="display: block"> 
+                                        <canvas baseChart
+                                            [data]="mistakesChartData"
+                                            [labels]="mistakesChartLabels"
+                                            [chartType]="mistakesChartType"
+                                            [colors]="mistakesChartColors"
+                                            [legend]="true"
+                                            (chartHover)="chartHovered($event)"
+                                            (chartClick)="chartClicked($event)">
+                                                    
+                                        </canvas>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <h5 style="text-align: center;">Actividades de completación</h5>
+                                    <div style="display: block"> 
+                                        <canvas baseChart
+                                            [data]="selectionChartData"
+                                            [labels]="selectionChartLabels"
+                                            [chartType]="selectionChartType"
+                                            [colors]="selectionChartColors"
+                                            (chartHover)="chartHovered($event)"
+                                            (chartClick)="chartClicked($event)">
+                                                    
+                                        </canvas>
+                                    </div>
+                                </div>
+                        </div> 
+
+                    </tab>
+                    <tab heading="Datos semanales" class="mt-2" (select)="onSelect($event)">
+                        <mat-spinner *ngIf="loading" class="spinner" style="margin:0 auto;" color='accent'>
+                        </mat-spinner>
+                        
+                        <div *ngIf="!loading&&generalWeeklyChartData.length>0" class="row align-items-center mb-5">
+                            <div style="display: block" class="col-md-8 offset-md-2">
+                                <h5 style="text-align: center;">Historial de respuestas</h5>
+                                <canvas baseChart
+                                    [data]="generalWeeklyChartData"
+                                    [labels]="generalWeeklyChartLabels"
+                                    [chartType]="generalWeeklyChartType"
+                                    [colors]="generalWeeklyChartColors"
+                                    (chartHover)="chartHovered($event)"
+                                    (chartClick)="chartClicked($event)">
+                                                
+                                </canvas>
+                            </div>  
+                        </div>
+
+                        <div *ngIf="!loading&&(mistakesWeeklyChartData.length>0&&selectionWeeklyChartData.length<1)" class="row align-items-center mb-5">
+                            <div style="display: block" class="col-md-8 offset-md-2">
+                                <h5 style="text-align: center;">Historial de actividades de error</h5>
+                                <canvas baseChart
+                                    [data]="mistakesWeeklyChartData"
+                                    [labels]="mistakesWeeklyChartLabels"
+                                    [chartType]="mistakesWeeklyChartType"
+                                    [colors]="mistakesWeeklyChartColors"
+                                    (chartHover)="chartHovered($event)"
+                                    (chartClick)="chartClicked($event)">
+                                                
+                                </canvas>
+                            </div>  
+                        </div>
+
+                        <div *ngIf="!loading&&(mistakesWeeklyChartData.length<1&&selectionWeeklyChartData.length>0)" class="row align-items-center mb-5">
+                            <div style="display: block" class="col-md-8 offset-md-2">
+                                <h5 style="text-align: center;">Historial de actividades de completación</h5>
+                                <canvas baseChart
+                                    [data]="selectionWeeklyChartData"
+                                    [labels]="selectionWeeklyChartLabels"
+                                    [chartType]="selectionWeeklyChartType"
+                                    [colors]="selectionWeeklyChartColors"
+                                    (chartHover)="chartHovered($event)"
+                                    (chartClick)="chartClicked($event)">
+                                                
+                                </canvas>
+                            </div>  
+                        </div> 
+
+                        <div *ngIf="!loading&&(mistakesWeeklyChartData.length>0&&selectionWeeklyChartData.length>0)" class="row align-items-center">
                                 <!--<div style="display: block" class="col-md-8 offset-md-2">
                                     <canvas baseChart
                                         [data]="generalChartData"
@@ -224,14 +234,15 @@
                                                 
                                     </canvas>
                                 </div>-->
-                                <div class="col-md-6">
-                                    <h5 style="text-align: center;">Historial de actividades de error</h5>
+                                <div class="col-md-6 mb-3">
+                                    <h5 style="text-align: center;">Actividades de error</h5>
                                     <div style="display: block"> 
                                         <canvas baseChart
-                                            [data]="mistakesChartData"
-                                            [labels]="mistakesChartLabels"
-                                            [chartType]="mistakesChartType"
-                                            [colors]="mistakesChartColors"
+                                            [data]="mistakesWeeklyChartData"
+                                            [labels]="mistakesWeeklyChartLabels"
+                                            [chartType]="mistakesWeeklyChartType"
+                                            [colors]="mistakesWeeklyChartColors"
+                                            [legend]="true"
                                             (chartHover)="chartHovered($event)"
                                             (chartClick)="chartClicked($event)">
                                                     
@@ -239,28 +250,21 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-6">
-                                    <h5 style="text-align: center;">Historial de actividades de error</h5>
+                                <div class="col-md-6 mb-3">
+                                    <h5 style="text-align: center;">Actividades de completación</h5>
                                     <div style="display: block"> 
                                         <canvas baseChart
-                                            [data]="mistakesChartData"
-                                            [labels]="mistakesChartLabels"
-                                            [chartType]="mistakesChartType"
-                                            [colors]="mistakesChartColors"
+                                            [data]="selectionWeeklyChartData"
+                                            [labels]="selectionWeeklyChartLabels"
+                                            [chartType]="selectionWeeklyChartType"
+                                            [colors]="selectionWeeklyChartColors"
                                             (chartHover)="chartHovered($event)"
                                             (chartClick)="chartClicked($event)">
                                                     
                                         </canvas>
                                     </div>
                                 </div>
-                            </div> 
-
-                    </tab>
-                    <tab heading="Second tab" class="mt-2" (select)="onSelect($event)">
-                        <h4>Title 2</h4>
-                        <p>It has survived not only five centuries, but also the leap into electronic typesetting,
-                      remaining essentially unchanged. It was popularised in the 1960s with the release of
-                      Letraset sheets containing Lorem Ipsum passages</p>
+                        </div> 
                     </tab>
                 </tabset>
             </div>
