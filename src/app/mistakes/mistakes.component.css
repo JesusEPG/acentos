@@ -14,3 +14,9 @@
 {
     margin-bottom:60px;
 }
+
+.selected-button {
+	color: #fff;
+	background-color: blue;
+	border-color: blue;
+}

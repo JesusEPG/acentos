@@ -93,21 +93,28 @@ export class MistakesComponent implements OnInit {
 		//Se debe agregar al arreglo de respuestas correctas y de respuestas posibles
 		//Analizar los casos en que se deben ocultar o no estas palabras
 		//O si se les puede hacer click
-		console.log(this.possibleAnswers.length)
-				console.log(this.possibleAnswers)
 
 		this.possibleAnswers=[];
 
+
 		if(!word.hidden){
-			
+			//Si la palabra no se había seleccionado
+			if(this.correctAnswer){
+				this.correctAnswer.hidden=!this.correctAnswer.hidden;
+				this.correctAnswer = null;
+			}	
 			//this.addCorrectAnswer(word);
 			this.correctAnswer=word;
 			
 		} else {
 			//this.deleteCorrectAnswer(word);
+			console.log('entre al else');
 			this.correctAnswer = null;
 		}
 		word.hidden = !word.hidden;
+		console.log(this.correctAnswer);
+		console.log(word);
+		console.log(this.splittedString);
 		//De lo contrario se debe buscar el objeto en los arreglos y luego sacarlo
 	}
 
@@ -152,9 +159,10 @@ export class MistakesComponent implements OnInit {
 		this.possibleAnswers.push(word);
 	}
 
-	deletePossibleAnswer(word){
+	deletePossibleAnswer(){
 		//word.clickeable = !word.clickeable;
-		this.remove(this.possibleAnswers, word);
+		//this.remove(this.possibleAnswers, word);
+		this.possibleAnswers.pop();
 	}
 
 	hasOnlywords(word){}

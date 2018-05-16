@@ -17,24 +17,7 @@ export class ProfileService {
 
 	constructor(private http: Http){
 		this.profileUrl = urljoin(environment.apiUrl, 'profile');
-		console.log(this.profileUrl)
 	}
-
-	/*getQuestions(): Promise<void | SimpleSelectionActivity[]>{
-		return this.http.get(this.simpleSelectionUrl)
-			.toPromise()
-			.then(response => response.json() as SimpleSelectionActivity[])		//Exitoso
-			.catch(this.handleError);								//Error
-	}
-
-
-	getSelectionActivity(id): Promise<void | SimpleSelectionActivity>{
-		const url = urljoin(this.simpleSelectionUrl, id);
-		return this.http.get(url)
-			.toPromise()
-			.then(response => response.json() as SimpleSelectionActivity)
-			.catch(this.handleError);
-	}*/
 
 	getData(): Promise<void | any[]>{
 		const token = this.getToken();
@@ -62,46 +45,6 @@ export class ProfileService {
 			.then(response => response.json() as any[])		//Exitoso
 			.catch(this.handleError);								//Error
 	}
-
-	/*addSimpleSelectionActivity(activity: SimpleSelectionActivity) {
-		const body = JSON.stringify(activity);
-		const headers = new Headers({'Content-Type': 'application/json'});
-		const token = this.getToken();
-		const url = this.simpleSelectionUrl + '/newSelectionActivity' + token;
-		//  apiUrl: 'http://localhost:3000/api/simpleSelection?token=${token}'
-		return this.http.post(url, body, { headers })
-			.map((response: Response) => response.json())
-			.catch((error: Response) => Observable.throw(error.json()));
-	}
-
-	updateSelectionActivity(activity: SimpleSelectionActivity) {
-		const body = JSON.stringify(activity);
-		const headers = new Headers({'Content-Type': 'application/json'});
-		//const token = this.getToken();
-		const url = this.simpleSelectionUrl + '/updateActivity';
-		//  apiUrl: 'http://localhost:3000/api/simpleSelection?token=${token}'
-		return this.http.post(url, body, { headers })
-			.map((response: Response) => response.json())
-			.catch((error: Response) => Observable.throw(error.json()));
-	}*/
-
-	/*addAnswer(answer: Answer) {
-
-		const a = {
-			description: answer.description,
-			question: {
-				_id: answer.question._id
-			}
-		}
-
-		const body = JSON.stringify(a);
-		const headers = new Headers({'Content-Type': 'application/json'});
-		const token = this.getToken();
-		//const url = urljoin(this.questionsUrl, answer.question._id, 'answers'); //en strings los aspectos de la ruta que no son parametros
-		return this.http.post(`${this.questionsUrl}/${answer.question._id}/answers${token}`, body, { headers })
-			.map((response: Response) => response.json())
-			.catch((error: Response) => Observable.throw(error.json()));
-	}*/
 
 	getToken(){
 		const token = localStorage.getItem('token');

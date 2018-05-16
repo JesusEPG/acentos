@@ -34,23 +34,44 @@
 	<mat-spinner *ngIf="loading" class="spinner" style="margin:0 auto;" color='accent'>
 	</mat-spinner>
 
-  	<div *ngIf="!loading&&!result" class="row">
-    	<div class="col-sm-12 mb-3">
+  	<div *ngIf="!loading&&!result" class="row justify-content-center">
+    	<div class="col-md-8 mb-3">
       		<div class="card text-center">
+      			<div class="card-header">
+		            <strong>Seleccione la respuesta correcta</strong>
+		        </div>
 		        <div class="card-body">
-		          <h5 class="card-title">Seleccione la respuesta correcta</h5>
-		          <p class="card-text">{{activities[counter].fullString}}</p>
-		          	
-					<div class="col-12">
+					
+					<div class="mb-3">
+
+						<ng-container *ngFor="let word of activities[counter].splittedString">
+							
+						    <span *ngIf="!word.hidden">{{word.word}}</span>
+						    <span *ngIf="word.hidden&&selectedAnswers[counter]">{{selectedAnswers[counter].word}}</span>
+
+						    <span *ngIf="word.hidden&&!selectedAnswers[counter]" style="visibility:hidden;">{{word.word}}</span>
+						  	
+						</ng-container>
+					</div>
+
+
+					<!--<div class="col-12 mt-3">
 						<div *ngFor="let word of activities[counter].possibleAnswers | shuffle" class="btn-group" role="group" aria-label="Basic example">
 								  	
 							<button type="button" class="btn btn-secondary submitButton mb-2" color="accent" (click)="selectAnswer(word)">{{ word.word }}</button>
 								
 						</div>
+					</div>-->
+
+					<div class="col-12 mb-3" class="btn-group" role="group" aria-label="Basic example">
+								  	
+						<button *ngFor="let word of activities[counter].possibleAnswers | shuffle" type="button" class="btn btn-secondary submitButton mb-3" [ngClass]="{'selected-button': !word.clickeable}" color="accent" (click)="selectAnswer(word)">{{ word.word }}</button>
+						
 					</div>
-		    	
-		        	<button *ngIf="selectedAnswers[counter]" class="btn btn-primary" type="button" (click)="next()">Siguiente</button>
-		        	<button *ngIf="!selectedAnswers[counter]" class="btn btn-primary" type="button" disabled>Siguiente</button>
+		    		<div>
+			        	<button *ngIf="selectedAnswers[counter]" class="btn btn-primary" type="button" (click)="next()">Siguiente</button>
+			        	<button *ngIf="!selectedAnswers[counter]" class="btn btn-primary" type="button" disabled>Siguiente</button>
+		        	</div>
 		        </div>
       		</div>
     	</div>

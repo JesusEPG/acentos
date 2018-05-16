@@ -5,7 +5,8 @@ import { WORST, BEST, CORRECT, INCORRECT, review } from './sm2-plus.module';
 
 @Component({
 	selector: 'app-selection-component',
-	templateUrl: 'selectionActivities.component.html',
+	templateUrl: './selectionActivities.component.html',
+	styleUrls: ['./selectionActivities.component.css'],
 	providers: [ActivitiesService]
 })
 
@@ -48,6 +49,8 @@ export class SelectionActivitiesComponent implements OnInit {
 		//Hago un push de la respuesta a selectedAnswers
 		if(word.clickeable){
 			//push
+
+			//Se verifica si hay una respuesta ya seleccionada
 			if(this.selectedAnswers[this.counter]){
 				this.selectedAnswers[this.counter].clickeable = !this.selectedAnswers[this.counter].clickeable;
 				this.selectedAnswers.pop();
@@ -57,6 +60,7 @@ export class SelectionActivitiesComponent implements OnInit {
 			console.log(this.selectedAnswers);
 		} else {
 			//pop
+			//le quito la clase agregada
 			this.selectedAnswers.pop();
 			console.log(this.selectedAnswers);
 

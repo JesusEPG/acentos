@@ -89,13 +89,22 @@ export class SimpleSelectionComponent implements OnInit {
 		this.possibleAnswers=[];
 
 		if(!word.hidden){
-			
+			/*if(this.possibleAnswers[0]){
+				this.possibleAnswers[0].hidden=false;
+			}*/
+
+			if(this.correctAnswer){
+				this.correctAnswer.hidden=!this.correctAnswer.hidden;
+				this.correctAnswer = null;
+			}
+
 			this.addCorrectAnswer(word);
 			
 		} else {
 			this.deleteCorrectAnswer(word);
 		}
 		word.hidden = !word.hidden;
+		console.log(this.splittedString);
 		//De lo contrario se debe buscar el objeto en los arreglos y luego sacarlo
 	}
 
