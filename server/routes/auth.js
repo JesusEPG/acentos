@@ -117,6 +117,7 @@ app.post('/signup', async (req, res) => {
 		lastName,
 		userName,
 		password: hash(password, 10),
+		modified: false,
 		activities: newActivities
 	})
 

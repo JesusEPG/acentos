@@ -89,6 +89,7 @@ export class SelectionActivitiesComponent implements OnInit {
 					//respuesta correcta
 					console.log('Correcto');
 					activity.correctCount++;
+					this.selectedAnswers[index].correct=true;
 					//calcular cambios del algoritmo
 					const newValues = review(activity, CORRECT)
 					console.log(newValues);
@@ -116,6 +117,7 @@ export class SelectionActivitiesComponent implements OnInit {
 					//respuesta erronea
 					console.log('Incorrecto');
 					activity.incorrectCount++;
+					this.selectedAnswers[index].correct=false;
 					//const newValues = calculate(activity, WORST, Math.round(new Date().getTime() / DAY_IN_MINISECONDS))
 					//console.log(newValues);
 					const newValues = review(activity, INCORRECT)

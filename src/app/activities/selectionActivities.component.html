@@ -1,30 +1,4 @@
-<!--<div class="container mt-5">
 
-	<alert *ngIf="loading" type="info">
-	  <strong>Heads up!</strong> This alert needs your attention, but it's not super important.
-	</alert>
-
-  <div *ngIf="!loading" class="row">
-    <div class="col-sm-12 mb-3">
-      <div class="card text-center">
-        <div class="card-body">
-        	<h5 class="card-title">Seleccione la respuesta correcta</h5>
-          	<p class="card-text">{{activities[counter].fullString}}</p>
-          	<div class="col-12">
-          		<div *ngFor="let word of activities[counter].possibleAnswers | shuffle" class="btn-group" role="group" aria-label="Basic example">
-						  	
-					<button type="button" class="btn btn-secondary submitButton mb-2" color="accent" (click)="selectAnswer(word)">{{ word.word }}</button>
-						
-				</div>
-			</div>
-          	<button *ngIf="selectedAnswers[counter]" class="btn btn-primary" type="button" (click)="next()">Siguiente</button>
-		    <button *ngIf="!selectedAnswers[counter]" class="btn btn-primary" type="button" disabled>Siguiente</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-</div>-->
 
 <div class="container mt-5">
 
@@ -63,9 +37,9 @@
 						</div>
 					</div>-->
 
-					<div class="col-12 mb-3" class="btn-group" role="group" aria-label="Basic example">
+					<div class="col mb-3" aria-label="Basic example">
 								  	
-						<button *ngFor="let word of activities[counter].possibleAnswers | shuffle" type="button" class="btn btn-secondary submitButton mb-3" [ngClass]="{'selected-button': !word.clickeable}" color="accent" (click)="selectAnswer(word)">{{ word.word }}</button>
+						<button *ngFor="let word of activities[counter].possibleAnswers | shuffle" type="button" class="btn btn-secondary submitButton mb-2" [ngClass]="{'selected-button': !word.clickeable}" color="accent" (click)="selectAnswer(word)">{{ word.word }}</button>
 						
 					</div>
 		    		<div>
@@ -77,28 +51,66 @@
     	</div>
 	</div>
 
-	<div *ngIf="!loading&&result">
+	<!--<div *ngIf="!loading&&result">
 	
 		<div class="col-sm-12 mb-3">
-		<ul class="list-group" *ngFor="let activity of activities; let i = index">
+			<ul class="list-group" *ngFor="let activity of activities; let i = index">
 
-			<li *ngIf="selectedAnswers[i].correct" class="list-group-item list-group-item-success">
-				<h5>Correcto!!!!!</h5>
-			</li>
-		  
-			<li *ngIf="!selectedAnswers[i].correct" class="list-group-item list-group-item-danger">
-				<div class="d-flex w-100 justify-content-between">
-		      		<!--<h5 class="mb-1">Respuesta: {{selectedAnswers[i].word}}</h5>-->
-		      		<small class="mb-1">Respuesta: {{selectedAnswers[i].word}}</small>
+				<li *ngIf="selectedAnswers[i].correct" class="list-group-item list-group-item-success">
+					<h5>Correcto!!!!!</h5>
+				</li>
+			  
+				<li *ngIf="!selectedAnswers[i].correct" class="list-group-item list-group-item-danger">
+					<div class="d-flex w-100 justify-content-between">
+			      		
+			      		<small class="mb-1">Respuesta: {{selectedAnswers[i].word}}</small>
 
-		      		<small>Correct Answer: {{activity.possibleAnswers[0].word}}</small>
-		    	</div>
-		    	<p class="mb-1">Texto completo: {{activity.fullString}}</p>
-		    	<p class="mb-1">Nota importante: {{activity.comment}}</p>
-		    	<small>Donec id elit non mi porta.</small>
-			</li>
+			      		<small>Correct Answer: {{activity.possibleAnswers[0].word}}</small>
+			    	</div>
+			    	<p class="mb-1">Texto completo: {{activity.fullString}}</p>
+			    	<p class="mb-1">Nota importante: {{activity.comment}}</p>
+			    	<small>Donec id elit non mi porta.</small>
+				</li>
 
-		</ul>
+			</ul>
+		</div>
+		
+	</div>-->
+
+	<div *ngIf="!loading&&result">
+		
+		<div class="row">
+			
+			<div class="col-sm-12 mb-3">
+				<ul class="list-group" *ngFor="let activity of activities; let i = index">
+
+					<li *ngIf="selectedAnswers[i].correct" class="list-group-item list-group-item-success">
+						<h5>Correcto!!!!!</h5>
+					</li>
+				  
+					<li *ngIf="!selectedAnswers[i].correct" class="list-group-item list-group-item-danger">
+						<div class="d-flex w-100 justify-content-between">
+				      		<!--<h5 class="mb-1">Respuesta: {{selectedAnswers[i].word}}</h5>-->
+				      		<small class="mb-1">Respuesta: {{selectedAnswers[i].word}}</small>
+
+				      		<small>Correct Answer: {{activity.possibleAnswers[0].word}}</small>
+				    	</div>
+				    	<p class="mb-1">Texto completo: {{activity.fullString}}</p>
+				    	<p class="mb-1">Nota importante: {{activity.comment}}</p>
+				    	<small>Donec id elit non mi porta.</small>
+					</li>
+
+				</ul>
+			</div>
+		</div>
+
+		<div class="row mt-5">
+			<div class="col links">
+				<button [routerLink]="['/activities']" class="btn btn-primary message" type="button">Volver a actividades</button>
+			</div>
+			<div class="col links">
+				<button [routerLink]="['/profile']" class="btn btn-primary message" type="button">Ir a perfil</button>		
+			</div>
 		</div>
 		
 	</div>

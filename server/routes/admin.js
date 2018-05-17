@@ -184,9 +184,12 @@ app.post('/updateUser', async (req, res) => {
 					
 					"firstName": firstName,
 					"lastName": lastName,
-					"userName": userName
+					"userName": userName,
+					"modified": true
 				} 
 			}, {new: true})
+			console.log('Usuario Actualizado: ')
+			console.log(userUpdated)
 
 			res.status(201).json({
 				message: 'Usuario Actualizado',
@@ -208,9 +211,13 @@ app.post('/updateUser', async (req, res) => {
 			const userUpdated = await User.findOneAndUpdate({"_id": _id}, { $set: { 
 					
 					"firstName": firstName,
-					"lastName": lastName
+					"lastName": lastName,
+					"modified": true
 				} 
 			}, {new: true})
+
+			console.log('Usuario Actualizado: ')
+			console.log(userUpdated)
 
 			res.status(201).json({
 				message: 'Usuario Actualizado',

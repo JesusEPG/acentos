@@ -51,6 +51,7 @@ export class ActivitiesService {
 					if(res.error){
 						this.snackBar.open(`${res.error.error}. ${res.error.message}`, 'x', { duration: 2500, verticalPosition: 'top'});
 						//this.authService.logout()
+						//this.getMistakeActivities()
 						this.router.navigateByUrl('/');
 					} else {
 						this.snackBar.open(`Presentamos problema con el servidor. Intentar más tarde`, 'x', { duration: 2500, verticalPosition: 'top'});
