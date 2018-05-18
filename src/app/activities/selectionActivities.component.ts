@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { SelectionActivity } from './selectionActivity.model';
 import { ActivitiesService } from './activities.service';
 import { WORST, BEST, CORRECT, INCORRECT, review } from './sm2-plus.module';
+import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
 	selector: 'app-selection-component',
@@ -23,7 +25,9 @@ export class SelectionActivitiesComponent implements OnInit {
 	loading = true;
 	result = false;
 
-	constructor(private activitiesService: ActivitiesService){
+	constructor(private activitiesService: ActivitiesService,
+				public snackBar: MatSnackBar,
+				private router: Router){
 
 	}
 
@@ -36,9 +40,21 @@ export class SelectionActivitiesComponent implements OnInit {
 			.getSelectionActivities()
 			.then((activities: SelectionActivity[]) => {
 				this.activities = activities;
-				console.log(this.activities);
-				console.log(this.activities.length);
-				this.loading = false;
+				if(this.activities.length<1){
+
+					this.snackBar.open(`No hay actividades de selección disponbles. Intente más tarde`,
+										'x', 
+										{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']}
+					);
+					this.router.navigateByUrl('/');
+					
+				} else {
+
+					console.log(this.activities);
+					console.log(this.activities.length);
+					this.loading = false;
+					
+				}
 			});
 	}
 

@@ -76,18 +76,6 @@ export class ProfileComponent implements OnInit {
 		this.profileService
 			.getData()
 			.then((data: any[]) => {
-				//this.data = data;
-				//console.log(this.data);
-				/*if(data.length>0){
-					//Si hay ejercicios
-					if(data[0].totalCorrect>0||data[0].totalIncorrect>0){
-						//El usuario ha tenido actividad
-						this.generalChartData.push(data[0].totalCorrect);
-						this.generalChartData.push(data[0].totalIncorrect);
-						this.numberOfActivities = data[0].count;
-					}
-
-				}*/
 
 				console.log(data);
 
@@ -175,7 +163,7 @@ export class ProfileComponent implements OnInit {
 			})
 			.catch((err: any) => {
 				console.log('Entre al error')
-				console.log('Error ' + err);
+				console.log('Error: ' + err);
 				//this.loading = false;
 			});
 	}

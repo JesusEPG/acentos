@@ -61,6 +61,7 @@ export class ProfileService {
 							return this.getData();
 							//this.router.navigateByUrl('/');
 						} else {
+							//Usuario eliminado
 							this.snackBar.open(`${res.error.error}. ${res.error.message}`, 'x', { duration: 2500, verticalPosition: 'top'});
 							//this.authService.logout()
 							//this.getMistakeActivities()

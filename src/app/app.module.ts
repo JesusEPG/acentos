@@ -43,6 +43,7 @@ import { StatisticsComponent } from './statistics/statistics.component';
 import { AuthService } from './auth/auth.service';
 import { AuthGuard } from './auth/auth-guard.service';
 import { SigninGuard } from './auth/signin-guard.service';
+import { AdminSigninGuard } from './auth/adminSignin-guard.service';
 import { AdminGuardService } from './auth/admin-guard.service';
 //import { JwtHelperService } from '@auth0/angular-jwt';
 
@@ -87,7 +88,7 @@ import { Routing } from './app.routing';
     NgPipesModule,
     NgxPaginationModule
   ],
-  providers: [AuthService, AuthGuard, SigninGuard, AdminGuardService],
+  providers: [AuthService, AuthGuard, SigninGuard, AdminGuardService, AdminSigninGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

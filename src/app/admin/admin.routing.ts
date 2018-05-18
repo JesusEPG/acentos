@@ -7,6 +7,7 @@ import { UpdateMistakeActivityComponent } from '../mistakes/updateMistakeActivit
 import { UpdateSelectionActivityComponent } from '../simpleSelection/updateSelectionActivity.component';
 import { AdminSigninComponent } from './adminSignin.component';
 import { AdminGuardService } from '../auth/admin-guard.service';
+import { AdminSigninGuard } from '../auth/adminSignin-guard.service';
 import { UserListComponent } from './userList.component';
 import { ActivityListComponent } from './activityList.component';
 import { UpdateUserComponent } from './updateUser.component';
@@ -17,7 +18,7 @@ import { AdminUserSignupComponent } from './adminUserSignup.component';
 
 export const ADMIN_ROUTES = [
 	{ path: '', component: AdminDashboardComponent, canActivate: [AdminGuardService]},
-	{ path: 'signin', component: AdminSigninComponent  },
+	{ path: 'signin', component: AdminSigninComponent, canActivate: [AdminSigninGuard] },
 	{ path: 'activities', component: AdminActivitiesComponent, canActivate: [AdminGuardService]},
 	{ path: 'activities/newSelectionActivity', component: SimpleSelectionComponent, canActivate: [AdminGuardService]},
 	{ path: 'activities/mistakesActivity', component: MistakesComponent, canActivate: [AdminGuardService] },

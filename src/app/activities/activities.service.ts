@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AuthService } from '../auth/auth.service';
+import { User } from '../auth/user.model';
 //Models
 import { Activity } from './activity.model';
 import { SelectionActivity } from './selectionActivity.model';
@@ -23,7 +24,7 @@ export class ActivitiesService {
 	constructor(private http: Http,
 				private authService: AuthService,
 				public snackBar: MatSnackBar,
-				private router: Router,){
+				private router: Router){
 		this.activitiesUrl = urljoin(environment.apiUrl, 'activities');
 	}
 
@@ -41,13 +42,13 @@ export class ActivitiesService {
 			.toPromise()
 			.then(response => response.json() as SelectionActivity[])		//Exitoso
 			.catch((response) => {
-				console.log('Catch del activities.service');
+				console.log('Catch del mistakesActivities.service');
 				const res = response.json();
 
 				console.log(res);
 				console.log(res.error);
 
-				if(res){
+				/*if(res){
 					if(res.error){
 						this.snackBar.open(`${res.error.error}. ${res.error.message}`, 'x', { duration: 2500, verticalPosition: 'top'});
 						//this.authService.logout()
@@ -57,7 +58,40 @@ export class ActivitiesService {
 						this.snackBar.open(`Presentamos problema con el servidor. Intentar más tarde`, 'x', { duration: 2500, verticalPosition: 'top'});
 						this.router.navigateByUrl('/');
 					}
+				}*/
+
+				if(res){
+					if(res.error){
+						
+						if(res.error.error === 'Usuario modificado'){
+							this.snackBar.open(`${res.error.error}. ${res.error.message}`, 'x', { duration: 2500, verticalPosition: 'top'});
+							//this.authService.logout()
+							localStorage.clear();
+							//this.authService.currentUser = null;
+
+							this.authService.currentUser = new User(res.userName, null, res.firstName, res.lastName, res.userId);
+							//localStorage.setItem('token', JSON.stringify({token: res.token});
+							localStorage.setItem('token', res.token);
+
+							localStorage.setItem('user', JSON.stringify({userId: res.userId,
+																		 firstName: res.firstName,
+																		 lastName: res.lastName,
+																		 userName: res.userName}));
+							return this.getMistakeActivities();
+							//this.router.navigateByUrl('/');
+						} else {
+							this.snackBar.open(`${res.error.error}. ${res.error.message}`, 'x', { duration: 2500, verticalPosition: 'top'});
+							//this.authService.logout()
+							//this.getMistakeActivities()
+							this.router.navigateByUrl('/');
+						}
+
+					} else {
+						this.snackBar.open(`Presentamos problema con el servidor. Intentar más tarde`, 'x', { duration: 2500, verticalPosition: 'top'});
+						this.router.navigateByUrl('/');
+					}
 				}
+
 			});
 			//.catch((error: Response) => Observable.throw(error.json()));							//Error
 	}
@@ -68,7 +102,44 @@ export class ActivitiesService {
 		return this.http.get(url)
 			.toPromise()
 			.then(response => response.json() as SelectionActivity[])		//Exitoso
-			.catch(this.handleError);								//Error
+			//.catch(this.handleError);							//Error
+			.catch((response) => {
+				console.log('Catch del selectionActivities.service');
+				const res = response.json();
+
+				if(res){
+					if(res.error){
+						
+						if(res.error.error === 'Usuario modificado'){
+							this.snackBar.open(`${res.error.error}. ${res.error.message}`, 'x', { duration: 2500, verticalPosition: 'top'});
+							//this.authService.logout()
+							localStorage.clear();
+							//this.authService.currentUser = null;
+
+							this.authService.currentUser = new User(res.userName, null, res.firstName, res.lastName, res.userId);
+							//localStorage.setItem('token', JSON.stringify({token: res.token});
+							localStorage.setItem('token', res.token);
+
+							localStorage.setItem('user', JSON.stringify({userId: res.userId,
+																		 firstName: res.firstName,
+																		 lastName: res.lastName,
+																		 userName: res.userName}));
+							return this.getSelectionActivities();
+							//this.router.navigateByUrl('/');
+						} else {
+							this.snackBar.open(`${res.error.error}. ${res.error.message}`, 'x', { duration: 2500, verticalPosition: 'top'});
+							//this.authService.logout()
+							//this.getMistakeActivities()
+							this.router.navigateByUrl('/');
+						}
+
+					} else {
+						this.snackBar.open(`Presentamos problema con el servidor. Intentar más tarde`, 'x', { duration: 2500, verticalPosition: 'top'});
+						this.router.navigateByUrl('/');
+					}
+				}
+
+			});
 	}
 
 	updateActivities(activities: SelectionActivity[]) {
