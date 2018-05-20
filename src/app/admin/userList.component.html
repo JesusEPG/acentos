@@ -1,5 +1,5 @@
 <div class="container mt-5 container-fixed-footer">
-	<mat-spinner *ngIf="loading" class="spinner" style="margin:0 auto;" color='accent'>
+	<mat-spinner *ngIf="loading" class="spinner" style="margin:0 auto;" color='primary'>
 	</mat-spinner>
 
 	<div *ngIf="!loading&&users.length>0">
@@ -10,7 +10,7 @@
 
 		<div class="mb-2">
 	        
-	        <input type="text" class="form-control" placeholder="filter" [(ngModel)]="filter">
+	        <input type="text" class="form-control" placeholder="Filtrar usuarios por: nombre, apellido, nombre de usuario" [(ngModel)]="filter">
 	        
 	        
 	    </div>

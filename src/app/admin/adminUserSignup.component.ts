@@ -14,7 +14,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class AdminUserSignupComponent implements OnInit {
 
 	signupForm: FormGroup;
-
 	loading:boolean = false;
 
 	constructor(private authService: AuthService,

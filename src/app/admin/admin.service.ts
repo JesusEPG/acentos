@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 //Models
 import { User } from '../auth/user.model';
-import { MistakeActivity } from '../mistakes/mistake.model';
+import { Activity } from './activity.model';
 //import { Activity } from './activity.model';
 //import { SelectionActivity } from './selectionActivity.model';
 //import { Answer } from '../answer/answer.model';
@@ -19,7 +21,9 @@ export class AdminService {
 
 	adminUrl: string;
 
-	constructor(private http: Http){
+	constructor(private http: Http,
+				private router: Router,
+				public snackBar: MatSnackBar){
 		this.adminUrl = urljoin(environment.apiUrl, 'admin');
 	}
 
@@ -27,7 +31,16 @@ export class AdminService {
 		return this.http.get(this.adminUrl+'/users')
 			.toPromise()
 			.then(response => response.json() as User[])		//Exitoso
-			.catch(this.handleError);								//Error
+			.catch((response) => {
+				const res = response.json();
+					if(res){
+						this.snackBar.open(`Presentamos problema con el servidor. Intenta más tarde`,
+											'x',
+											{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']}
+						);
+						this.router.navigateByUrl('/admin');
+					}
+			});								//Error
 	}
 
 	getUser(id): Promise<void | User>{
@@ -39,11 +52,22 @@ export class AdminService {
 			.catch(this.handleError);								//Error
 	}
 
-	getMistakeActivities(): Promise<void | MistakeActivity[]>{
+	getActivities(): Promise<void | Activity[]>{
 		return this.http.get(this.adminUrl+'/activities')
 			.toPromise()
-			.then(response => response.json() as MistakeActivity[])		//Exitoso
-			.catch(this.handleError);								//Error
+			.then(response => response.json() as Activity[])		//Exitoso
+			.catch((response) => {
+				const res = response.json();
+					if(res){
+						/*const errMsg = res.error.message ? res.error.message :
+						res.error.status ? `${res.error.status} - ${res.error.statusText}` : 'Presentamos problemas con el servidor. Intenta más tarde';*/
+						this.snackBar.open(`Presentamos problema con el servidor. Intenta más tarde`,
+											'x',
+											{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']}
+						);
+						this.router.navigateByUrl('/admin');
+					}
+			});								//Error
 	}
 
 	updateUser(user: User) {
@@ -56,13 +80,6 @@ export class AdminService {
 			.map((response: Response) => response.json())
 			.catch((error: Response) => Observable.throw(error.json()));
 	}
-
-	/*deleteActivity(activityId): Promise<void | MistakeActivity>{
-		return this.http.delete(this.adminUrl+'/deleteActivity')
-			.toPromise()
-			.then(response => response.json() as MistakeActivity)
-			.catch(this.handleError)
-	}*/
 
 	deleteActivity(activityId) {
 		//Obtener adminToken y asignarlo al body
@@ -165,9 +182,10 @@ export class AdminService {
 	}
 
 	handleError(error: any) {
+		console.log('Entré al catch de admin service');
+		console.log(error);
 		const errMsg = error.message ? error.message :
-		error.status ? `${error.status} - ${error.statusText}` : 'Server error';
-		console.log('Entre al handler');
-		console.log(errMsg);
+		error.status ? `${error.status} - ${error.statusText}` : 'Presentamos problemas con el servidor. Intenta más tarde';
+		
 	}
 }

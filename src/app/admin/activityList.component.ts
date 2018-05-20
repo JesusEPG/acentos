@@ -22,6 +22,7 @@ export class ActivityListComponent implements OnInit {
 	activities: MistakeActivity[];
 	modalRef: BsModalRef;
   	message: string;
+  	public filter: string = '';
 
 	constructor(private adminService: AdminService,
 				private router: Router,
@@ -31,7 +32,7 @@ export class ActivityListComponent implements OnInit {
 	ngOnInit(){
 
 		this.adminService
-			.getMistakeActivities()
+			.getActivities()
 			.then((activities: MistakeActivity[]) => {
 				this.activities = activities;
 				this.loading = false;

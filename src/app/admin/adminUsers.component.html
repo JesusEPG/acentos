@@ -1,25 +1,29 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item active" aria-current="page">Control de usuarios</li>
+    </ol>
+</nav>
+
 <div class="container mt-5">
 
   <div class="row">
       
       <div class="col-md-6 mb-3">
-        <div class="card text-white bg-dark mb-3">
-          <div class="card-header">Agregar usuario estudiante</div>
+        <div class="card text-dark bg-light mb-3">
             <div class="card-body">
-              <h5 class="card-title">Dark card title</h5>
-              <p class="card-text">Crea un usuario de tipo estudiante para poder poder probar el sitio desde la perspectiva del estudiante</p>
-              <a [routerLink]="['signup']" class="btn btn-primary">Pruebalo</a>
-          </div>
+              <h5 class="card-title"><strong>Agregar usuario estudiante</strong></h5>
+              <p class="card-text">Agrega al sistema nuevos usuarios de tipo estudiante</p>
+              <button [routerLink]="['signup']" style="background-color: #00bfff; border: 0;" class="btn btn-primary btn-block">Pruebalo</button>
+            </div>
         </div>
       </div>
       <div class="col-md-6 mb-3">
-        <div class="card text-white bg-dark mb-3">
-          <div class="card-header">Modificar y eliminar usuarios</div>
+        <div class="card text-dark bg-light mb-3">
             <div class="card-body">
-              <h5 class="card-title">Dark card title</h5>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-              <a [routerLink]="['userList']" class="btn btn-primary">Pruebalo</a>
-          </div>
+              <h5 class="card-title"><strong>Modificar y eliminar usuarios</strong></h5>
+              <p class="card-text">Edita o elimina usuarios previamente guardados en el sistema</p>
+              <button [routerLink]="['userList']" style="background-color: #00bfff; border: 0;" class="btn btn-primary btn-block">Pruebalo</button>
+            </div>
         </div>
       </div>
   </div>

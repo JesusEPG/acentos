@@ -12,6 +12,7 @@ import { User } from './user.model';
 export class SignupComponent implements OnInit {
 
 	signupForm: FormGroup;
+	loading:boolean = false;
 
 	constructor(private authService: AuthService){}
 
@@ -30,6 +31,7 @@ export class SignupComponent implements OnInit {
 
 	onSubmit() {
 		if(this.signupForm.valid){
+			this.loading = true;
 			const {firstName, lastName, userName, password} = this.signupForm.value;
 			const user = new User(userName, password, firstName, lastName);
 			console.log(`Nombre Completo: ${firstName} ${lastName}, Username: ${userName}, Contraseña: ${password}`);

@@ -16,7 +16,7 @@ app.get('/users', async (req, res) => {
 	User.find({}, function(err, users){
 		if(err){
 			console.log(err)
-			handleError(err, res)
+			return handleError(err, res)
 		}
 		res.status(200).json(users)
 	})
@@ -30,7 +30,7 @@ app.get('/user/:id', async (req, res) => {
 	User.findOne({ _id: id }, function(err, user){
 		if(err){
 			console.log(err)
-			handleError(err, res)
+			return handleError(err, res)
 		}
 
 		console.log(user)
@@ -49,6 +49,8 @@ app.get('/user/:id', async (req, res) => {
 // 	GET	/api/admin/activities
 app.get('/activities', async (req, res) => {
 
+	//res.status(200).json([])
+
 	try {
 
 		const result = await activities.findAllActivities()
@@ -57,7 +59,7 @@ app.get('/activities', async (req, res) => {
 	} catch(err) {
 		// statements
 		console.log(err);
-		handleError(err, res)
+		return handleError(err, res)
 	}
 })
 

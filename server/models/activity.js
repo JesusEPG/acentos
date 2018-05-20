@@ -5,7 +5,7 @@ import mongoose, { Schema } from 'mongoose'
 const ActivitySchema = Schema({
 	difficulty: { type: Number, required: true },
 	type: {type: String, required: true},
-	comment: { type: String, required: true },
+	comment: { type: String, required: true, default: 'Seguir Repasando' },
 	fullString: { type: String, required: true },
 	splittedString: [{}],
 	//correctAnswer: {type: Object, required: true},

@@ -17,6 +17,7 @@ export class SigninComponent implements OnInit {
 	signinForm: FormGroup;
 	alert?: any;
 	returnUrl: string;
+	loading:boolean = false;
 
 	constructor(
 		private authService: AuthService,
@@ -39,7 +40,7 @@ export class SigninComponent implements OnInit {
 
 	onSubmit(){
 		if(this.signinForm.valid){
-
+			this.loading = true;
 			const { userName, password} = this.signinForm.value;
 			console.log(`Usuario: ${userName}, Contraseña: ${password}`);
 			this.signinForm.reset();

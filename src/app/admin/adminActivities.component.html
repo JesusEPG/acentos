@@ -1,33 +1,35 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item active" aria-current="page">Control de actividades</li>
+    </ol>
+</nav>
 <div class="container mt-5">
 
   <div class="row">
       <div class="col-md-4 mb-3">
-        <div class="card text-white bg-dark mb-3">
-          <div class="card-header">Nueva actividad de identificar error</div>
+        <div class="card text-dark bg-ligth mb-3">
             <div class="card-body">
-              <h5 class="card-title">Dark card title</h5>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-              <a [routerLink]="['mistakesActivity']" class="btn btn-primary">Pruebalo</a>
+              <h5 class="card-title"><strong>Actividad de error</strong></h5>
+              <p class="card-text">Agrega nuevas actividades de errores para uso de los estudiantes</p>
+              <button [routerLink]="['mistakesActivity']" style="background-color: #00bfff; border: 0;" class="btn btn-primary btn-block">Pruebalo</button>
           </div>
         </div>
       </div>
       <div class="col-md-4 mb-3">
-        <div class="card text-white bg-dark mb-3">
-          <div class="card-header">Nueva actividad de selección simple</div>
+        <div class="card text-dark bg-ligth mb-3">
             <div class="card-body">
-              <h5 class="card-title">Dark card title</h5>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-              <a [routerLink]="['newSelectionActivity']" class="btn btn-primary">Pruebalo</a>
+              <h5 class="card-title"><strong>Actividad de completación</strong></h5>
+              <p class="card-text">Agrega nuevas actividades de completación para uso de los estudiantes</p>
+              <button [routerLink]="['newSelectionActivity']" style="background-color: #00bfff; border: 0;" class="btn btn-primary btn-block">Pruebalo</button>
           </div>
         </div>
       </div>
       <div class="col-md-4 mb-3">
-        <div class="card text-white bg-dark mb-3">
-          <div class="card-header">Modificar o eliminar actividades</div>
+        <div class="card text-dark bg-ligth mb-3">
             <div class="card-body">
-              <h5 class="card-title">Dark card title</h5>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-              <a [routerLink]="['activityList']" class="btn btn-primary">Pruebalo</a>
+              <h5 class="card-title"><strong>Modificar o eliminar actividades</strong></h5>
+              <p class="card-text">Edita o elimina actividades previamente guardadas en el sistema</p>
+              <button [routerLink]="['activityList']" style="background-color: #00bfff; border: 0;" class="btn btn-primary btn-block">Pruebalo</button>
           </div>
         </div>
       </div>

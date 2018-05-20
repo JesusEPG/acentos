@@ -5,6 +5,7 @@ import { MistakeService } from './mistake.service';
 import { AuthService } from '../auth/auth.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { noWhitespaceValidator } from '../utils/noWhitespaces.validator';
 
 @Component({
 	selector: 'app-mistakes-component',
@@ -18,6 +19,8 @@ export class MistakesComponent implements OnInit {
 	splittedString: any[];
 	correctAnswer: any;
 	possibleAnswers: any[]=[];
+	activityWords: any[]=[];
+	loading:boolean =  false;
 
 	constructor(private mistakeService: MistakeService,
 				private router: Router,
@@ -26,7 +29,7 @@ export class MistakesComponent implements OnInit {
 
 	ngOnInit(){
 		this.activityForm = new FormGroup({
-			comment: new FormControl(null, [Validators.required, Validators.maxLength(15)]),
+			comment: new FormControl(null, [Validators.required, Validators.maxLength(15), noWhitespaceValidator]),
 			difficulty: new FormControl(null, Validators.required),
 			possibleAnswer: new FormControl(null), //Validar que solo acepte
 			fullString: new FormControl(null, [Validators.required, Validators.maxLength(50)])
@@ -47,43 +50,59 @@ export class MistakesComponent implements OnInit {
 		
 		this.correctAnswer=null;
 		this.possibleAnswers=[];
+		this.activityWords=[];
 
 
 		//Obtengo el texto del formulario
 		let str = this.activityForm.value.fullString;
-		str.trim();
+		if(str){
 
-		//Se debe usar una expresión regular para que solo forme las palabras
-		//Y guarde los signos de puntuación
-		//Se separa en espacios
-		let tokens = str.split(/(;\s|:\s|,|,\s|\?\s|\?|\s)/);
-		console.log(tokens);
+			str.trim();
 
-		//Validar que si 'token' es un signo de puntuación, se debe colocar 'cliackeable:false'
-		//Y en el cliente solo se muestran los que tengan 'clickeable:true'
-		this.splittedString = tokens.map(function(token, index) {
+			//Se debe usar una expresión regular para que solo forme las palabras
+			//Y guarde los signos de puntuación
+			//Se separa en espacios
+			//let tokens = str.split(/(;|;\s|:|:\s|,|,\s|\?|\?\s|\¿|\¿\s|\s|.|.\s)/);
+			let tokens = str.split(/(;|;\s|:|:\s|,|,\s|\?|\?\s|\¿|\¿\s|\s\¿|\s|\.|\.\s|-|-\s|\s-|\!|\!\s|\¡|\¡\s|\s\¡)/);
+			console.log(tokens);
 
-			//Verificar si es un caracter especial, no es clickeable.
-			if(/^[a-zA-ZáÁéÉíÍóÓúÚñÑ]+$/.test(token)){
-				
-				return {
-					//id: window.performance && window.performance.now && window.performance.timing && window.performance.timing.navigationStart ? window.performance.now() + window.performance.timing.navigationStart : Date.now(),				
-				   	id: index,
-				   	word: token,
-				   	hidden: false,
-				   	clickeable: true,
-				   	selected: false
+			//Validar que si 'token' es un signo de puntuación, se debe colocar 'cliackeable:false'
+			//Y en el cliente solo se muestran los que tengan 'clickeable:true'
+			this.splittedString = tokens.map(function(token, index) {
+
+				//Verificar si es un caracter especial, no es clickeable.
+				if(/^[a-zA-ZáÁéÉíÍóÓúÚñÑ]+$/.test(token)){
+					this.activityWords.push({
+						//id: window.performance && window.performance.now && window.performance.timing && window.performance.timing.navigationStart ? window.performance.now() + window.performance.timing.navigationStart : Date.now(),				
+					   	id: index,
+					   	word: token,
+					   	hidden: false,
+					   	clickeable: true,
+					   	selected: false
+					});
+
+					return {
+						//id: window.performance && window.performance.now && window.performance.timing && window.performance.timing.navigationStart ? window.performance.now() + window.performance.timing.navigationStart : Date.now(),				
+					   	id: index,
+					   	word: token,
+					   	hidden: false,
+					   	clickeable: true,
+					   	selected: false
+					}
 				}
-			}
-			return {
-				//id: window.performance && window.performance.now && window.performance.timing && window.performance.timing.navigationStart ? window.performance.now() + window.performance.timing.navigationStart : Date.now(),
-				id: index,
-				word: token,
-			   	hidden: false,
-			   	clickeable: false,
-			   	selected: false
-			}   
-		});
+				return {
+					//id: window.performance && window.performance.now && window.performance.timing && window.performance.timing.navigationStart ? window.performance.now() + window.performance.timing.navigationStart : Date.now(),
+					id: index,
+					word: token,
+				   	hidden: false,
+				   	clickeable: false,
+				   	selected: false
+				}   
+			}, this);
+
+			console.log(this.activityWords)
+		}
+		
 	}
 
 	hideAnswer(word){
@@ -182,9 +201,11 @@ export class MistakesComponent implements OnInit {
 
 	onSubmit(){
 		if(this.activityForm.valid){
+			this.loading=true;
 			const {difficulty, comment, fullString} = this.activityForm.value;
+			console.log(comment);
 			const difficultyNumber = this.round(parseInt(difficulty, 10) * 0.1, 1);
-			console.log(difficulty)
+			//console.log(difficulty)
 			const activity = new MistakeActivity(
 				difficultyNumber,
 				'Mistake',
@@ -201,7 +222,7 @@ export class MistakesComponent implements OnInit {
 					this.authService.handleError
 				);
 			*/
-			this.mistakeService.addMistakeActivity(activity)
+			/*this.mistakeService.addMistakeActivity(activity)
 				.subscribe(
 					//( {_id} ) => this.router.navigate(['/questions', _id]),
 					//this.router.navigate(['/']),
@@ -213,7 +234,7 @@ export class MistakesComponent implements OnInit {
 						);
 					},
 					this.authService.handleError
-				);//recibe dos funciones como parametros, la función de exito y la función de error
+				);//recibe dos funciones como parametros, la función de exito y la función de error*/
 		} else {
 			//Not valid
 			this.snackBar.open(`Verificar los datos e intentar nuevamente!`,

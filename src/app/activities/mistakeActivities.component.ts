@@ -17,10 +17,6 @@ export class MistakeActivitiesComponent implements OnInit {
 
 	activities: SelectionActivity[];
 	updatedActivities: SelectionActivity[];
-	//Verificar si selectedAnswers será object o String
-	//En el html, si selectedAnswers[counter] está vació
-	//Se muestra la oración con una ralla en donde toque la respuesta correcta
-	//De no estar vacío se muestra lo que se haya seleccionado
 	selectedAnswers: any[] =[];
 	counter:number = 0;
 	loading = true;
