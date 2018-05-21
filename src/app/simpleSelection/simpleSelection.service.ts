@@ -70,7 +70,29 @@ export class SimpleSelectionService {
 		//  apiUrl: 'http://localhost:3000/api/simpleSelection?token=${token}'
 		return this.http.post(url, body, { headers })
 			.map((response: Response) => response.json())
-			.catch((error: Response) => Observable.throw(error.json()));
+			//.catch((error: Response) => Observable.throw(error.json()));
+			.catch((error: Response) => {
+				console.log(error);
+				console.log(error.json());
+
+				const res = error.json();
+				
+				if(res){
+					console.log('Entré al if del catch service');
+					console.log(res);
+					if(res.message){
+						
+						//Error arrojado desde el servidor
+						return Observable.throw(res.message);
+
+					} else {
+							
+						//Error por servidor caído
+						return Observable.throw('Presentamos problema con el servidor. Intenta más tarde');
+					}
+				}
+
+			});
 	}
 
 	/*addAnswer(answer: Answer) {

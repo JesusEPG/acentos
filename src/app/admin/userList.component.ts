@@ -35,9 +35,24 @@ export class UserListComponent implements OnInit {
 			.getUsers()
 			.then((users: User[]) => {
 				this.users = users;
-				//console.log(this.users);
-				//console.log(this.users.length);
 				this.loading = false;
+			}, (error) => { 
+				//Error en el servidor
+				console.log('Función de error en el subscribe');
+				this.snackBar.open(error.message,
+									'x',
+									{ duration: 4500, verticalPosition: 'top', panelClass: ['snackbar-color']}
+				);
+				this.router.navigateByUrl('/admin');
+
+			})
+			.catch((error) => {
+				//Error en el then
+				this.snackBar.open(`Problemas al obtener las actividades. Intenta más tarde`,
+									'x',
+									{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']}
+				);
+				this.router.navigateByUrl('/admin');
 			});
 	}
 
@@ -46,22 +61,33 @@ export class UserListComponent implements OnInit {
 	}
 	 
 	confirm(userId): void {
+		this.loading = true;
 	    this.message = 'Confirmed!';
 	    this.modalRef.hide();
 	    this.adminService.deleteUser(userId)
 			.subscribe(
-				//( {_id} ) => this.router.navigate(['/questions', _id]),
-				//this.router.navigate(['/']),
-				( {_id} ) => {
-					this.snackBar.open('Se ha eliminado el usuario exitosamente', 'x', { duration: 20000,
-					panelClass: 'container-fixed-footer', verticalPosition: 'top' });
 					
-					this.router.navigate(['/admin']);
-						console.log('Exitoso')
-						console.log(_id);
-				},
-				this.adminService.handleError
-			);
+					( {message, id} ) => {
+						this.snackBar.open(	message, 
+											'x',
+											{duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']}
+						);
+						this.loading = false;
+						this.router.navigate(['/admin']);
+					},
+					(error) => {
+						console.log('En el component');
+						console.log(error);
+
+						//Error en el servidor
+						console.log('Función de error en el subscribe');
+						this.snackBar.open(error,
+											'x',
+											{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']}
+						);
+						this.router.navigateByUrl('/admin');
+					}
+				);
 	}
 	 
 	decline(): void {

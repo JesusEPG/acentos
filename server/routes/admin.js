@@ -283,16 +283,23 @@ app.post('/deleteUser', async (req, res) => {
 	//const deletedActivity = await Activity.findOneAndRemove({_id: toDelete})
 
 	User.findOneAndRemove({_id: toDelete}, async function(err, user){
+	//User.findOneAndRemove({_id: 'juan'}, async function(err, user){
 		if(err) handleError(err, res)
 
-		try {
-			// statements
-			await user.remove()
-	 		res.status(201).json({message: 'Usuario eliminado exitosamente', _id: '123'})
-		} catch(err) {
-			// statements
-			console.log(err)
-			handleError(err, res)
+		else if(user) {
+			try {
+				// statements
+				const deletedUser = await user.remove()
+		 		res.status(201).json({message: 'Se ha eliminado el usuario exitosamente', id: deletedUser._id })
+			} catch(err) {
+				// statements
+				console.log(err)
+				return handleError(err, res)
+			}
+		} else {
+			res.status(500).json({
+				message: 'Ha ocurrido un error al buscar la actividad. Contacte al profesor'
+			})
 		}
 	})
 

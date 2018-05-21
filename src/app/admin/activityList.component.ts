@@ -36,16 +36,6 @@ export class ActivityListComponent implements OnInit {
 			.then((activities: MistakeActivity[]) => {
 				//Exitoso
 				this.activities = activities;
-				/*if(this.activities.length===0){
-					
-					//No se encontró resultado
-					this.snackBar.open(`Aún no hay actividades disponible`,
-											'x',
-											{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']}
-					);
-					this.router.navigateByUrl('/admin');
-					
-				} */
 				this.loading = false;
 			}, (error) => { 
 				//Error en el servidor
@@ -90,6 +80,7 @@ export class ActivityListComponent implements OnInit {
 	 
 	  confirm(activityId): void {
 	    this.message = 'Confirmed!';
+	    this.loading = true;
 	    this.modalRef.hide();
 	    this.adminService.deleteActivity(activityId)
 				.subscribe(
@@ -100,8 +91,8 @@ export class ActivityListComponent implements OnInit {
 											'x',
 											{duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']}
 						);
-						
-						this.router.navigate(['/admin']);
+						this.loading = false;
+						//this.router.navigate(['/admin']);
 					},
 					//this.adminService.handleError
 					(error) => {

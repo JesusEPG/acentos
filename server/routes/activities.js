@@ -517,49 +517,65 @@ app.post('/updateActivity', async (req, res) => {
 		const updatedActivity = await activities.updateActivity(activity)
 		console.log('Actualizado: ')
 		console.log(updatedActivity)
-		try {
-			//Hacer que updateUsers sea una promesa para poder validar errores
-			const users = await User.find({})
+		if(updatedActivity){
 			try {
-				// statements
+				//Hacer que updateUsers sea una promesa para poder validar errores
+				const users = await User.find({})
+				console.log('Users: ')
+				console.log(users)
+				if(users.length>0){
+					try {
+						// statements
 
-				users.forEach(function(user, index) {
-					user.activities.forEach(async function(activity, index) {
+						users.forEach(function(user, index) {
+							user.activities.forEach(async function(activity, index) {
 
-						if(activity.activity.equals(updatedActivity._id)){
-							//esta es la actividad en activities de user
-							//modifico
-							if (activity.taken){
-								console.log('Fue tomado en sesión')
-								const update = await activities.updateUsersTakenActivity(user._id, updatedActivity)
-								console.log(update)
-							} else {
+								if(activity.activity.equals(updatedActivity._id)){
+									//esta es la actividad en activities de user
+									//modifico
+									if (activity.taken){
+										console.log('Fue tomado en sesión')
+										const update = await activities.updateUsersTakenActivity(user._id, updatedActivity)
+										console.log(update)
+									} else {
 
-								console.log('Es igual!!!')
-								const update = await activities.updateUsersActivity(user._id, updatedActivity)
-								console.log(update)
-							}
-						}
-					});
-					//User.save(user)
-				});
+										console.log('Es igual!!!')
+										const update = await activities.updateUsersActivity(user._id, updatedActivity)
+										console.log(update)
+									}
+								}
+							});
+							//User.save(user)
+						});
 
 
-				//const test = await activities.updateUsersActivity(updated)
-				res.status(201).json({message: 'Actualización exitosa'})
+						//const test = await activities.updateUsersActivity(updated)
+						res.status(201).json({message: 'Se ha actualizado la actividad exitosamente'})
 
-			} catch(err) {
-				// statements
+					} catch(err) {
+						// statements
+						console.log(err)
+						return handleError(err, res)
+					}
+					
+				} else{
+					res.status(500).json({
+						message: 'Ha ocurrido un error al actualizar la actividad. Contacte al profesor'
+					})
+				}
+			} catch (err) {
 				console.log(err)
-				handleError(err, res)
+				return handleError(err, res)
 			}
-		} catch (err) {
-			console.log(err)
-			handleError(err, res)
+			
+		} else {
+			res.status(500).json({
+				message: 'Ha ocurrido un error al actualizar la actividad. Contacte al profesor'
+			})
 		}
 	} catch (err){
 		console.log(err)
-		handleError(err, res)
+		return handleError(err, res)
 	}
 })
 

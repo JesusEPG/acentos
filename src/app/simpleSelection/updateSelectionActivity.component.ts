@@ -219,6 +219,7 @@ export class UpdateSelectionActivityComponent implements OnInit {
 
 	onSubmit(){
 		if(this.activityForm.valid){
+			this.loading = true;
 			const {difficulty, comment, fullString} = this.activityForm.value;
 			const difficultyNumber = this.round(parseInt(difficulty, 10) * 0.1, 1);
 			console.log(difficulty)
@@ -244,15 +245,27 @@ export class UpdateSelectionActivityComponent implements OnInit {
 				.subscribe(
 					//( {_id} ) => this.router.navigate(['/questions', _id]),
 					//this.router.navigate(['/']),
-					( {_id} ) =>{ 
-						this.snackBar.open(`Se ha actualizado la actividad exitosamente`,
+					( {message} ) =>{ 
+						this.snackBar.open(message,
 											'x',
 											{ duration: 2500, verticalPosition: 'top'}
 						);
 
 						this.router.navigate(['/admin'])
 					},
-					this.authService.handleError
+					(error) => {
+						console.log('En el component');
+						console.log(error);
+
+						//Error en el servidor
+						console.log('Función de error en el subscribe');
+						this.snackBar.open(error,
+											'x',
+											{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']}
+						);
+						//this.loading = false
+						this.router.navigateByUrl('/admin');
+					}
 				);//recibe dos funciones como parametros, la función de exito y la función de error
 		} else {
 			//Not valid

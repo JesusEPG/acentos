@@ -92,8 +92,23 @@ export class AuthService {
 				return json;
 			})
 			.catch((error: Response) => {
-				console.log(error);
-				return Observable.throw(error.json());
+				const res = error.json();
+				
+				if(res){
+					console.log('Entré al if del catch service');
+					console.log(res);
+					if(res.message){
+						
+						//Error arrojado desde el servidor
+						return Observable.throw(res.message);
+
+					} else {
+							
+						//Error por servidor caído
+						return Observable.throw('Presentamos problema con el servidor. Intenta más tarde');
+					}
+				}
+
 			});
 	}
 

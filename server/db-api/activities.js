@@ -143,6 +143,7 @@ export default {
 	updateActivity: (actv) => {
 
 		return Activity.findOneAndUpdate({"_id": actv._id}, { $set: { 
+		//return Activity.findOneAndUpdate({"comment": 'juan'}, { $set: { 
 					
 				"difficulty": actv.difficulty,
 				"correctAnswer": actv.correctAnswer,

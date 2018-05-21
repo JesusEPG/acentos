@@ -59,13 +59,13 @@ app.post('/adminSignin', async (req, res, next) => {
 	//El usuario no existe
 	if(!admin){
 		debug(`Admin with email ${email} not found`)
-		return handleLoginFailed(res, 'Email not found')
+		return handleLoginFailed(res, 'No se encontró el email')
 	}
 
 	//La contraseña ingresada es invalida
 	if(!comparePasswords(password, admin.password)){
 		debug(`Password ${password} does not match`)
-		return handleLoginFailed(res, 'Password doesn\'t match')
+		return handleLoginFailed(res, 'La contraseña no coincide')
 	}
 
 	//Las credenciales son correctas
@@ -148,7 +148,7 @@ app.post('/signup', async (req, res) => {
 
 function handleLoginFailed(res, msg){
 	return res.status(401).json({
-		message:'Login failed',
+		message:`Inicio de sesión fallido. ${msg}`,
 		error: msg
 	})
 }

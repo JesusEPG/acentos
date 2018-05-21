@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AuthService } from '../auth/auth.service';
 import { AdminUser } from '../auth/adminUser.model';
 import { Router, ActivatedRoute } from '@angular/router';
-//import { AlertComponent } from 'ngx-bootstrap/alert/alert.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -22,7 +22,8 @@ export class AdminSigninComponent implements OnInit {
 	constructor(
 		private authService: AuthService,
 		private route: ActivatedRoute,
-        private router: Router){}
+        private router: Router,
+        private snackBar: MatSnackBar){}
 
 	ngOnInit() {
 		this.signinForm = new FormGroup({
@@ -49,13 +50,32 @@ export class AdminSigninComponent implements OnInit {
 				.subscribe(
 					//this.router.navigateByUrl(this.returnUrl),
 					//this.authService.login,
-					data => {
+					() => {
 	                    // login successful so redirect to return url
 	                    //this.authService.login;
 	                    this.router.navigateByUrl(this.returnUrl);
 	                },
-					this.authService.handleError
+					//this.authService.handleError
+					(error) => {
+						//Error en el servidor
+						console.log('Función de error en el then');
+						this.snackBar.open(error,
+											'x',
+											{ duration: 4500, verticalPosition: 'top', panelClass: ['snackbar-color']}
+						);
+						//this.router.navigateByUrl('/admin');
+						this.authService.adminLogout();
+						this.loading = false;
+					}
 				);	
+		} else {
+			//Not valid
+			this.snackBar.open(`Verifica los datos e intenta nuevamente!`,
+								'x',
+								{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']}
+			);
 		}
+
+
 	}
 }
