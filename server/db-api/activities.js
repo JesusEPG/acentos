@@ -128,6 +128,8 @@ export default {
 	findActivityById: (_id) => {
 		debug(`Finding activity with id: ${_id}`)
 		return Activity.findOne({ _id })
+		//return Activity.findOne({ _id: 'Juan' })
+		//return Activity.findOne({ userName: 'Juan' })
 	},
 
 	createActivity: (actv) => {

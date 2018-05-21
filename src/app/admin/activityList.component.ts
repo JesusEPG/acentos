@@ -34,8 +34,36 @@ export class ActivityListComponent implements OnInit {
 		this.adminService
 			.getActivities()
 			.then((activities: MistakeActivity[]) => {
+				//Exitoso
 				this.activities = activities;
+				/*if(this.activities.length===0){
+					
+					//No se encontró resultado
+					this.snackBar.open(`Aún no hay actividades disponible`,
+											'x',
+											{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']}
+					);
+					this.router.navigateByUrl('/admin');
+					
+				} */
 				this.loading = false;
+			}, (error) => { 
+				//Error en el servidor
+				console.log('Función de error en el then');
+				this.snackBar.open(error.message,
+									'x',
+									{ duration: 4500, verticalPosition: 'top', panelClass: ['snackbar-color']}
+				);
+				this.router.navigateByUrl('/admin');
+
+			})
+			.catch((error) => {
+				//Error en el then
+				this.snackBar.open(`Problemas al obtener las actividades. Intenta más tarde`,
+									'x',
+									{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']}
+				);
+				this.router.navigateByUrl('/admin');
 			});
 	}
 
@@ -67,15 +95,27 @@ export class ActivityListComponent implements OnInit {
 				.subscribe(
 					//( {_id} ) => this.router.navigate(['/questions', _id]),
 					//this.router.navigate(['/']),
-					( {_id} ) => {
-						this.snackBar.open('Se ha eliminado la actividad exitosamente', 'x', { duration: 20000,
-						panelClass: 'container-fixed-footer', verticalPosition: 'top' });
+					( {message, id} ) => {
+						this.snackBar.open(	message, 
+											'x',
+											{duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']}
+						);
 						
 						this.router.navigate(['/admin']);
-						console.log('Exitoso')
-						console.log(_id);
 					},
-					this.adminService.handleError
+					//this.adminService.handleError
+					(error) => {
+						console.log('En el component');
+						console.log(error);
+
+						//Error en el servidor
+						console.log('Función de error en el then');
+						this.snackBar.open(error,
+											'x',
+											{ duration: 4500, verticalPosition: 'top', panelClass: ['snackbar-color']}
+						);
+						this.router.navigateByUrl('/admin');
+					}
 				);
 	  }
 	 

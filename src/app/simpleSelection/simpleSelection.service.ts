@@ -31,7 +31,24 @@ export class SimpleSelectionService {
 		return this.http.get(url)
 			.toPromise()
 			.then(response => response.json() as SimpleSelectionActivity)
-			.catch(this.handleError);
+			.catch((response) => {
+				console.log('Catch del selection service');
+				const res = response.json();
+					if(res){
+						console.log('Entré al if del catch service');
+						console.log(res);
+
+						if(res.message){
+							
+							//Error arrojado desde el servidor
+							throw new Error(res.message);
+						} else {
+							
+							//Error por servidor caído
+							throw new Error('Presentamos problema con el servidor. Intenta más tarde');
+						}
+					}
+			});
 	}
 
 	addSimpleSelectionActivity(activity: SimpleSelectionActivity) {

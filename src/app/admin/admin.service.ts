@@ -57,17 +57,23 @@ export class AdminService {
 			.toPromise()
 			.then(response => response.json() as Activity[])		//Exitoso
 			.catch((response) => {
+				console.log('Catch del mistake service');
 				const res = response.json();
-					if(res){
-						/*const errMsg = res.error.message ? res.error.message :
-						res.error.status ? `${res.error.status} - ${res.error.statusText}` : 'Presentamos problemas con el servidor. Intenta más tarde';*/
-						this.snackBar.open(`Presentamos problema con el servidor. Intenta más tarde`,
-											'x',
-											{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']}
-						);
-						this.router.navigateByUrl('/admin');
+				
+				if(res){
+					console.log('Entré al if del catch service');
+					console.log(res);
+					if(res.message){
+						
+						//Error arrojado desde el servidor
+						throw new Error(res.message);
+					} else {
+							
+						//Error por servidor caído
+						throw new Error('Presentamos problema con el servidor. Intenta más tarde');
 					}
-			});								//Error
+				}
+			});	
 	}
 
 	updateUser(user: User) {
@@ -91,7 +97,50 @@ export class AdminService {
 
 		return this.http.post(url, body, { headers })
 			.map((response: Response) => response.json())
-			.catch((error: Response) => Observable.throw(error.json()));
+			.catch((error: Response) => {
+				console.log(error);
+				console.log(error.json());
+
+				const res = error.json();
+				
+				if(res){
+					console.log('Entré al if del catch service');
+					console.log(res);
+					if(res.message){
+						
+						//Error arrojado desde el servidor
+						//throw new Error(res.message);
+						return Observable.throw(res.message);
+
+					} else {
+							
+						//Error por servidor caído
+						//throw new Error('Presentamos problema con el servidor. Intenta más tarde');
+						return Observable.throw('Presentamos problema con el servidor. Intenta más tarde');
+					}
+				}
+
+			}
+			);
+			/*.catch((response) => {
+				console.log('Catch del admin service');
+				const res = response.json();
+				
+				if(res){
+					console.log('Entré al if del catch service');
+					console.log(res);
+					if(res.message){
+						
+						//Error arrojado desde el servidor
+						throw new Error(res.message);
+					} else {
+							
+						//Error por servidor caído
+						throw new Error('Presentamos problema con el servidor. Intenta más tarde');
+					}
+				}
+			});*/
+
 	}
 
 	deleteUser(userId) {

@@ -52,9 +52,9 @@ app.get('/activities', async (req, res) => {
 	//res.status(200).json([])
 
 	try {
-
 		const result = await activities.findAllActivities()
 		res.status(200).json(result)
+		//res.status(200).json([])
 		
 	} catch(err) {
 		// statements
@@ -246,17 +246,27 @@ app.post('/deleteActivity', async (req, res) => {
 	//const deletedActivity = await Activity.findOneAndRemove({_id: toDelete})
 
 	Activity.findOneAndRemove({_id: toDelete}, async function(err, activity){
-		if(err) handleError(err, res)
+	//Activity.findOneAndRemove({_id: '15'}, async function(err, activity){
+		if(err) return handleError(err, res)
 
-		try {
-			// statements
-			await activity.remove()
-	 		console.log('Luego del hook')
-	 		res.status(201).json({message: 'U eliminada exitosamente', _id: '123'})
-		} catch(err) {
-			// statements
-			console.log(err)
-			handleError(err, res)
+
+		else if(activity){
+			console.log(activity)
+			try {
+				// statements
+				const deletedActivity = await activity.remove()
+		 		console.log('Luego del hook')
+		 		res.status(201).json({message: 'Se ha eliminado la actividad exitosamente', id: deletedActivity._id })
+			} catch(err) {
+				// statements
+				console.log('catch del delete')
+				console.log(err)
+				return handleError(err, res)
+			}
+		} else {
+			res.status(500).json({
+				message: 'Ha ocurrido un error al buscar la actividad. Contacte al profesor'
+			})
 		}
 	})
 

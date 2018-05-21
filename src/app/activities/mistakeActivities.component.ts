@@ -37,7 +37,7 @@ export class MistakeActivitiesComponent implements OnInit {
 				this.activities = activities;
 				if(this.activities.length<1){
 
-					this.snackBar.open(`No hay actividades de selección disponbles. Intente más tarde`,
+					this.snackBar.open(`No hay actividades de selección disponibles. Intente más tarde`,
 										'x', 
 										{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']}
 					);

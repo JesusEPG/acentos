@@ -45,20 +45,46 @@ export class UpdateSelectionActivityComponent implements OnInit {
 			this.selectionService
 			.getSelectionActivity(params['_id'])
 			.then((activity: SimpleSelectionActivity) => {
+				//Exitoso
 				this.activity = activity;
-				console.log(this.activity);
-				console.log((this.activity.difficulty/0.1).toString());
-				//console.log(this.activities.length);
-				this.activityForm.patchValue({
-				  difficulty: (Math.round(this.activity.difficulty/0.1)).toString(), 
-				  comment: this.activity.comment,
-				  fullString: this.activity.fullString
-				});
+				if(this.activity) {
+					//Resultado encontrado
+					this.activityForm.patchValue({
+					  difficulty: (Math.round(this.activity.difficulty/0.1)).toString(), 
+					  comment: this.activity.comment,
+					  fullString: this.activity.fullString
+					});
+					
+					this.splittedString = this.activity.splittedString;
+					this.correctAnswer = this.activity.correctAnswer;
+					this.possibleAnswers = this.activity.possibleAnswers;
+					this.loading = false;
+				} else {
+					//No se encontró resultado
+					this.snackBar.open(`Problemas al obtener la actividad. Intenta más tarde`,
+											'x',
+											{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']}
+					);
+					this.router.navigateByUrl('/admin');
+				}
 				
-				this.splittedString = this.activity.splittedString;
-				this.correctAnswer = this.activity.correctAnswer;
-				this.possibleAnswers = this.activity.possibleAnswers;
-				this.loading = false;
+			}, (error) => { 
+				//Error en el servidor
+				console.log('Función de error en el then');
+				this.snackBar.open(error.message,
+									'x',
+									{ duration: 4500, verticalPosition: 'top', panelClass: ['snackbar-color']}
+				);
+				this.router.navigateByUrl('/admin');
+
+			})
+			.catch((error) => {
+				//Error en el then
+				this.snackBar.open(`Problemas al obtener la actividad. Intenta más tarde`,
+									'x',
+									{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']}
+				);
+				this.router.navigateByUrl('/admin');
 			}))
 	}
 

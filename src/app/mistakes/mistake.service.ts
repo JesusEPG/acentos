@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MistakeActivity } from './mistake.model';
+import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 //import { Answer } from '../answer/answer.model';
 import { Http, Headers, Response } from '@angular/http';
 import { environment } from '../../environments/environment';
@@ -15,7 +17,9 @@ export class MistakeService {
 
 	mistakeUrl: string;
 
-	constructor(private http: Http){
+	constructor(private http: Http,
+				private router: Router,
+				public snackBar: MatSnackBar){
 		this.mistakeUrl = urljoin(environment.apiUrl, 'activities');
 	}
 
@@ -33,7 +37,24 @@ export class MistakeService {
 		return this.http.get(url)
 			.toPromise()
 			.then(response => response.json() as MistakeActivity)
-			.catch(this.handleError);
+			.catch((response) => {
+				console.log('Catch del mistake service');
+				const res = response.json();
+				
+				if(res){
+					console.log('Entré al if del catch service');
+					console.log(res);
+					if(res.message){
+						
+						//Error arrojado desde el servidor
+						throw new Error(res.message);
+					} else {
+							
+						//Error por servidor caído
+						throw new Error('Presentamos problema con el servidor. Intenta más tarde');
+					}
+				}
+			});
 	}
 
 	addMistakeActivity(activity: MistakeActivity) {

@@ -278,9 +278,11 @@ app.get('/:id', async (req, res) => {
 	try{
 		const activity = await activities.findActivityById(req.params.id)
 		res.status(200).json(activity)
+		//res.status(200).json({})
 
 	} catch (err) {
-		handleError(err, res)
+		console.log('Catch del route')
+		return handleError(err, res)
 	}
 
 })
