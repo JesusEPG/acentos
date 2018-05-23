@@ -5,14 +5,14 @@
 	<!--<alert *ngIf="loading" type="info">
 	  <strong>Heads up!</strong> This alert needs your attention, but it's not super important.
 	</alert>-->
-	<mat-spinner *ngIf="loading" class="spinner" style="margin:0 auto;" color='accent'>
+	<mat-spinner *ngIf="loading&&!preview" class="spinner" style="margin:0 auto;" color='accent'>
 	</mat-spinner>
 
-  	<div *ngIf="!loading&&!result&&activities.length>0" class="row justify-content-center">
+  	<div *ngIf="!loading&&!result&&activities.length>0&&!preview" class="row justify-content-center">
     	<div class="col-md-8 mb-3">
       		<div class="card text-center">
       			<div class="card-header">
-		            <strong>Seleccione la respuesta correcta</strong>
+		            <strong>Selecciona la respuesta correcta</strong>
 		        </div>
 		        <div class="card-body">
 					
@@ -23,7 +23,9 @@
 						    <span *ngIf="!word.hidden">{{word.word}}</span>
 						    <span *ngIf="word.hidden&&selectedAnswers[counter]">{{selectedAnswers[counter].word}}</span>
 
-						    <span *ngIf="word.hidden&&!selectedAnswers[counter]" style="visibility:hidden;">{{word.word}}</span>
+						    <!--<span *ngIf="word.hidden&&!selectedAnswers[counter]" style="visibility:hidden;">{{word.word}}</span>-->
+
+						    <span *ngIf="word.hidden&&!selectedAnswers[counter]">{{renderSpace(word.word)}}</span>
 						  	
 						</ng-container>
 					</div>
@@ -51,7 +53,7 @@
     	</div>
 	</div>
 
-	<div *ngIf="!loading&&!result&&activities.length<1">
+	<div *ngIf="!loading&&!result&&activities.length<1&&!preview">
 
 		No hay actividades de errores disponible
 		
@@ -119,6 +121,48 @@
 			</div>
 		</div>
 		
+	</div>
+
+	<div *ngIf="preview">
+		<div class="row justify-content-center">
+
+			<div class="col-md-8">
+
+				<div class="card">
+				  	<div class="card-body">
+				  		<h4 class="card-title text text-center mb-3"><strong>Instrucciones</strong></h4>
+				  		<ul class="list-group list-group-flush mb-3">
+						  	<li class="list-group-item d-flex">
+						    	<span class="badge badge-primary badge-pill align-self-center mr-4">1</span>
+						    	Debes responder las siguientes 10 actividades para finalizar la sesión
+						  	</li>
+						  	<li class="list-group-item d-flex">
+						    	<span class="badge badge-primary badge-pill align-self-center mr-4">2</span>
+						    	Lee el texto que se presenta e identifica el error
+						  	</li>
+						  	<li class="list-group-item d-flex">
+						    	<span class="badge badge-primary badge-pill align-self-center mr-4">3</span>
+						    	Luego, presiona el botón correspondiente a la palabra que esté mal escrita
+						  	</li>
+						  	<li class="list-group-item d-flex">
+						    	<span class="badge badge-primary badge-pill align-self-center mr-4">4</span>
+						    	Presiona el botón "Siguiente" para avanzar a la próxima pregunta
+						  	</li>
+						</ul>
+						<div class="alert alert-info mb-3" role="alert">
+						  <strong>Importante</strong>: Recuerda que no puedes saltar actividades
+						</div>
+						<div class="message">
+							
+				    		<button class="btn btn-primary" (click)="preview=false">Entendido</button>
+
+						</div>
+				  	</div>
+				</div>
+				
+			</div>
+			
+		</div>
 	</div>
     
 </div>

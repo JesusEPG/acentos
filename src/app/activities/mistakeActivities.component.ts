@@ -21,6 +21,7 @@ export class MistakeActivitiesComponent implements OnInit {
 	counter:number = 0;
 	loading = true;
 	result = false;
+	preview = true;
 
 	constructor(private activitiesService: ActivitiesService,
 				public snackBar: MatSnackBar,

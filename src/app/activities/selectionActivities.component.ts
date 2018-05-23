@@ -24,6 +24,7 @@ export class SelectionActivitiesComponent implements OnInit {
 	counter:number = 0;
 	loading = true;
 	result = false;
+	preview = true;
 
 	constructor(private activitiesService: ActivitiesService,
 				public snackBar: MatSnackBar,
@@ -52,10 +53,22 @@ export class SelectionActivitiesComponent implements OnInit {
 
 					console.log(this.activities);
 					console.log(this.activities.length);
+					console.log(this.activities[0].correctAnswer.word);
+					this.renderSpace(this.activities[0].correctAnswer.word);
 					this.loading = false;
 					
 				}
 			});
+	}
+
+	renderSpace(word){
+		let space ="";
+		for (var i = 0; i < word.length; i++) {
+			space+="_";
+		}
+
+		return space;
+
 	}
 
 	selectAnswer(word){
