@@ -4,6 +4,9 @@ import { ActivitiesService } from './activities.service';
 import { WORST, BEST, CORRECT, INCORRECT, review } from './sm2-plus.module';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ComponentCanDeactivate } from './session-guard.service';
+import { HostListener } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 
 
 @Component({
@@ -13,7 +16,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 	providers: [ActivitiesService]
 })
 
-export class MistakeActivitiesComponent implements OnInit {
+export class MistakeActivitiesComponent implements OnInit, ComponentCanDeactivate {
 
 	activities: SelectionActivity[];
 	updatedActivities: SelectionActivity[];
@@ -28,6 +31,24 @@ export class MistakeActivitiesComponent implements OnInit {
 				private router: Router){
 
 	}
+
+	 // @HostListener allows us to also guard against browser refresh, close, etc.
+  	@HostListener('window:beforeunload')
+  	canDeactivate(): Observable<boolean> | boolean {
+    	// insert logic to check if there are pending changes here;
+    	// returning true will navigate without confirmation
+    	// returning false will show a confirm dialog before navigating away
+
+    	if(this.preview){
+    		return true;
+    	} else if (!this.preview&&!this.result){
+    		return false;
+    	} else {
+    		return true;
+    	}
+
+  	}
+
 
 	ngOnInit() {
 		
