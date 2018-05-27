@@ -1,3 +1,9 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item active" aria-current="page">Lista de actividades</li>
+    </ol>
+</nav>
+
 <div class="container mt-5 container-fixed-footer">
 	<mat-spinner *ngIf="loading" class="spinner" style="margin:0 auto;" color='primary'>
 	</mat-spinner>
@@ -50,7 +56,15 @@
 		<pagination-controls (pageChange)="p = $event"></pagination-controls>
 	</div>
 
-	<div *ngIf="!loading&&activities.length<1" class="alert alert-info" role="alert">
-		No hay actividades almacenadas!!!
+	<div *ngIf="!loading&&activities.length<1">
+		<div class="alert alert-info" role="alert">
+			¡No hay actividades almacenadas!
+		</div>
+
+		<div class="row mt-5 links">
+			<div class="col links">
+				<button [routerLink]="['/admin']" class="btn btn-primary text-center" type="button">Volver a panel de control</button>
+			</div>
+		</div>
 	</div>
 </div>

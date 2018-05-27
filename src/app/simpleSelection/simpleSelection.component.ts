@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { SimpleSelectionActivity } from './simpleSelection.model';
 import { SimpleSelectionService } from './simpleSelection.service';
 import { AuthService } from '../auth/auth.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ComponentCanDeactivate } from '../activities/session-guard.service';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
 	selector: 'app-simple-selection-component',
@@ -13,16 +15,35 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 	providers: [SimpleSelectionService]
 })
 
-export class SimpleSelectionComponent implements OnInit {
+export class SimpleSelectionComponent implements OnInit, ComponentCanDeactivate {
 	activityForm: FormGroup;
 	splittedString: any[];
 	correctAnswer: any;
 	possibleAnswers: any[]=[];
+	loading:boolean =  false;
+	done: boolean = false;
 
 	constructor(private simpleSelectionService: SimpleSelectionService,
 				private router: Router,
 				private authService: AuthService,
 				public snackBar: MatSnackBar){}
+
+	// @HostListener allows us to also guard against browser refresh, close, etc.
+  	@HostListener('window:beforeunload')
+  	canDeactivate(): Observable<boolean> | boolean {
+    	// insert logic to check if there are pending changes here;
+    	// returning true will navigate without confirmation
+    	// returning false will show a confirm dialog before navigating away
+    	//return false;
+    	if((this.activityForm.value.fullString||this.activityForm.value.difficulty||this.activityForm.value.comment)&&!this.done) {
+
+    		return false;
+    	} else {
+
+    		return true;
+    	}
+
+  	}
 
 	ngOnInit(){
 		this.activityForm = new FormGroup({
@@ -168,6 +189,7 @@ export class SimpleSelectionComponent implements OnInit {
 
 	onSubmit(){
 		if(this.activityForm.valid){
+			this.loading=true;
 			const {difficulty, comment, fullString} = this.activityForm.value;
 			const difficultyNumber = this.round(parseInt(difficulty, 10) * 0.1, 1);
 			console.log(difficulty)
@@ -191,7 +213,8 @@ export class SimpleSelectionComponent implements OnInit {
 				.subscribe(
 					//( {_id} ) => this.router.navigate(['/questions', _id]),
 					//this.router.navigate(['/']),
-					( {_id} ) =>{ 
+					( {_id} ) =>{
+						this.done = true;
 						this.snackBar.open(`Se ha creado la actividad exitosamente`,
 											'x',
 											{ duration: 2500, verticalPosition: 'top'}

@@ -169,10 +169,13 @@ app.post('/updateUser', async (req, res) => {
 
 	const { firstName, lastName, userName, password, _id } = req.body
 
+	console.log(userName)
+
 	if(userName){
 		//verificar que userName no este almacenado en base de datos
-		const user = await User.find({userName: userName})
+		const user = await User.findOne({userName: userName})
 		if (user){
+			console.log('Entre al error')
 			console.log(user)
 			return res.status(401).json({
 				message:'Actualización de usuario falló',

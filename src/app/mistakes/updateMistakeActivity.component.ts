@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MistakeActivity } from './mistake.model';
 import { MistakeService } from './mistake.service';
 import { AuthService } from '../auth/auth.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ComponentCanDeactivate } from '../activities/session-guard.service';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
 	selector: 'app-update-mistake-activity-component',
@@ -13,13 +15,14 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 	providers: [MistakeService]
 })
 
-export class UpdateMistakeActivityComponent implements OnInit {
+export class UpdateMistakeActivityComponent implements OnInit, ComponentCanDeactivate {
 	activityForm: FormGroup;
 	splittedString: any[];
 	correctAnswer: any;
 	possibleAnswers: any[]=[];
 	private activity?: MistakeActivity;
 	loading: boolean = true;
+	done: boolean = false;
 
 	constructor(private mistakeService: MistakeService,
 				private router: Router,
@@ -27,6 +30,23 @@ export class UpdateMistakeActivityComponent implements OnInit {
 				private authService: AuthService,
 				public snackBar: MatSnackBar){}
 
+	// @HostListener allows us to also guard against browser refresh, close, etc.
+  	@HostListener('window:beforeunload')
+  	canDeactivate(): Observable<boolean> | boolean {
+    	// insert logic to check if there are pending changes here;
+    	// returning true will navigate without confirmation
+    	// returning false will show a confirm dialog before navigating away
+    	//return false;
+    	if((this.activityForm.value.fullString||this.activityForm.value.difficulty||this.activityForm.value.comment)&&!this.done) {
+
+    		return false;
+    	} else {
+
+    		return true;
+    	}
+
+  	}
+	
 	ngOnInit(){
 		this.activityForm = new FormGroup({
 			comment: new FormControl(null, [Validators.required, Validators.maxLength(50)]),
@@ -251,11 +271,11 @@ export class UpdateMistakeActivityComponent implements OnInit {
 					//( {_id} ) => this.router.navigate(['/questions', _id]),
 					//this.router.navigate(['/']),
 					( {message} ) =>{ 
+						this.done = true;
 						this.snackBar.open(message,
 											'x',
 											{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']}
 						);
-
 						this.router.navigate(['/admin'])
 					},
 					(error) => {

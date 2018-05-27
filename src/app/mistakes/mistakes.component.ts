@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MistakeActivity } from './mistake.model';
 import { MistakeService } from './mistake.service';
@@ -6,6 +6,8 @@ import { AuthService } from '../auth/auth.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { noWhitespaceValidator } from '../utils/noWhitespaces.validator';
+import { ComponentCanDeactivate } from '../activities/session-guard.service';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
 	selector: 'app-mistakes-component',
@@ -14,18 +16,37 @@ import { noWhitespaceValidator } from '../utils/noWhitespaces.validator';
 	providers: [MistakeService]
 })
 
-export class MistakesComponent implements OnInit {
+export class MistakesComponent implements OnInit, ComponentCanDeactivate {
 	activityForm: FormGroup;
 	splittedString: any[];
 	correctAnswer: any;
 	possibleAnswers: any[]=[];
 	activityWords: any[]=[];
 	loading:boolean =  false;
+	done: boolean = false;
 
 	constructor(private mistakeService: MistakeService,
 				private router: Router,
 				private authService: AuthService,
 				public snackBar: MatSnackBar){}
+
+
+	// @HostListener allows us to also guard against browser refresh, close, etc.
+  	@HostListener('window:beforeunload')
+  	canDeactivate(): Observable<boolean> | boolean {
+    	// insert logic to check if there are pending changes here;
+    	// returning true will navigate without confirmation
+    	// returning false will show a confirm dialog before navigating away
+    	//return false;
+    	if((this.activityForm.value.fullString||this.activityForm.value.difficulty||this.activityForm.value.comment)&&!this.done) {
+
+    		return false;
+    	} else {
+
+    		return true;
+    	}
+
+  	}
 
 	ngOnInit(){
 		this.activityForm = new FormGroup({
@@ -216,22 +237,18 @@ export class MistakesComponent implements OnInit {
 				this.possibleAnswers
 			);
 			console.log(activity);
-			/*this.mistakeService.signin(user)
-				.subscribe(
-					this.authService.login,
-					this.authService.handleError
-				);
-			*/
-			/*this.mistakeService.addMistakeActivity(activity)
+			
+			this.mistakeService.addMistakeActivity(activity)
 				.subscribe(
 					//( {_id} ) => this.router.navigate(['/questions', _id]),
 					//this.router.navigate(['/']),
 					(  ) => {
-						this.router.navigate(['/admin']);
+						this.done = true;
 						this.snackBar.open(`Se ha creado la actividad exitosamente`,
 											'x',
 											{ duration: 2500, verticalPosition: 'top'}
 						);
+						this.router.navigate(['/admin']);
 					},
 					this.authService.handleError
 				);//recibe dos funciones como parametros, la función de exito y la función de error*/

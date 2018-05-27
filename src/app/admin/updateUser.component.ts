@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AuthService } from '../auth/auth.service';
 import { User } from '../auth/user.model';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AdminService } from './admin.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ComponentCanDeactivate } from '../activities/session-guard.service';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
 	selector: 'app-update-user-component',
@@ -13,16 +15,34 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 	providers: [AdminService]
 })
 
-export class UpdateUserComponent implements OnInit {
+export class UpdateUserComponent implements OnInit, ComponentCanDeactivate {
 
 	userUpdateForm: FormGroup;
 	private user?: User;
 	loading: boolean = true;
+	done: boolean = false;
 
 	constructor(private adminService: AdminService,
 				private router: Router,
 				private route: ActivatedRoute,
 				public snackBar: MatSnackBar){}
+
+	// @HostListener allows us to also guard against browser refresh, close, etc.
+  	@HostListener('window:beforeunload')
+  	canDeactivate(): Observable<boolean> | boolean {
+    	// insert logic to check if there are pending changes here;
+    	// returning true will navigate without confirmation
+    	// returning false will show a confirm dialog before navigating away
+    	//return false;
+    	if((this.userUpdateForm.value.firstName||this.userUpdateForm.value.lastName||this.userUpdateForm.value.userName)&&!this.done) {
+
+    		return false;
+    	} else {
+
+    		return true;
+    	}
+
+  	}
 
 	ngOnInit(){
 		this.userUpdateForm = new FormGroup({
@@ -55,6 +75,7 @@ export class UpdateUserComponent implements OnInit {
 
 	onSubmit() {
 		if(this.userUpdateForm.valid){
+			this.loading = true;
 			const {firstName, lastName, userName, password} = this.userUpdateForm.value;
 			const username = userName === this.user.userName? null : userName;
 			const user = new User(username, null, firstName, lastName, this.user._id);
@@ -63,9 +84,10 @@ export class UpdateUserComponent implements OnInit {
 			this.adminService.updateUser(user)
 				.subscribe(
 					( {_id} ) =>{ 
+						this.done = true;
 						this.snackBar.open(`Se ha actualizado el usuario exitosamente`,
 											'x',
-											{ duration: 2500, verticalPosition: 'top'}
+											{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color'] }
 						);
 
 						this.router.navigate(['/admin'])

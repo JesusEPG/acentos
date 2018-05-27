@@ -3,41 +3,46 @@
 	<mat-spinner *ngIf="loading" class="spinner" style="margin:0 auto;" color='primary'>
 	</mat-spinner>
 
-	<form *ngIf="!loading" [formGroup]="signupForm" (ngSubmit)="onSubmit()">
-		<!--<fieldset class="form-row">
-			<div class="form-group col-md-6">
-				<label for="first_name">Nombre</label>
-				<input class="form-control" placeholder="Nombre" formControlName="firstName" id="firstName">
+	<div *ngIf="!loading">
+
+		<div class="row justify-content-center">
+
+			<div class="col-md-5">
+
+				<form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+					
+					<div class="form-row">
+						<div class="form-group col-md-6">
+							<label for="first_name">Nombre</label>
+							<input class="form-control" placeholder="Nombre" formControlName="firstName" id="firstName">
+						</div>
+						<div class="form-group col-md-6">
+							<label for="first_name">Apellido</label>		
+							<input class="form-control" placeholder="Apellido" formControlName="lastName" id="lastName">
+						</div>
+					</div>
+					<fieldset class="form-group form-row">
+						<div class="col-sm-12">
+							<label for="user_name">Username</label>
+							<input class="form-control" placeholder="Nombre de Usuario" formControlName="userName" id="userName">
+						</div>
+					</fieldset>
+					<fieldset class="form-group form-row">
+						<div class="col-sm-12">
+							<label for="password">Password</label>
+							<input type="password" class="form-control" placeholder="Contraseña" formControlName="password" id="password">
+						</div>
+					</fieldset>
+					<div class="row submit-button">
+						<button type="submit" class="btn btn-primary submitButton" color="accent">Crear usuario</button>		
+					</div>
+				</form>
+				
 			</div>
-			<div class="form-group col-md-6">
-				<label for="first_name">Apellido</label>		
-				<input class="form-control" placeholder="Apellido" formControlName="lastName" id="lastName">
-			</div>
-		</fieldset>-->
-		<div class="form-row">
-			<div class="form-group col-md-6">
-				<label for="first_name">Nombre</label>
-				<input class="form-control" placeholder="Nombre" formControlName="firstName" id="firstName">
-			</div>
-			<div class="form-group col-md-6">
-				<label for="first_name">Apellido</label>		
-				<input class="form-control" placeholder="Apellido" formControlName="lastName" id="lastName">
-			</div>
+			
 		</div>
-		<fieldset class="form-group form-row">
-			<div class="col-sm-12">
-				<label for="user_name">Username</label>
-				<input class="form-control" placeholder="Nombre de Usuario" formControlName="userName" id="userName">
-			</div>
-		</fieldset>
-		<fieldset class="form-group form-row">
-			<div class="col-sm-12">
-				<label for="password">Password</label>
-				<input type="password" class="form-control" placeholder="Contraseña" formControlName="password" id="password">
-			</div>
-		</fieldset>
-		<div class="row submit-button">
-			<button type="submit" class="btn btn-primary submitButton" color="accent">Crear usuario</button>		
-		</div>
-	</form>
+		
+	</div>
+
+
 </div>

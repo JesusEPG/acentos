@@ -4,6 +4,8 @@ export class User {
 		public password: string,
 		public firstName?: string,
 		public lastName?: string,
+		public school?: string,
+		public grade?: string,
 		public _id?: string,
 		public activities?: any[]
 	) {}

@@ -1,12 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SelectionActivity } from './selectionActivity.model';
 import { ActivitiesService } from './activities.service';
 import { WORST, BEST, CORRECT, INCORRECT, review } from './sm2-plus.module';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ComponentCanDeactivate } from './session-guard.service';
 import { HostListener } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { Subject } from "rxjs/Subject";
+import "rxjs/add/operator/takeUntil";
+import 'rxjs/add/operator/filter';
+//import { NavigationStart, NavigationEnd, NavigationError, NavigationCancel, RoutesRecognized } from '@angular/router';
 
 
 @Component({
@@ -16,8 +20,10 @@ import { Observable } from 'rxjs/Observable';
 	providers: [ActivitiesService]
 })
 
-export class MistakeActivitiesComponent implements OnInit, ComponentCanDeactivate {
+export class MistakeActivitiesComponent implements OnInit, OnDestroy, ComponentCanDeactivate {
 
+	//private ngUnsubscribe: Subject = new Subject();
+	private unsubscribe = new Subject<void>();
 	activities: SelectionActivity[];
 	updatedActivities: SelectionActivity[];
 	selectedAnswers: any[] =[];
@@ -30,6 +36,18 @@ export class MistakeActivitiesComponent implements OnInit, ComponentCanDeactivat
 				public snackBar: MatSnackBar,
 				private router: Router){
 
+		/*router.events
+	    .filter(event => event instanceof NavigationEnd)
+	    .subscribe((event:NavigationEnd) => {
+	      // You only receive NavigationStart events
+	      console.log('Te fuiste');
+	    });*/
+
+	    /*router.events.subscribe((val) => {
+	        // see also 
+	        console.log(val instanceof NavigationEnd) 
+	    });*/
+
 	}
 
 	 // @HostListener allows us to also guard against browser refresh, close, etc.
@@ -39,10 +57,8 @@ export class MistakeActivitiesComponent implements OnInit, ComponentCanDeactivat
     	// returning true will navigate without confirmation
     	// returning false will show a confirm dialog before navigating away
 
-    	if(this.preview){
-    		return true;
-    	} else if (!this.preview&&!this.result){
-    		return false;
+    	if(!this.preview&&!this.result){
+			return false;
     	} else {
     		return true;
     	}
@@ -55,7 +71,7 @@ export class MistakeActivitiesComponent implements OnInit, ComponentCanDeactivat
 		this.activitiesService
 			.getMistakeActivities()
 			.then((activities: SelectionActivity[]) => {
-
+				console.log('Then');
 				this.activities = activities;
 				if(this.activities.length<1){
 
@@ -78,6 +94,18 @@ export class MistakeActivitiesComponent implements OnInit, ComponentCanDeactivat
 				console.log('Error ' + err);
 				//this.loading = false;
 			});
+
+		console.log('NgOnInit!')
+
+		/*console.log('Prueba bien');
+				
+		this.activitiesService.prueba(this.activities)
+			.takeUntil(this.unsubscribe)
+			.subscribe(
+				//( {_id} ) => this.router.navigate(['/', _id]),
+				() => {console.log('Subscribe')}
+			);*/
+		//setTimeout(function(){console.log('Luego del timeout');},55000);
 	}
 
 	selectAnswer(word){
@@ -188,6 +216,7 @@ export class MistakeActivitiesComponent implements OnInit, ComponentCanDeactivat
 
 			//const q = new Question(form.value.title, form.value.description, new Date(), form.value.icon);
 			this.activitiesService.updateActivities(this.updatedActivities)
+				.takeUntil(this.unsubscribe)
 				.subscribe(
 					//( {_id} ) => this.router.navigate(['/', _id]),
 					() => {
@@ -203,4 +232,61 @@ export class MistakeActivitiesComponent implements OnInit, ComponentCanDeactivat
 		}
 	}
 	
+	ngOnDestroy(){
+
+		console.log('NgOnDestroy!')
+
+		if(!this.result){
+			
+			console.log('Me fui demasiado');
+			if(this.activities){
+				if(this.activities.length>0){
+					console.log('Mejor Caso');
+					this.activitiesService.updateActivities(this.activities)
+						.takeUntil(this.unsubscribe)
+						.subscribe(
+								//( {_id} ) => this.router.navigate(['/', _id]),
+								() => {}
+						);
+				} 
+			} else {
+				console.log('Prueba bien');
+				
+				this.activitiesService.prueba(this.activities)
+					.takeUntil(this.unsubscribe)
+					.subscribe(
+						//( {_id} ) => this.router.navigate(['/', _id]),
+						() => {}
+					);
+			}
+		}
+
+		/*this.activitiesService.prueba(this.activities)
+			.takeUntil(this.unsubscribe)
+			.subscribe(
+					//( {_id} ) => this.router.navigate(['/', _id]),
+					() => {}
+			);*/
+		setTimeout(()=>{    //<<<---    using ()=> syntax
+		    this.unsubscribe.next();
+	    	this.unsubscribe.complete();
+		 }, 1000);
+
+	    //this.unsubscribe.next();
+	    //this.unsubscribe.complete();
+
+
+		/*if(this.activities){
+			if(this.activities.length>0){
+				this.activitiesService.updateActivities(this.updatedActivities);
+			} else {
+				console.log('Prueba');
+				this.activitiesService.prueba(this.activities);
+			}
+		} else {
+			console.log('Prueba');
+			
+			this.activitiesService.prueba(this.activities);
+		}*/
+	}
 }

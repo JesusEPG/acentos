@@ -12,6 +12,7 @@ import { UserListComponent } from './userList.component';
 import { ActivityListComponent } from './activityList.component';
 import { UpdateUserComponent } from './updateUser.component';
 import { AdminUserSignupComponent } from './adminUserSignup.component';
+import { SessionGuard } from '../activities/session-guard.service';
 //import { ActivitiesComponent } from './activities.component';
 //import { SelectionActivitiesComponent } from './selectionActivities.component';
 //import { QuestionFormComponent } from './question-form.component';
@@ -20,15 +21,15 @@ export const ADMIN_ROUTES = [
 	{ path: '', component: AdminDashboardComponent, canActivate: [AdminGuardService]},
 	{ path: 'signin', component: AdminSigninComponent, canActivate: [AdminSigninGuard] },
 	{ path: 'activities', component: AdminActivitiesComponent, canActivate: [AdminGuardService]},
-	{ path: 'activities/newSelectionActivity', component: SimpleSelectionComponent, canActivate: [AdminGuardService]},
-	{ path: 'activities/mistakesActivity', component: MistakesComponent, canActivate: [AdminGuardService] },
+	{ path: 'activities/newSelectionActivity', component: SimpleSelectionComponent, canActivate: [AdminGuardService], canDeactivate: [SessionGuard]},
+	{ path: 'activities/mistakesActivity', component: MistakesComponent, canActivate: [AdminGuardService], canDeactivate: [SessionGuard] },
 	{ path: 'activities/activityList', component: ActivityListComponent, canActivate:[AdminGuardService]},
-	{ path: 'activities/activityList/updateMistakeActivity/:_id', component: UpdateMistakeActivityComponent, canActivate:[AdminGuardService]},
-	{ path: 'activities/activityList/updateSelectionActivity/:_id', component: UpdateSelectionActivityComponent, canActivate:[AdminGuardService]},
+	{ path: 'activities/activityList/updateMistakeActivity/:_id', component: UpdateMistakeActivityComponent, canActivate:[AdminGuardService], canDeactivate: [SessionGuard]},
+	{ path: 'activities/activityList/updateSelectionActivity/:_id', component: UpdateSelectionActivityComponent, canActivate:[AdminGuardService], canDeactivate: [SessionGuard]},
 	{ path: 'users', component: AdminUsersComponent, canActivate: [AdminGuardService]},
 	{ path: 'users/signup', component: AdminUserSignupComponent, canActivate: [AdminGuardService]},
 	{ path: 'users/userList', component: UserListComponent, canActivate:[AdminGuardService]},
-	{ path: 'users/userList/updateUser/:_id', component: UpdateUserComponent, canActivate:[AdminGuardService]}
+	{ path: 'users/userList/updateUser/:_id', component: UpdateUserComponent, canActivate:[AdminGuardService], canDeactivate: [SessionGuard] }
 
 	//{ path: ':id', component: QuestionDetailComponent }
 ];

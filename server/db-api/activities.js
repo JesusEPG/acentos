@@ -29,7 +29,7 @@ export default {
   				// Sorting pipeline
         		{ "$sort": { "activities.percentOverDue": -1 } },
         		// Optionally limit results
-		        { "$limit": 2 },
+		        { "$limit": 10 },
 		        {
 		        	//Aquí van los campos que me voy a traer de cada activity
 					"$project" : { 
@@ -85,7 +85,7 @@ export default {
   				// Sorting pipeline
         		{ "$sort": { "activities.percentOverDue": -1 } },
         		// Optionally limit results
-		        { "$limit": 2 },
+		        { "$limit": 10 },
 		        {
 		        	//Aquí van los campos que me voy a traer de cada activity
 					"$project" : { 
@@ -224,6 +224,7 @@ export default {
 				"activities.$.correctCount": 0,
 				"activities.$.incorrectCount": 0,
 				"activities.$.lastAnswer": null,
+				"activities.$.modified": false
 			}
 		}, {new: true})
 	},

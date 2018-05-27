@@ -7,6 +7,8 @@ const UserSchema = Schema({
 	userName: { type: String, required: true, unique: true, index: true},
 	password: { type: String, required: true},
 	modified: { type: Boolean, default: false},
+	school: { type: String, required: true },
+	grade: { type: String, required: true},
 	//activities: [{}]
 	activities: [{ 
 		activity: { type: Schema.Types.ObjectId, ref: 'SimpleSelectionActivity', required: true },

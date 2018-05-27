@@ -72,6 +72,8 @@ app.get('/mistakes', required, async (req, res) => {
 	/*const test = [];
 
 	return res.status(200).json(test)*/
+
+	console.log('ENTRANDO A ACTIVITIES')
 	
 	var result = []
 
@@ -84,7 +86,7 @@ app.get('/mistakes', required, async (req, res) => {
 		//y debo crear el objeto con todos los datos para devolver al client
 
 		console.log('Fetched: ')
-		console.log(fetchedActivities)
+		//console.log(fetchedActivities)
 
 
 		User.findById({_id: req.user._id}, async function(err, user){
@@ -123,10 +125,15 @@ app.get('/mistakes', required, async (req, res) => {
 
 			})
 			const newUser = await user.save()
-			console.log(`New User ${newUser}`)
-			console.log('Result')
-			console.log(result)
+			console.log(`New User en ACTIVITIES ${newUser}`)
+			/*console.log('Result')
+			console.log(result)*/
+			console.log('Saliendo de ACTIVITIES')
+			/*setTimeout(function(){
+				console.log('Luego de 10 seg')
+				res.status(200).json(result)},10000);*/
 			res.status(200).json(result)
+			//res.status(200).json([])
 
 
 		})
@@ -289,7 +296,7 @@ app.get('/:id', async (req, res) => {
 
 //	POST  /api/simpleSelection
 //app.post('/', required, async (req, res) => {
-app.post('/updateActivities', required, async (req, res) => {
+/*app.post('/updateActivities', required, async (req, res) => {
 
 	const toUpdate = req.body
 	let errors = 0
@@ -299,12 +306,6 @@ app.post('/updateActivities', required, async (req, res) => {
 	toUpdate.forEach( async function(activity, index) {
 		console.log(activity)
 		// statements
-		/*User.findOne({_id: req.user._id, "activities.activity": activity.activity}, function(err, subdoc){
-			if(err) console.log('Error')
-
-			console.log('Probando subdoc')
-			console.log(subdoc)
-		})*/
 
 		User.findById({_id:req.user._id}, async function(err, user) {
 			if (err){
@@ -349,6 +350,110 @@ app.post('/updateActivities', required, async (req, res) => {
 	console.log(errors)
 
 	res.status(201).json({message: 'Todo Bien'})
+})*/
+
+app.post('/updateActivities', required, async (req, res) => {
+
+	console.log('ENTRANDO AL UPDATE')
+
+	//activities to update
+	const toUpdate = req.body
+
+
+	User.findById({_id:req.user._id}, async function(err, user){
+		if (err){
+			console.log(err)
+			return handleError(err, res)
+		} else {
+			toUpdate.forEach(async function(activity, index) {
+				
+				var subDoc = user.activities.id(activity._id);
+		  		console.log(`Subdocument: ${subDoc}`)
+
+		  		if(!subDoc.modified){
+					console.log('No se ha modificado')
+
+					subDoc.set({
+						difficulty: activity.difficulty,
+						lastAttempt: activity.lastAttempt,
+						reviewInterval: activity.reviewInterval,
+						percentOverDue: activity.percentOverDue,
+						correctCount: activity.correctCount,
+						incorrectCount: activity.incorrectCount,
+						lastAnswer: activity.lastAnswer,
+						taken: false
+					})
+
+					try {
+						//const savedActivity = await activities.updateUserActivities(req.user._id, activity)
+						const savedActivity = await user.save()
+						console.log(savedActivity)
+						console.log(`Resultado del query ${savedActivity}`)
+					} catch (err){
+						//console.log(err)
+						errors++
+						return handleError(err, res)
+					}
+
+				} else {
+				  	console.log('Se modificó')
+				  	//subDoc.set(req.body);
+				  	subDoc.set({modified: false, taken: false})
+
+				  	try {
+						const savedActivity = await user.save()
+						console.log(savedActivity)
+						console.log(`Resultado del query ${savedActivity}`)
+					} catch (err){
+						//console.log(err)
+						errors++
+						handleError(err, res)
+					}
+				}
+
+			});
+		}
+	})
+
+	res.status(201).json({message: 'Actualización de actividades se ha realizado de manera exitosa'})
+})
+
+app.post('/updateLostActivities', required, async (req, res) => {
+
+	console.log('Llegué a LOST activities')
+
+	User.findById({_id:req.user._id}, async function(err, user){
+		if (err){
+			console.log(err)
+			return handleError(err, res)
+		} else {
+			console.log('USER EN LOST:')
+			console.log(user)
+			user.activities.forEach(async function(activity, index) {
+				
+				if (activity.modified||activity.taken){
+
+					console.log('Se modificó')
+					var subDoc = user.activities.id(activity._id);
+				  	//subDoc.set(req.body);
+				  	subDoc.set({modified: false, taken: false})
+
+				  	try {
+						const savedActivity = await user.save()
+						//console.log(savedActivity)
+						console.log(`Resultado del query ${savedActivity}`)
+					} catch (err){
+						console.log(err)
+						errors++
+						handleError(err, res)
+					}
+
+				}
+			});
+			console.log('Saliendo de LOST activities')
+			res.status(201).json({message: 'Actualización de actividades se ha realizado de manera exitosa'})
+		}
+	})
 })
 
 //	POST  /api/simpleSelection

@@ -7,8 +7,7 @@ import { User } from '../models'
 const debug = Debug('acentos:auth-middleware')
 
 export const required = (req, res, next) => {
-	console.log('Token Request: ')
-	console.log(req.query.token)
+	
 	jwt.verify(req.query.token, secret, (err, token) => {
 		console.log('Token: ')
 		console.log(token)
@@ -45,7 +44,7 @@ export const required = (req, res, next) => {
 			
 			if(user&&!user.modified){
 				debug(`Token verified ${token}`)
-				debug(token)
+				//debug(token)
 				req.user = token.user
 				next()
 			 	

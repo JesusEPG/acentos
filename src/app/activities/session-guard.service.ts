@@ -2,8 +2,6 @@ import { CanDeactivate } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Component, TemplateRef } from '@angular/core';
-import { BsModalService } from 'ngx-bootstrap/modal';
-import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 
 export interface ComponentCanDeactivate {
   canDeactivate: () => boolean | Observable<boolean>;
@@ -12,9 +10,7 @@ export interface ComponentCanDeactivate {
 @Injectable()
 export class SessionGuard implements CanDeactivate<ComponentCanDeactivate> {
 
-      modalRef: BsModalRef;
-      message: string;
-      constructor(private modalService: BsModalService) {}
+    constructor() {}
 
     canDeactivate(component: ComponentCanDeactivate): boolean | Observable<boolean> {
       
@@ -33,11 +29,9 @@ export class SessionGuard implements CanDeactivate<ComponentCanDeactivate> {
             return true;
         } else {
 
-           if(confirm('WARNING: You have unsaved changes. Press Cancel to go back and save these changes, or OK to lose these changes.')) {
-               console.log('TRUE');
+           if(confirm('ATENCIÓN: Aún no has terminado. Presiona Cancel para seguir aquí, u OK para salir.')) {
                return true;
            } else 
-               console.log('FALSE');
                return false;
         }
     }

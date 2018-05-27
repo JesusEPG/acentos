@@ -91,8 +91,8 @@ export class ActivityListComponent implements OnInit {
 											'x',
 											{duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']}
 						);
-						this.loading = false;
-						//this.router.navigate(['/admin']);
+						//this.loading = false;
+						this.router.navigate(['/admin']);
 					},
 					//this.adminService.handleError
 					(error) => {

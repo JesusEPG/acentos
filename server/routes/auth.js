@@ -88,7 +88,7 @@ app.post('/signup', async (req, res) => {
 
 	let newActivities = []
 
-	const { firstName, lastName, userName, password } = req.body
+	const { firstName, lastName, userName, password, school, grade } = req.body
 	
 	//VALIDAR QUE EL USUARIO NO EXISTa
 
@@ -118,6 +118,8 @@ app.post('/signup', async (req, res) => {
 		userName,
 		password: hash(password, 10),
 		modified: false,
+		school,
+		grade,
 		activities: newActivities
 	})
 

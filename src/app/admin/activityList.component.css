@@ -2,3 +2,13 @@
 {
     margin-bottom:55px;
 }
+
+.links{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.message {
+	text-align: center;
+}
