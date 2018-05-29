@@ -18,6 +18,10 @@ async function start () {
 	app.listen(PORT, () => {
 		debug(`Server running at port ${PORT}`)
 	})
+
+	/*app.listen(PORT, '192.168.1.3', function() {
+	    console.log('Listening to port:  ' + 3000);
+	});*/
 }
 
 start()

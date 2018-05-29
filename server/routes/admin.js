@@ -167,7 +167,7 @@ app.post('/updateActivities', required, async (req, res) => {
 //app.post('/', required, async (req, res) => {
 app.post('/updateUser', async (req, res) => {
 
-	const { firstName, lastName, userName, password, _id } = req.body
+	const { firstName, lastName, userName, password, school, grade, _id } = req.body
 
 	console.log(userName)
 
@@ -190,7 +190,9 @@ app.post('/updateUser', async (req, res) => {
 					"firstName": firstName,
 					"lastName": lastName,
 					"userName": userName,
-					"modified": true
+					"modified": true,
+					"school": school,
+					"grade": grade
 				} 
 			}, {new: true})
 			console.log('Usuario Actualizado: ')
@@ -201,7 +203,9 @@ app.post('/updateUser', async (req, res) => {
 				userId: userUpdated._id,
 				firstName: userUpdated.firstName,
 				lastName: userUpdated.lastName,
-				userName: userUpdated.userName
+				userName: userUpdated.userName,
+				school: userUpdated.school,
+				grade: userUpdated.grade
 			})
 		} catch(err) {
 			// statements
@@ -217,7 +221,9 @@ app.post('/updateUser', async (req, res) => {
 					
 					"firstName": firstName,
 					"lastName": lastName,
-					"modified": true
+					"modified": true,
+					"school": school,
+					"grade": grade
 				} 
 			}, {new: true})
 
@@ -228,7 +234,9 @@ app.post('/updateUser', async (req, res) => {
 				message: 'Usuario Actualizado',
 				userId: userUpdated._id,
 				firstName: userUpdated.firstName,
-				lastName: userUpdated.lastName
+				lastName: userUpdated.lastName,
+				school: userUpdated.school,
+				grade: userUpdated.grade
 			})
 		} catch(err) {
 			// statements

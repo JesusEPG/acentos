@@ -23,6 +23,7 @@ export class UpdateMistakeActivityComponent implements OnInit, ComponentCanDeact
 	private activity?: MistakeActivity;
 	loading: boolean = true;
 	done: boolean = false;
+	preview:boolean = true;
 
 	constructor(private mistakeService: MistakeService,
 				private router: Router,
@@ -37,7 +38,7 @@ export class UpdateMistakeActivityComponent implements OnInit, ComponentCanDeact
     	// returning true will navigate without confirmation
     	// returning false will show a confirm dialog before navigating away
     	//return false;
-    	if((this.activityForm.value.fullString||this.activityForm.value.difficulty||this.activityForm.value.comment)&&!this.done) {
+    	if((this.activityForm.value.fullString||this.activityForm.value.difficulty||this.activityForm.value.comment)&&!this.done&&!this.preview) {
 
     		return false;
     	} else {
@@ -49,10 +50,10 @@ export class UpdateMistakeActivityComponent implements OnInit, ComponentCanDeact
 	
 	ngOnInit(){
 		this.activityForm = new FormGroup({
-			comment: new FormControl(null, [Validators.required, Validators.maxLength(50)]),
+			comment: new FormControl(null, [Validators.required, Validators.maxLength(100)]),
 			difficulty: new FormControl(null, Validators.required),
 			possibleAnswer: new FormControl(null), //Validar que solo acepte
-			fullString: new FormControl(null, [Validators.required, Validators.maxLength(50)])
+			fullString: new FormControl(null, [Validators.required, Validators.maxLength(100)])
 			/*fullString: new FormControl(null, [
 				Validators.required//,
 				Validators.pattern(/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)
@@ -126,7 +127,9 @@ export class UpdateMistakeActivityComponent implements OnInit, ComponentCanDeact
 		//Se debe usar una expresión regular para que solo forme las palabras
 		//Y guarde los signos de puntuación
 		//Se separa en espacios
-		let tokens = str.split(/(;\s|:\s|,|,\s|\?\s|\?|\s)/);
+		//let tokens = str.split(/(;\s|:\s|,|,\s|\?\s|\?|\s)/);
+		let tokens = str.split(/(;|;\s|:|:\s|,|,\s|\?|\?\s|\¿|\¿\s|\s\¿|\s|\.|\.\s|-|-\s|\s-|\!|\!\s|\¡|\¡\s|\s\¡)/);
+
 		console.log(tokens);
 
 		//Validar que si 'token' es un signo de puntuación, se debe colocar 'cliackeable:false'

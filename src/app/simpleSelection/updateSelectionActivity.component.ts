@@ -23,6 +23,7 @@ export class UpdateSelectionActivityComponent implements OnInit, ComponentCanDea
 	private activity?: SimpleSelectionActivity;
 	loading: boolean = true;
 	done: boolean = false;
+	preview:boolean = true;
 
 	constructor(private selectionService: SimpleSelectionService,
 				private router: Router,
@@ -37,7 +38,7 @@ export class UpdateSelectionActivityComponent implements OnInit, ComponentCanDea
     	// returning true will navigate without confirmation
     	// returning false will show a confirm dialog before navigating away
     	//return false;
-    	if((this.activityForm.value.fullString||this.activityForm.value.difficulty||this.activityForm.value.comment)&&!this.done) {
+    	if((this.activityForm.value.fullString||this.activityForm.value.difficulty||this.activityForm.value.comment)&&!this.done&&!this.preview) {
 
     		return false;
     	} else {
@@ -121,7 +122,9 @@ export class UpdateSelectionActivityComponent implements OnInit, ComponentCanDea
 		//Se debe usar una expresión regular para que solo forme las palabras
 		//Y guarde los signos de puntuación
 		//Se separa en espacios
-		let tokens = str.split(/(;\s|:\s|,|,\s|\?\s|\?|\s)/);
+		//let tokens = str.split(/(;\s|:\s|,|,\s|\?\s|\?|\s)/);
+		let tokens = str.split(/(;|;\s|:|:\s|,|,\s|\?|\?\s|\¿|\¿\s|\s\¿|\s|\.|\.\s|-|-\s|\s-|\!|\!\s|\¡|\¡\s|\s\¡)/);
+
 		console.log(tokens);
 
 		//Validar que si 'token' es un signo de puntuación, se debe colocar 'cliackeable:false'

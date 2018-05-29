@@ -28,6 +28,8 @@ export class AdminUserSignupComponent implements OnInit {
 				Validators.required//,
 				//Validators.pattern(/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)
 			]),
+			school: new FormControl(null, Validators.required),
+			grade: new FormControl(null, [Validators.required]),
 			password: new FormControl(null, Validators.required)
 		});
 
@@ -36,8 +38,8 @@ export class AdminUserSignupComponent implements OnInit {
 	onSubmit() {
 		if(this.signupForm.valid){
 			this.loading = true;
-			const {firstName, lastName, userName, password} = this.signupForm.value;
-			const user = new User(userName, password, firstName, lastName);
+			const {firstName, lastName, userName, password, school, grade} = this.signupForm.value;
+			const user = new User(userName, password, firstName, lastName, school, grade);
 			this.authService.signup(user)
 				.subscribe(
 					( user ) => {

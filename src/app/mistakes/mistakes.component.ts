@@ -24,6 +24,7 @@ export class MistakesComponent implements OnInit, ComponentCanDeactivate {
 	activityWords: any[]=[];
 	loading:boolean =  false;
 	done: boolean = false;
+	preview:boolean = true;
 
 	constructor(private mistakeService: MistakeService,
 				private router: Router,
@@ -38,7 +39,7 @@ export class MistakesComponent implements OnInit, ComponentCanDeactivate {
     	// returning true will navigate without confirmation
     	// returning false will show a confirm dialog before navigating away
     	//return false;
-    	if((this.activityForm.value.fullString||this.activityForm.value.difficulty||this.activityForm.value.comment)&&!this.done) {
+    	if((this.activityForm.value.fullString||this.activityForm.value.difficulty||this.activityForm.value.comment)&&!this.done&&!this.preview) {
 
     		return false;
     	} else {
@@ -50,19 +51,14 @@ export class MistakesComponent implements OnInit, ComponentCanDeactivate {
 
 	ngOnInit(){
 		this.activityForm = new FormGroup({
-			comment: new FormControl(null, [Validators.required, Validators.maxLength(15), noWhitespaceValidator]),
+			comment: new FormControl(null, [Validators.required, Validators.maxLength(100), noWhitespaceValidator]),
 			difficulty: new FormControl(null, Validators.required),
 			possibleAnswer: new FormControl(null), //Validar que solo acepte
-			fullString: new FormControl(null, [Validators.required, Validators.maxLength(50)])
+			fullString: new FormControl(null, [Validators.required, Validators.maxLength(100)])
 			/*fullString: new FormControl(null, [
 				Validators.required//,
 				Validators.pattern(/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)
 			]),*/
-		});
-
-		this.activityForm.patchValue({
-		  comment: 'Probando', 
-		  // formControlName2: myValue2 (can be omitted)
 		});
 
 	}
@@ -187,16 +183,17 @@ export class MistakesComponent implements OnInit, ComponentCanDeactivate {
 		let str = this.activityForm.value.possibleAnswer;
 		this.activityForm.patchValue({possibleAnswer: null});
 		console.log(str);
-		console.log(this.possibleAnswers.length)
+		if(str){
 
-		const word = {
-				   	id: this.possibleAnswers.length,
-				   	word: str,
-				   	hidden: false,
-				   	clickeable: true,
-				   	selected: false
-				};
-		this.possibleAnswers.push(word);
+			const word = {
+					   	id: this.possibleAnswers.length,
+					   	word: str,
+					   	hidden: false,
+					   	clickeable: true,
+					   	selected: false
+					};
+			this.possibleAnswers.push(word);
+		}
 	}
 
 	deletePossibleAnswer(){
@@ -246,7 +243,7 @@ export class MistakesComponent implements OnInit, ComponentCanDeactivate {
 						this.done = true;
 						this.snackBar.open(`Se ha creado la actividad exitosamente`,
 											'x',
-											{ duration: 2500, verticalPosition: 'top'}
+											{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']}
 						);
 						this.router.navigate(['/admin']);
 					},
@@ -256,7 +253,7 @@ export class MistakesComponent implements OnInit, ComponentCanDeactivate {
 			//Not valid
 			this.snackBar.open(`Verificar los datos e intentar nuevamente!`,
 								'x',
-								{ duration: 2500, verticalPosition: 'top'}
+								{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']}
 			);
 		}
 	}

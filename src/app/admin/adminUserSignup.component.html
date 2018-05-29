@@ -21,6 +21,26 @@
 							<input class="form-control" placeholder="Apellido" formControlName="lastName" id="lastName">
 						</div>
 					</div>
+					<div class="form-row">
+						<div class="form-group col-md-3">
+							<label for="first_name">Grado</label>
+							<!--<input class="form-control" placeholder="Grado" formControlName="grade" id="grade">-->
+							<select class="custom-select form-control" formControlName="grade" id="grade">
+								<option></option>
+								<option value="1">1</option>
+								<option value="2">2</option>
+								<option value="3">3</option>
+								<option value="4">4</option>
+								<option value="5">5</option>
+								<option value="6">6</option>
+
+							</select>
+						</div>
+						<div class="form-group col-md-9">
+							<label for="first_name">Escuela</label>		
+							<input class="form-control" placeholder="Escuela" formControlName="school" id="school">
+						</div>
+					</div>
 					<fieldset class="form-group form-row">
 						<div class="col-sm-12">
 							<label for="user_name">Username</label>

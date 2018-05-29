@@ -1,7 +1,5 @@
-.container{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.container {
+    margin-bottom:60px;
 }
 
 .submit-button {
@@ -12,11 +10,17 @@
 
 .container-fixed-footer
 {
-    margin-bottom:60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .selected-button {
 	color: #fff;
 	background-color: blue;
 	border-color: blue;
+}
+
+.message {
+    text-align: center;
 }

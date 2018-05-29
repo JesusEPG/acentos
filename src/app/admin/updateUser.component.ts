@@ -52,6 +52,8 @@ export class UpdateUserComponent implements OnInit, ComponentCanDeactivate {
 			Validators.required//,
 				//Validators.pattern(/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)
 			]),
+			school: new FormControl(null, Validators.required),
+			grade: new FormControl(null, [Validators.required]),
 			password: new FormControl(null)
 		});
 
@@ -66,7 +68,9 @@ export class UpdateUserComponent implements OnInit, ComponentCanDeactivate {
 				this.userUpdateForm.patchValue({
 				  firstName: this.user.firstName,
 				  lastName: this.user.lastName,
-				  userName: this.user.userName
+				  userName: this.user.userName,
+				  school: this.user.school,
+				  grade: this.user.grade
 				});
 				this.loading = false;
 			}))
@@ -76,9 +80,9 @@ export class UpdateUserComponent implements OnInit, ComponentCanDeactivate {
 	onSubmit() {
 		if(this.userUpdateForm.valid){
 			this.loading = true;
-			const {firstName, lastName, userName, password} = this.userUpdateForm.value;
+			const {firstName, lastName, userName, password, school, grade} = this.userUpdateForm.value;
 			const username = userName === this.user.userName? null : userName;
-			const user = new User(username, null, firstName, lastName, this.user._id);
+			const user = new User(username, null, firstName, lastName, school, grade, this.user._id);
 			console.log(user);
 			console.log(`Nombre Completo: ${firstName} ${lastName}, Username: ${userName}, Contraseña: ${password}`);
 			this.adminService.updateUser(user)

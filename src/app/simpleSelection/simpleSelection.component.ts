@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ComponentCanDeactivate } from '../activities/session-guard.service';
 import { Observable } from 'rxjs/Observable';
+import { noWhitespaceValidator } from '../utils/noWhitespaces.validator';
 
 @Component({
 	selector: 'app-simple-selection-component',
@@ -22,6 +23,7 @@ export class SimpleSelectionComponent implements OnInit, ComponentCanDeactivate 
 	possibleAnswers: any[]=[];
 	loading:boolean =  false;
 	done: boolean = false;
+	preview:boolean = true;
 
 	constructor(private simpleSelectionService: SimpleSelectionService,
 				private router: Router,
@@ -35,7 +37,7 @@ export class SimpleSelectionComponent implements OnInit, ComponentCanDeactivate 
     	// returning true will navigate without confirmation
     	// returning false will show a confirm dialog before navigating away
     	//return false;
-    	if((this.activityForm.value.fullString||this.activityForm.value.difficulty||this.activityForm.value.comment)&&!this.done) {
+    	if((this.activityForm.value.fullString||this.activityForm.value.difficulty||this.activityForm.value.comment)&&!this.done&&!this.preview) {
 
     		return false;
     	} else {
@@ -47,10 +49,10 @@ export class SimpleSelectionComponent implements OnInit, ComponentCanDeactivate 
 
 	ngOnInit(){
 		this.activityForm = new FormGroup({
-			comment: new FormControl(null, [Validators.required, Validators.maxLength(50)]),
+			comment: new FormControl(null, [Validators.required, Validators.maxLength(100), noWhitespaceValidator]),
 			difficulty: new FormControl(null, Validators.required),
 			possibleAnswer: new FormControl(null), //Validar que solo acepte
-			fullString: new FormControl(null, [Validators.required, Validators.maxLength(50)])
+			fullString: new FormControl(null, [Validators.required, Validators.maxLength(100)])
 			/*fullString: new FormControl(null, [
 				Validators.required//,
 				Validators.pattern(/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)
@@ -71,7 +73,9 @@ export class SimpleSelectionComponent implements OnInit, ComponentCanDeactivate 
 		//Se debe usar una expresión regular para que solo forme las palabras
 		//Y guarde los signos de puntuación
 		//Se separa en espacios
-		let tokens = str.split(/(;\s|:\s|,|,\s|\?\s|\?|\s)/);
+		//let tokens = str.split(/(;\s|:\s|,|,\s|\?\s|\?|\s)/);
+		let tokens = str.split(/(;|;\s|:|:\s|,|,\s|\?|\?\s|\¿|\¿\s|\s\¿|\s|\.|\.\s|-|-\s|\s-|\!|\!\s|\¡|\¡\s|\s\¡)/);
+
 		console.log(tokens);
 
 		//Validar que si 'token' es un signo de puntuación, se debe colocar 'cliackeable:false'
@@ -158,13 +162,15 @@ export class SimpleSelectionComponent implements OnInit, ComponentCanDeactivate 
 		let str = this.activityForm.value.possibleAnswer;
 		this.activityForm.patchValue({possibleAnswer: null});
 		console.log(str);
-		const word = {
-				   	id: this.possibleAnswers.length,
-				   	word: str,
-				   	hidden: false,
-				   	clickeable: true
-				};
-		this.possibleAnswers.push(word);
+		if(str){
+			const word = {
+					   	id: this.possibleAnswers.length,
+					   	word: str,
+					   	hidden: false,
+					   	clickeable: true
+					};
+			this.possibleAnswers.push(word);
+		}
 	}
 
 	deletePossibleAnswer(word){
@@ -217,7 +223,7 @@ export class SimpleSelectionComponent implements OnInit, ComponentCanDeactivate 
 						this.done = true;
 						this.snackBar.open(`Se ha creado la actividad exitosamente`,
 											'x',
-											{ duration: 2500, verticalPosition: 'top'}
+											{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']}
 						);
 
 						this.router.navigate(['/admin'])
@@ -229,7 +235,7 @@ export class SimpleSelectionComponent implements OnInit, ComponentCanDeactivate 
 			console.log('Not valid');
 			this.snackBar.open(`Verificar los datos e intentar nuevamente!`,
 								'x',
-								{ duration: 2500, verticalPosition: 'top'}
+								{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']}
 			);
 		}
 	}

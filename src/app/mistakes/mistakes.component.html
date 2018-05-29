@@ -4,11 +4,11 @@
     </ol>
 </nav> 
 
-<div class="container mt-5 container-fixed-footer">
+<div class="container mt-5">
 	<mat-spinner *ngIf="loading" class="spinner" style="margin:0 auto;" color='primary'>
 	</mat-spinner>
 
-	<div *ngIf="!loading">
+	<div *ngIf="!loading&&!preview" class="container-fixed-footer">
 		<form [formGroup]="activityForm" (ngSubmit)="onSubmit()">
 			<div class="input-group mb-2" tooltip="Dificultad de la actividad">
 				<div class="input-group-prepend">
@@ -30,11 +30,10 @@
 				</select>
 			</div>
 
-			<div class="input-group mb-2" tooltip="Comentario mostrado al estudiante en caso de responder incorrectamente. Máximo 50 caracteres">
+			<div class="input-group mb-2" tooltip="Comentario mostrado al estudiante en caso de responder incorrectamente. Máximo 100 caracteres">
 				<div class="input-group-prepend">
 					<span class="input-group-text">Comentario</span>
 					<span class="input-group-text"><code>{{comment.value.length}}/100</code></span>
-					<!--<small class="form-text text-muted"><code>{{comment.value.length}}</code> of <code>200</code> characters</small>-->
 				</div>
 				<textarea class="form-control" aria-label="With textarea" formControlName="comment" #comment onkeydown="if (event.keyCode == 13) return false"></textarea>
 			</div>
@@ -50,13 +49,9 @@
 
 			<div class="input-group mb-2">
 				  	
-				<textarea maxlength="50" tooltip="Texto que conformará la actividad. Presionar el botón 'Dividir' tantas veces se quiera para separar el texto en palabras. Máximo 50 caracteres" class="form-control" placeholder="Ingrese texto" aria-label="With textarea" formControlName="fullString" #fullString onkeydown="if (event.keyCode == 13) return false"></textarea>
-				  	<!--<textarea *ngIf="!activityForm.controls['fullString'].hasError('maxlength')" tooltip="Texto que conformará la actividad. Presionar el botón 'Dividir' tantas veces se quiera para separar el texto en palabras. Máximo 50 caracteres" class="form-control" placeholder="Ingrese texto" aria-label="With textarea" formControlName="fullString" #fullString></textarea>
-
-				  	<textarea *ngIf="activityForm.controls['fullString'].hasError('maxlength')" onkeydown="if (event.keyCode !== 8 ) return false" tooltip="Texto que conformará la actividad. Presionar el botón 'Dividir' tantas veces se quiera para separar el texto en palabras. Máximo 50 caracteres" class="form-control" placeholder="Ingrese texto" aria-label="With textarea" formControlName="fullString" #fullString></textarea>-->
+				<textarea tooltip="Texto que conformará la actividad. Presionar el botón 'Dividir' tantas veces se quiera para separar el texto en palabras. Máximo 100 caracteres" class="form-control" placeholder="Ingrese texto" aria-label="With textarea" formControlName="fullString" #fullString onkeydown="if (event.keyCode == 13) return false"></textarea>
 
 				  	<div class="input-group-append">
-				    	<!--<button class="btn btn-outline-secondary" type="button" color="accent" (click)="stringTokenizer()">Dividir</button>-->
 				    	<button *ngIf="activityForm.controls['fullString'].hasError('maxlength')" disabled class="btn btn-primary btn-sm" type="button" color="accent">Dividir</button>
 				    	<button *ngIf="!activityForm.controls['fullString'].hasError('maxlength')" class="btn btn-primary btn-sm" type="button" color="accent" (click)="stringTokenizer()">Dividir</button>
 					</div>
@@ -66,54 +61,8 @@
 				  Tienes más de los caracteres permitidos!
 			</div>
 
-			<!--<div *ngIf="splittedString" class="mb-2" style="text-align: center;">-->
-					
-					<!--<div class="row justify-content-center mb-2">
-						<div class="col-sm-12">
-							<h6>Seleccione la respuesta correcta de la actividad</h6>
-						</div>
-					</div>
-					<div class="row">
-						
-				        <div class="col-sm-12">
-							<div *ngFor="let word of splittedString" class="btn-group" role="group" aria-label="Basic example">
-							  	
-								<button *ngIf="word.clickeable" type="button" class="btn btn-secondary submitButton mb-2" color="accent" (click)="hideAnswer(word)">{{ word.word }}</button>
-							
-							</div>
-				    	</div>
-	    			</div>-->
-
-	    			<!--<div class="row">
-				        <div class="col">
-				        	<h6>Seleccione la respuesta correcta</h6>
-					        	<ng-container *ngFor="let word of splittedString">
-					        		<button *ngIf="word.clickeable" type="button" class="btn btn-secondary submitButton mb-2" [ngClass]="{'selected-button': word.hidden}" color="accent" (click)="hideAnswer(word)">{{ word.word }}</button>
-					        	</ng-container>
-							
-							
-				    	</div>
-	    			</div>	
-
-			</div>-->
 
 			<div *ngIf="activityWords.length>0" class="mb-2" style="text-align: center;">
-					
-					<!--<div class="row justify-content-center mb-2">
-						<div class="col-sm-12">
-							<h6>Seleccione la respuesta correcta de la actividad</h6>
-						</div>
-					</div>
-					<div class="row">
-						
-				        <div class="col-sm-12">
-							<div *ngFor="let word of splittedString" class="btn-group" role="group" aria-label="Basic example">
-							  	
-								<button *ngIf="word.clickeable" type="button" class="btn btn-secondary submitButton mb-2" color="accent" (click)="hideAnswer(word)">{{ word.word }}</button>
-							
-							</div>
-				    	</div>
-	    			</div>-->
 
 	    			<div class="row">
 				        <div class="col">
@@ -129,7 +78,11 @@
 			<div *ngIf="correctAnswer" class="clearfix">
 			
 					<div class="input-group mb-2">
-						  	<input type="text" class="form-control" placeholder="Ingrese la respuesta correcta" aria-label="Recipient's username" aria-describedby="basic-addon2" formControlName="possibleAnswer" onkeydown="if (event.keyCode == 13 || event.keyCode == 32) return false">
+						  	<!--<input type="text" class="form-control" placeholder="Ingrese la respuesta correcta" aria-label="Recipient's username" aria-describedby="basic-addon2" formControlName="possibleAnswer" onkeydown="if ((event.keyCode >= 65 && event.keyCode <= 90 ) || (event.keyCode >= 97 && event.keyCode <= 122 ) || event.keyCode == 8 || event.keyCode == 164 ) return true
+								else return false">-->
+
+							<input type="text" class="form-control" placeholder="Ingrese la respuesta correcta" aria-label="Recipient's username" aria-describedby="basic-addon2" formControlName="possibleAnswer" onkeydown="if ((event.keyCode >= 65 && event.keyCode <= 90 ) || (event.keyCode >= 97 && event.keyCode <= 122 ) || event.keyCode == 8 || event.key == 'Ñ' || event.key == 'ñ' ) return true
+								else return false">
 
 						  	<div class="input-group-append" *ngIf="possibleAnswers.length===0">
 						    	<button class="btn btn-outline-secondary" type="button" (click)="addPossibleAnswer()">Agregar</button>
@@ -138,26 +91,6 @@
 						    	<button class="btn btn-outline-secondary" type="button" disabled>Agregar</button>
 							</div>
 					</div>
-				
-					<!--<div class="row btn-group pull-left mb-4" role="group" aria-label="Basic example">
-						
-						<div class="btn-group pull-left mb-4" role="group" aria-label="Basic example">
-							<button type="button" class="btn btn-secondary submitButton" disabled color="accent">{{ correctAnswer.word }}</button>
-							
-						  	<div *ngFor="let word of possibleAnswers">
-								<button *ngIf="!word.hidden" type="button" class="btn btn-secondary submitButton" color="accent" (click)="deletePossibleAnswer(word)">{{ word.word }}</button>
-							</div>
-						</div>
-						
-					</div>-->
-
-					<!--<div class="row mb-2">
-						<div class="col btn-group mb-4" role="group" aria-label="Basic example">
-							<button type="button" class="btn btn-secondary submitButton" disabled color="accent">{{ correctAnswer.word }}</button>
-					  		
-							<button *ngIf="possibleAnswers.length>0" type="button" class="btn btn-secondary submitButton" color="accent" (click)="deletePossibleAnswer(possibleAnswers[0].word)">{{ possibleAnswers[0].word }}</button>
-						</div>
-					</div>-->
 
 					<div class="row mb-4" style="text-align: center;">
 				        <div class="col">
@@ -168,53 +101,54 @@
 				    	</div>
 	    			</div>	
 
-					<!-- ESTE ES
-					<div class="row">
-				        <div class="col-12">
-				        	<div class="btn-group pull-left" role="group" aria-label="Basic example">
-				        		<button type="button" class="btn btn-secondary submitButton" disabled color="accent">{{ correctAnswer.word }}</button>
-
-				        		<div *ngFor="let word of possibleAnswers" class="btn-group">
-									<button *ngIf="!word.hidden" type="button" class="btn btn-secondary submitButton" color="accent" (click)="deletePossibleAnswer(word)">{{ word.word }}</button>
-								</div>
-							</div>
-				    	</div>
-	    			</div>-->
-
-	    			<!--<div class="row">
-				        <div class="col-12">
-				        	<button type="button" class="btn btn-secondary btn-sm">{{ correctAnswer.word }}</button>
-				        		
-
-				        		<div *ngFor="let word of possibleAnswers">
-									<button *ngIf="!word.hidden" type="button" class="btn btn-secondary submitButton" color="accent" (click)="deletePossibleAnswer(word)">{{ word.word }}</button>
-								</div>
-				    	</div>
-	    			</div>-->
-
-	    			<!--<div class="row">
-				        <div class="col col-md-3">
-				        	<button type="button" class="btn btn-secondary">{{ correctAnswer.word }}</button>
-				       	</div>
-				       	<div>
-				       		
-				       	</div>
-				    	<div class="col col-md-3" *ngFor="let word of possibleAnswers">
-				    		
-							<button *ngIf="!word.hidden" type="button" class="btn btn-secondary submitButton" color="accent" (click)="deletePossibleAnswer(word)">{{ word.word }}</button>
-						
-				    	</div>
-	    			</div>-->
 			</div>
-
-			<!--<div class="row mt-5">
-				<button class="btn btn-primary" color="accent" type="button" (click)="log()">Log</button>		
-			</div>-->
 			
 			<div *ngIf="possibleAnswers.length===1" class="row submit-button">
 				<button type="submit" class="btn btn-success submitButton" color="accent">Submit</button>		
 			</div>
 		</form>
+	</div>
+
+	<div *ngIf="preview">
+		<div class="row justify-content-center">
+
+			<div class="col-md-9">
+
+				<div class="card">
+				  	<div class="card-body">
+				  		<h4 class="card-title text text-center mb-3"><strong>Indicaciones</strong></h4>
+				  		<ul class="list-group list-group-flush mb-3">
+						  	<li class="list-group-item d-flex">
+						    	<span class="badge badge-primary badge-pill align-self-center mr-4">1</span>
+						    	Debes responder las siguientes 10 actividades para finalizar la sesión
+						  	</li>
+						  	<li class="list-group-item d-flex">
+						    	<span class="badge badge-primary badge-pill align-self-center mr-4">2</span>
+						    	Lee el texto que se presenta e identifica el error
+						  	</li>
+						  	<li class="list-group-item d-flex">
+						    	<span class="badge badge-primary badge-pill align-self-center mr-4">3</span>
+						    	Luego, presiona el botón correspondiente a la palabra que esté mal escrita
+						  	</li>
+						  	<li class="list-group-item d-flex">
+						    	<span class="badge badge-primary badge-pill align-self-center mr-4">4</span>
+						    	Presiona el botón "Siguiente" para avanzar a la próxima pregunta
+						  	</li>
+						</ul>
+						<div class="alert alert-info mb-3" role="alert">
+						  <strong>Importante</strong>: Recuerda que no puedes saltar actividades
+						</div>
+						<div class="message">
+							
+				    		<button class="btn btn-primary" (click)="preview=false">Entendido</button>
+
+						</div>
+				  	</div>
+				</div>
+				
+			</div>
+			
+		</div>
 	</div>
 
 </div>
