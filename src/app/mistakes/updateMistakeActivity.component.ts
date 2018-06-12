@@ -5,6 +5,7 @@ import { MistakeService } from './mistake.service';
 import { AuthService } from '../auth/auth.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { noWhitespaceValidator } from '../utils/noWhitespaces.validator';
 import { ComponentCanDeactivate } from '../activities/session-guard.service';
 import { Observable } from 'rxjs/Observable';
 
@@ -20,10 +21,10 @@ export class UpdateMistakeActivityComponent implements OnInit, ComponentCanDeact
 	splittedString: any[];
 	correctAnswer: any;
 	possibleAnswers: any[]=[];
+	activityWords: any[]=[];
 	private activity?: MistakeActivity;
 	loading: boolean = true;
 	done: boolean = false;
-	preview:boolean = true;
 
 	constructor(private mistakeService: MistakeService,
 				private router: Router,
@@ -38,7 +39,7 @@ export class UpdateMistakeActivityComponent implements OnInit, ComponentCanDeact
     	// returning true will navigate without confirmation
     	// returning false will show a confirm dialog before navigating away
     	//return false;
-    	if((this.activityForm.value.fullString||this.activityForm.value.difficulty||this.activityForm.value.comment)&&!this.done&&!this.preview) {
+    	if((this.activityForm.value.fullString||this.activityForm.value.difficulty||this.activityForm.value.comment)&&!this.done) {
 
     		return false;
     	} else {
@@ -50,17 +51,11 @@ export class UpdateMistakeActivityComponent implements OnInit, ComponentCanDeact
 	
 	ngOnInit(){
 		this.activityForm = new FormGroup({
-			comment: new FormControl(null, [Validators.required, Validators.maxLength(100)]),
+			comment: new FormControl(null, [Validators.required, Validators.maxLength(100), noWhitespaceValidator]),
 			difficulty: new FormControl(null, Validators.required),
 			possibleAnswer: new FormControl(null), //Validar que solo acepte
 			fullString: new FormControl(null, [Validators.required, Validators.maxLength(100)])
-			/*fullString: new FormControl(null, [
-				Validators.required//,
-				Validators.pattern(/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)
-			]),*/
 		});
-
-		//Hacer que vaya a list si no consigue la actividad
 
 		this.route.params.subscribe( params => 
 			this.mistakeService
@@ -80,6 +75,11 @@ export class UpdateMistakeActivityComponent implements OnInit, ComponentCanDeact
 					});
 					
 					this.splittedString = this.activity.splittedString;
+					this.activity.splittedString.map(function(word){
+						console.log(word);
+						
+						this.activityWords.push(word);
+					}, this);
 					this.correctAnswer = this.activity.correctAnswer;
 					this.possibleAnswers = this.activity.possibleAnswers;
 					this.loading = false;
@@ -117,16 +117,11 @@ export class UpdateMistakeActivityComponent implements OnInit, ComponentCanDeact
 		
 		this.correctAnswer=null;
 		this.possibleAnswers=[];
-
+		this.activityWords=[];
 
 		//Obtengo el texto del formulario
 		let str = this.activityForm.value.fullString;
 		str.trim();
-
-		//Se debe usar una expresión regular para que solo forme las palabras
-		//Y guarde los signos de puntuación
-		//Se separa en espacios
-		//let tokens = str.split(/(;\s|:\s|,|,\s|\?\s|\?|\s)/);
 		let tokens = str.split(/(;|;\s|:|:\s|,|,\s|\?|\?\s|\¿|\¿\s|\s\¿|\s|\.|\.\s|-|-\s|\s-|\!|\!\s|\¡|\¡\s|\s\¡)/);
 
 		console.log(tokens);
@@ -138,6 +133,14 @@ export class UpdateMistakeActivityComponent implements OnInit, ComponentCanDeact
 			//Verificar si es un caracter especial, no es clickeable.
 			if(/^[a-zA-ZáÁéÉíÍóÓúÚñÑ]+$/.test(token)){
 				
+				this.activityWords.push({			
+				   	id: index,
+				   	word: token,
+				   	hidden: false,
+				   	clickeable: true,
+				   	selected: false
+				});
+
 				return {
 					//id: window.performance && window.performance.now && window.performance.timing && window.performance.timing.navigationStart ? window.performance.now() + window.performance.timing.navigationStart : Date.now(),				
 				   	id: index,
@@ -160,26 +163,27 @@ export class UpdateMistakeActivityComponent implements OnInit, ComponentCanDeact
 
 	hideAnswer(word){
 
-		//De ser seleccionada una palabra, es decir word.hidden == false
-		//Se hace word.hidden = false y
-		//Se debe agregar al arreglo de respuestas correctas y de respuestas posibles
-		//Analizar los casos en que se deben ocultar o no estas palabras
-		//O si se les puede hacer click
-		console.log(this.possibleAnswers.length)
-				console.log(this.possibleAnswers)
-
 		this.possibleAnswers=[];
 
 		if(!word.hidden){
-			
-			//this.addCorrectAnswer(word);
+			//Si no se presiono la palbra que ya está seleccionada
+			if(this.correctAnswer){
+				this.correctAnswer.hidden=!this.correctAnswer.hidden;
+				this.splittedString[this.correctAnswer.id].hidden = this.correctAnswer.hidden;
+				this.correctAnswer = null;
+			}
 			this.correctAnswer=word;
 			
 		} else {
-			//this.deleteCorrectAnswer(word);
+			//Si se presiono la palbra que ya está seleccionada
 			this.correctAnswer = null;
 		}
 		word.hidden = !word.hidden;
+
+		this.splittedString[word.id].hidden = word.hidden;
+		console.log(this.correctAnswer);
+		console.log(word);
+		console.log(this.splittedString);
 		//De lo contrario se debe buscar el objeto en los arreglos y luego sacarlo
 	}
 

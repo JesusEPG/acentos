@@ -23,7 +23,6 @@ export class UpdateSelectionActivityComponent implements OnInit, ComponentCanDea
 	private activity?: SimpleSelectionActivity;
 	loading: boolean = true;
 	done: boolean = false;
-	preview:boolean = true;
 
 	constructor(private selectionService: SimpleSelectionService,
 				private router: Router,
@@ -38,7 +37,7 @@ export class UpdateSelectionActivityComponent implements OnInit, ComponentCanDea
     	// returning true will navigate without confirmation
     	// returning false will show a confirm dialog before navigating away
     	//return false;
-    	if((this.activityForm.value.fullString||this.activityForm.value.difficulty||this.activityForm.value.comment)&&!this.done&&!this.preview) {
+    	if((this.activityForm.value.fullString||this.activityForm.value.difficulty||this.activityForm.value.comment)&&!this.done) {
 
     		return false;
     	} else {
@@ -77,6 +76,7 @@ export class UpdateSelectionActivityComponent implements OnInit, ComponentCanDea
 					});
 					
 					this.splittedString = this.activity.splittedString;
+					console.log(this.splittedString)
 					this.correctAnswer = this.activity.correctAnswer;
 					this.possibleAnswers = this.activity.possibleAnswers;
 					this.loading = false;
@@ -156,19 +156,19 @@ export class UpdateSelectionActivityComponent implements OnInit, ComponentCanDea
 
 	hideAnswer(word){
 
-		//De ser seleccionada una palabra, es decir word.hidden == false
-		//Se hace word.hidden = false y
-		//Se debe agregar al arreglo de respuestas correctas y de respuestas posibles
-		//Analizar los casos en que se deben ocultar o no estas palabras
-		//O si se les puede hacer click
-		console.log(this.possibleAnswers.length)
-				console.log(this.possibleAnswers)
+		console.log(word);
+		console.log(this.correctAnswer);
 
 		this.possibleAnswers=[];
 
 		if(!word.hidden){
 			
 			//this.addCorrectAnswer(word);
+			if(this.correctAnswer){
+				this.correctAnswer.hidden=!this.correctAnswer.hidden;
+				this.splittedString[this.correctAnswer.id].hidden = this.correctAnswer.hidden;
+				this.correctAnswer = null;
+			}
 			this.correctAnswer=word;
 			
 		} else {
@@ -176,6 +176,10 @@ export class UpdateSelectionActivityComponent implements OnInit, ComponentCanDea
 			this.correctAnswer = null;
 		}
 		word.hidden = !word.hidden;
+
+		console.log(this.correctAnswer);
+		//console.log(word);
+		console.log(this.splittedString);
 		//De lo contrario se debe buscar el objeto en los arreglos y luego sacarlo
 	}
 

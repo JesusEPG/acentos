@@ -53,7 +53,7 @@
 			</div>
 
 			<div *ngIf="activityForm.controls['fullString'].hasError('maxlength')" class="alert alert-warning mb-2" role="alert">
-				  Tienes más de los caracteres permitidos!
+				  ¡Tienes más de los caracteres permitidos!
 			</div>
 
 
@@ -62,10 +62,9 @@
 	    			<div class="row">
 				        <div class="col">
 				        	<h6>Seleccione la palabra incorrecta</h6>
-					        	<ng-container *ngFor="let word of activityWords">
-					        		<button *ngIf="word.clickeable" type="button" class="btn btn-secondary submitButton mb-2" [ngClass]="{'selected-button': word.hidden}" color="accent" (click)="hideAnswer(word)">{{ word.word }}</button>
-					        	</ng-container>			
-							
+					        <ng-container *ngFor="let word of activityWords">
+					        	<button *ngIf="word.clickeable" type="button" class="btn btn-secondary submitButton mb-2" [ngClass]="{'selected-button': word.hidden}" color="accent" (click)="hideAnswer(word)">{{ word.word }}</button>
+					        </ng-container>			
 				    	</div>
 	    			</div>	
 
@@ -75,10 +74,8 @@
 					<h6>Ingrese la respuesta correcta</h6>
 			
 					<div class="input-group mb-2">
-						  	<!--<input type="text" class="form-control" placeholder="Ingrese la respuesta correcta" aria-label="Recipient's username" aria-describedby="basic-addon2" formControlName="possibleAnswer" onkeydown="if ((event.keyCode >= 65 && event.keyCode <= 90 ) || (event.keyCode >= 97 && event.keyCode <= 122 ) || event.keyCode == 8 || event.keyCode == 164 ) return true
-								else return false">-->
-
-							<input type="text" class="form-control" placeholder="Respuesta correcta" aria-label="Recipient's username" aria-describedby="basic-addon2" formControlName="possibleAnswer" onkeydown="if ((event.keyCode >= 65 && event.keyCode <= 90 ) || (event.keyCode >= 97 && event.keyCode <= 122 ) || event.keyCode == 8 || event.key == 'Ñ' || event.key == 'ñ' ) return true
+						  	
+							<input type="text" class="form-control" placeholder="Ingrese respuesta a agregar" aria-label="Recipient's username" aria-describedby="basic-addon2" formControlName="possibleAnswer" onkeydown="if ((event.keyCode >= 65 && event.keyCode <= 90 ) || (event.keyCode >= 97 && event.keyCode <= 122 ) || event.keyCode == 8 || event.key == 'Ñ' || event.key == 'ñ' ) return true
 								else return false">
 
 						  	<div class="input-group-append" *ngIf="possibleAnswers.length===0">
@@ -117,23 +114,23 @@
 				  		<ul class="list-group list-group-flush mb-3">
 						  	<li class="list-group-item d-flex">
 						    	<span class="badge badge-primary badge-pill align-self-center mr-4">1</span>
-						    	Debes responder las siguientes 10 actividades para finalizar la sesión
+						    	Todos los campos del formulario son requeridos
 						  	</li>
 						  	<li class="list-group-item d-flex">
 						    	<span class="badge badge-primary badge-pill align-self-center mr-4">2</span>
-						    	Lee el texto que se presenta e identifica el error
+						    	El comentario que se ingresa se le muestra al estudiante cuando responde de manera incorrecta la actividad
 						  	</li>
 						  	<li class="list-group-item d-flex">
 						    	<span class="badge badge-primary badge-pill align-self-center mr-4">3</span>
-						    	Luego, presiona el botón correspondiente a la palabra que esté mal escrita
+						    	Debes agregar un texto que contenga una palabra mal escrita. Este texto es el que se le mostrará al estudiante cuando repase la actividad
 						  	</li>
 						  	<li class="list-group-item d-flex">
-						    	<span class="badge badge-primary badge-pill align-self-center mr-4">4</span>
-						    	Presiona el botón "Siguiente" para avanzar a la próxima pregunta
+						    	<span class="badge badge-primary badge-pill align-self-center mr-4">3</span>
+						    	Selecciona la palabra incorrecta del texto, y luego agrega la forma correcta de escribir dicha palabra
 						  	</li>
 						</ul>
 						<div class="alert alert-info mb-3" role="alert">
-						  <strong>Importante</strong>: Recuerda que no puedes saltar actividades
+						  <strong>Importante</strong>: Tienes mensaje de ayuda e información al pasar el mouse sobre cualquiera de los elementos del formulario
 						</div>
 						<div class="message">
 							

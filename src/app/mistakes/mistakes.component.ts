@@ -75,22 +75,16 @@ export class MistakesComponent implements OnInit, ComponentCanDeactivate {
 		if(str){
 
 			str.trim();
-
-			//Se debe usar una expresión regular para que solo forme las palabras
-			//Y guarde los signos de puntuación
-			//Se separa en espacios
-			//let tokens = str.split(/(;|;\s|:|:\s|,|,\s|\?|\?\s|\¿|\¿\s|\s|.|.\s)/);
 			let tokens = str.split(/(;|;\s|:|:\s|,|,\s|\?|\?\s|\¿|\¿\s|\s\¿|\s|\.|\.\s|-|-\s|\s-|\!|\!\s|\¡|\¡\s|\s\¡)/);
 			console.log(tokens);
 
-			//Validar que si 'token' es un signo de puntuación, se debe colocar 'cliackeable:false'
+			//Si 'token' es un signo de puntuación, se coloca 'cliackeable:false'
 			//Y en el cliente solo se muestran los que tengan 'clickeable:true'
 			this.splittedString = tokens.map(function(token, index) {
 
 				//Verificar si es un caracter especial, no es clickeable.
 				if(/^[a-zA-ZáÁéÉíÍóÓúÚñÑ]+$/.test(token)){
-					this.activityWords.push({
-						//id: window.performance && window.performance.now && window.performance.timing && window.performance.timing.navigationStart ? window.performance.now() + window.performance.timing.navigationStart : Date.now(),				
+					this.activityWords.push({			
 					   	id: index,
 					   	word: token,
 					   	hidden: false,
@@ -98,8 +92,7 @@ export class MistakesComponent implements OnInit, ComponentCanDeactivate {
 					   	selected: false
 					});
 
-					return {
-						//id: window.performance && window.performance.now && window.performance.timing && window.performance.timing.navigationStart ? window.performance.now() + window.performance.timing.navigationStart : Date.now(),				
+					return {			
 					   	id: index,
 					   	word: token,
 					   	hidden: false,
@@ -108,7 +101,6 @@ export class MistakesComponent implements OnInit, ComponentCanDeactivate {
 					}
 				}
 				return {
-					//id: window.performance && window.performance.now && window.performance.timing && window.performance.timing.navigationStart ? window.performance.now() + window.performance.timing.navigationStart : Date.now(),
 					id: index,
 					word: token,
 				   	hidden: false,
@@ -124,19 +116,13 @@ export class MistakesComponent implements OnInit, ComponentCanDeactivate {
 
 	hideAnswer(word){
 
-		//De ser seleccionada una palabra, es decir word.hidden == false
-		//Se hace word.hidden = false y
-		//Se debe agregar al arreglo de respuestas correctas y de respuestas posibles
-		//Analizar los casos en que se deben ocultar o no estas palabras
-		//O si se les puede hacer click
-
 		this.possibleAnswers=[];
-
 
 		if(!word.hidden){
 			//Si la palabra no se había seleccionado
 			if(this.correctAnswer){
 				this.correctAnswer.hidden=!this.correctAnswer.hidden;
+				this.splittedString[this.correctAnswer.id].hidden = this.correctAnswer.hidden;
 				this.correctAnswer = null;
 			}	
 			//this.addCorrectAnswer(word);
@@ -148,6 +134,7 @@ export class MistakesComponent implements OnInit, ComponentCanDeactivate {
 			this.correctAnswer = null;
 		}
 		word.hidden = !word.hidden;
+		this.splittedString[word.id].hidden = word.hidden;
 		console.log(this.correctAnswer);
 		console.log(word);
 		console.log(this.splittedString);
