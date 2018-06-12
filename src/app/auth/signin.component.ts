@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AuthService } from './auth.service';
 import { User } from './user.model';
 import { Router, ActivatedRoute } from '@angular/router';
-//import { AlertComponent } from 'ngx-bootstrap/alert/alert.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -15,14 +15,14 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class SigninComponent implements OnInit {
 
 	signinForm: FormGroup;
-	alert?: any;
 	returnUrl: string;
 	loading:boolean = false;
 
 	constructor(
 		private authService: AuthService,
 		private route: ActivatedRoute,
-        private router: Router){}
+        private router: Router,
+        private snackBar: MatSnackBar){}
 
 	ngOnInit() {
 		this.signinForm = new FormGroup({
@@ -35,28 +35,46 @@ export class SigninComponent implements OnInit {
 
 		// get return url from route parameters or default to '/'
         this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
-        console.log(this.returnUrl);
 	}
 
 	onSubmit(){
 		if(this.signinForm.valid){
 			this.loading = true;
 			const { userName, password} = this.signinForm.value;
-			console.log(`Usuario: ${userName}, Contraseña: ${password}`);
-			this.signinForm.reset();
+			//this.signinForm.reset();
 
 			const user = new User (userName, password);
 			this.authService.signin(user)
 				.subscribe(
 					//this.router.navigateByUrl(this.returnUrl),
 					//this.authService.login,
-					data => {
-	                    // login successful so redirect to return url
-	                    //this.authService.login;
-	                    this.router.navigateByUrl(this.returnUrl);
+					() => {
+	                    // login successful so redirect to return url or profile
+	                    if(this.returnUrl==='/'){
+	                    	this.router.navigateByUrl('/profile');
+	                    } else {
+	                    	this.router.navigateByUrl(this.returnUrl);
+	                    } 
 	                },
-					this.authService.handleError
+					//this.authService.handleError
+					(error) => {
+						//Error en el servidor
+						console.log('Función de error en el then');
+						this.snackBar.open(error,
+											'x',
+											{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']}
+						);
+						//this.router.navigateByUrl('/admin');
+						this.authService.logout();
+						this.loading = false;
+					}
 				);	
+		} else {
+			//Not valid
+			this.snackBar.open(`¡Verifica los datos e intenta nuevamente!`,
+								'x',
+								{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']}
+			);
 		}
 	}
 }

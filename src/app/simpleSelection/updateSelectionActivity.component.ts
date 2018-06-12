@@ -272,7 +272,7 @@ export class UpdateSelectionActivityComponent implements OnInit, ComponentCanDea
 						this.done = true;
 						this.snackBar.open(message,
 											'x',
-											{ duration: 2500, verticalPosition: 'top'}
+											{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']}
 						);
 
 						this.router.navigate(['/admin'])
@@ -293,9 +293,9 @@ export class UpdateSelectionActivityComponent implements OnInit, ComponentCanDea
 				);//recibe dos funciones como parametros, la función de exito y la función de error
 		} else {
 			//Not valid
-			this.snackBar.open(`Verificar los datos e intentar nuevamente!`,
+			this.snackBar.open(`¡Verifica los datos e intenta nuevamente!`,
 								'x',
-								{ duration: 2500, verticalPosition: 'top'}
+								{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']}
 			);
 		}
 	}

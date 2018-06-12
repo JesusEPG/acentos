@@ -15,7 +15,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class AdminSigninComponent implements OnInit {
 
 	signinForm: FormGroup;
-	alert?: any;
 	returnUrl: string;
 	loading:boolean = false;
 
@@ -42,8 +41,7 @@ export class AdminSigninComponent implements OnInit {
 		if(this.signinForm.valid){
 			this.loading = true;
 			const { email, password} = this.signinForm.value;
-			console.log(`Usuario: ${email}, Contraseña: ${password}`);
-			this.signinForm.reset();
+			//this.signinForm.reset();
 
 			const user = new AdminUser (email, password);
 			this.authService.adminSignin(user)
@@ -52,7 +50,6 @@ export class AdminSigninComponent implements OnInit {
 					//this.authService.login,
 					() => {
 	                    // login successful so redirect to return url
-	                    //this.authService.login;
 	                    this.router.navigateByUrl(this.returnUrl);
 	                },
 					//this.authService.handleError
@@ -61,7 +58,7 @@ export class AdminSigninComponent implements OnInit {
 						console.log('Función de error en el then');
 						this.snackBar.open(error,
 											'x',
-											{ duration: 4500, verticalPosition: 'top', panelClass: ['snackbar-color']}
+											{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']}
 						);
 						//this.router.navigateByUrl('/admin');
 						this.authService.adminLogout();
@@ -70,7 +67,7 @@ export class AdminSigninComponent implements OnInit {
 				);	
 		} else {
 			//Not valid
-			this.snackBar.open(`Verifica los datos e intenta nuevamente!`,
+			this.snackBar.open(`¡Verifica los datos e intenta nuevamente!`,
 								'x',
 								{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']}
 			);

@@ -57,7 +57,24 @@ export class AdminService {
 		return this.http.get(url)
 			.toPromise()
 			.then(response => response.json() as User)		//Exitoso
-			.catch(this.handleError);								//Error
+			.catch((response) => {
+				console.log('Catch del mistake service');
+				const res = response.json();
+				
+				if(res){
+					console.log('Entré al if del catch service');
+					console.log(res);
+					if(res.message){
+						
+						//Error arrojado desde el servidor
+						throw new Error(res.message);
+					} else {
+							
+						//Error por servidor caído
+						throw new Error('Presentamos problema con el servidor. Intenta más tarde');
+					}
+				}
+			});								//Error
 	}
 
 	getActivities(): Promise<void | Activity[]>{
@@ -92,7 +109,27 @@ export class AdminService {
 		//  apiUrl: 'http://localhost:3000/api/simpleSelection?token=${token}'
 		return this.http.post(url, body, { headers })
 			.map((response: Response) => response.json())
-			.catch((error: Response) => Observable.throw(error.json()));
+			//.catch((error: Response) => Observable.throw(error.json()));
+			.catch((error: Response) => {
+				console.log(error);
+				console.log(error.json());
+
+				const res = error.json();
+				
+				if(res){
+					if(res.message){
+						
+						//Error arrojado desde el servidor
+						return Observable.throw(res);
+
+					} else {
+							
+						//Error por servidor caído
+						return Observable.throw('Presentamos problema con el servidor. Intenta más tarde');
+					}
+				}
+
+			}
 	}
 
 	deleteActivity(activityId) {
@@ -164,70 +201,6 @@ export class AdminService {
 			});
 	}
 
-	/*getMistakeActivities(): Promise<void | SelectionActivity[]>{
-		const token = this.getToken();
-		const url = this.activitiesUrl+ '/mistakes' + token;
-		return this.http.get(url)
-			.toPromise()
-			.then(response => response.json() as SelectionActivity[])		//Exitoso
-			.catch(this.handleError);								//Error
-	}
-
-	getSelectionActivities(): Promise<void | SelectionActivity[]>{
-		const token = this.getToken();
-		const url = this.activitiesUrl+ '/selection' + token;
-		return this.http.get(url)
-			.toPromise()
-			.then(response => response.json() as SelectionActivity[])		//Exitoso
-			.catch(this.handleError);								//Error
-	}
-
-	updateActivities(activities: SelectionActivity[]) {
-		const body = JSON.stringify(activities);
-		const headers = new Headers({'Content-Type': 'application/json'});
-		const token = this.getToken();
-		const url = this.activitiesUrl + '/updateActivities' + token;
-		return this.http.post(url, body, { headers })
-			.map((response: Response) => response.json())
-			.catch((error: Response) => Observable.throw(error.json()));
-	}
-
-	getQuestion(id): Promise<void | Question>{
-		const url = urljoin(this.questionsUrl, id);
-		return this.http.get(url)
-			.toPromise()
-			.then(response => response.json() as Question)
-			.catch(this.handleError);
-	}
-
-	addQuestion(question: Question) {
-		const body = JSON.stringify(question);
-		const headers = new Headers({'Content-Type': 'application/json'});
-		const token = this.getToken();
-		const url = this.questionsUrl + token;
-		return this.http.post(url, body, { headers })
-			.map((response: Response) => response.json())
-			.catch((error: Response) => Observable.throw(error.json()));
-	}
-
-	addAnswer(answer: Answer) {
-
-		const a = {
-			description: answer.description,
-			question: {
-				_id: answer.question._id
-			}
-		}
-
-		const body = JSON.stringify(a);
-		const headers = new Headers({'Content-Type': 'application/json'});
-		const token = this.getToken();
-		//const url = urljoin(this.questionsUrl, answer.question._id, 'answers'); //en strings los aspectos de la ruta que no son parametros
-		return this.http.post(`${this.questionsUrl}/${answer.question._id}/answers${token}`, body, { headers })
-			.map((response: Response) => response.json())
-			.catch((error: Response) => Observable.throw(error.json()));
-	}*/
-
 	getToken(){
 		const token = localStorage.getItem('token');
 		return `?token=${token}`;
@@ -239,7 +212,7 @@ export class AdminService {
 	}
 
 	handleError(error: any) {
-		console.log('Entré al catch de admin service');
+		console.log('Entré al catch de handleerror en admin service');
 		console.log(error);
 		const errMsg = error.message ? error.message :
 		error.status ? `${error.status} - ${error.statusText}` : 'Presentamos problemas con el servidor. Intenta más tarde';

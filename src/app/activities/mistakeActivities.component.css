@@ -14,7 +14,16 @@
 	text-align: center;
 }
 
-.container-fixed-footer
-{
+.container-fixed-footer {
     margin-bottom:55px;
+}
+
+.selected-button {
+	color: #fff;
+	background-color: #007bff;
+	border-color: #007bff;
+}
+
+#activity-text {
+    font-size: larger;
 }

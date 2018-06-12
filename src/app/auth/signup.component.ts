@@ -38,12 +38,31 @@ export class SignupComponent implements OnInit {
 			this.loading = true;
 			const {firstName, lastName, userName, password, school, grade} = this.signupForm.value;
 			const user = new User(userName, password, firstName, lastName, school, grade);
-			console.log(`Nombre Completo: ${firstName} ${lastName}, Username: ${userName}, Contraseña: ${password}, Grade: ${grade}, School: ${school}`);
 			this.authService.signup(user)
 				.subscribe(
 					this.authService.login,
 					//err => console.log(err)
-					this.authService.handleError
+					//this.authService.handleError
+					(error) => {
+						//Error en el servidor
+						console.log('Función de error en el then');
+						console.log(error);
+						if(error==="Registro de usuario falló. Nombre de usuario ya está en uso"){
+							this.snackBar.open(error,
+												'x',
+												{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']}
+							);
+							this.loading = false;
+							//this.signupForm.reset();
+						} else {
+							this.snackBar.open(error,
+												'x',
+												{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']}
+							);
+							//this.router.navigateByUrl('/admin');
+							this.authService.adminLogout();
+						}
+					}
 				);
 			this.signupForm.reset();
 		} else {

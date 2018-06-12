@@ -93,15 +93,14 @@ export class UpdateMistakeActivityComponent implements OnInit, ComponentCanDeact
 					this.router.navigateByUrl('/admin');
 
 				}
-			}, (error) => 
+			}, (error) => {
 				//Error en el servidor
-				{console.log('Función de error en el then');
+				console.log('Función de error en el then');
 				this.snackBar.open(error.message,
 									'x',
-									{ duration: 4500, verticalPosition: 'top', panelClass: ['snackbar-color']}
+									{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']}
 				);
 				this.router.navigateByUrl('/admin');
-				//console.log(err);
 
 			})
 			.catch((error) => {

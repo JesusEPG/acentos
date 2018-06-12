@@ -7,7 +7,7 @@ hr {
 /* Jumbotron (hero) */
 .jumbotron {
 	position: relative;
- 	background: url(https://source.unsplash.com/9Y8vxVQN4o4/1920x1080)
+ 	background: url(../../assets/images/Jumbo-02.jpg)
              no-repeat bottom center / cover;
 }
 .jumbotron, .container {

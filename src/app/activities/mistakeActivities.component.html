@@ -1,8 +1,5 @@
 <div class="container mt-5 container-fixed-footer">
 
-	<!--<alert *ngIf="loading" type="info">
-	  <strong>Heads up!</strong> This alert needs your attention, but it's not super important.
-	</alert>-->
 	<mat-spinner *ngIf="loading&&!preview" class="spinner" style="margin:0 auto;" color='accent'>
 	</mat-spinner>
 
@@ -13,24 +10,16 @@
 		            <strong>Seleccione el error en la oración</strong>
 		        </div>
 		        <div class="card-body">
-		          <p class="card-text">{{activities[counter].fullString}}</p>
-		          	
-					<!--<div class="col-12">
-						<div *ngFor="let word of activities[counter].splittedString" class="btn-group" role="group" aria-label="Basic example">
-								  	
-							<button *ngIf="word.clickeable" type="button" class="btn btn-secondary submitButton mb-2" color="accent" (click)="selectAnswer(word)">{{ word.word }}</button>
-								
-						</div>
-					</div>-->
+		          <p id="activity-text">{{activities[counter].fullString}}</p>
 
 					<div class="col mb-3" >
 						<ng-container *ngFor="let word of activities[counter].splittedString">
-							<button *ngIf="word.clickeable" type="button" class="btn btn-secondary submitButton mb-2" color="accent" (click)="selectAnswer(word)">{{ word.word }}</button>
+							<button *ngIf="word.clickeable" type="button" class="btn btn-secondary mb-2" [ngClass]="{'selected-button': word.selected}" color="accent" (click)="selectAnswer(word)">{{ word.word }}</button>
 						</ng-container>
 					</div>
 		    	
-		        	<button *ngIf="selectedAnswers[counter]" class="btn btn-primary" type="button" (click)="next()">Siguiente</button>
-		        	<button *ngIf="!selectedAnswers[counter]" class="btn btn-primary" type="button" disabled>Siguiente</button>
+		        	<button *ngIf="selectedAnswers[counter]" class="btn btn-success btn-primary" type="button" (click)="next()">Siguiente</button>
+		        	<button *ngIf="!selectedAnswers[counter]" class="btn btn-success btn-primary" type="button" disabled>Siguiente</button>
 		        </div>
       		</div>
     	</div>
@@ -56,19 +45,30 @@
 				<ul class="list-group" *ngFor="let activity of activities; let i = index">
 
 					<li *ngIf="selectedAnswers[i].correct" class="list-group-item list-group-item-success">
-						<h5>Correcto!!!!!</h5>
+						<div class="text-center">
+							<h4 *ngIf="activity.difficulty>0.5">¡Impresionante!</h4>
+							<h4 *ngIf="activity.difficulty<0.5">¡Acertaste!</h4>
+						</div>
+						<hr>
+						<h5 class="mb-1"><strong>Tu respuesta: {{selectedAnswers[i].word}}</strong></h5>
+						<h5 class="mb-1">Texto completo: {{activity.fullString}}</h5>
 					</li>
 				  
 					<li *ngIf="!selectedAnswers[i].correct" class="list-group-item list-group-item-danger">
+
+				    	<div class="text-center">
+							<h4 *ngIf="activity.difficulty>0.5">¡Casi lo tienes!</h4>
+							<h4 *ngIf="activity.difficulty<0.5">¡Sigue intentando!</h4>
+						</div>
+						<hr>
 						<div class="d-flex w-100 justify-content-between">
 				      		<!--<h5 class="mb-1">Respuesta: {{selectedAnswers[i].word}}</h5>-->
-				      		<small class="mb-1">Respuesta: {{selectedAnswers[i].word}}</small>
+				      		<h5 class="mb-1">Tu respuesta: {{selectedAnswers[i].word}}</h5>
 
-				      		<small>Correct Answer: {{activity.possibleAnswers[0].word}}</small>
+				      		<h5><strong>Respuesta correcta: {{activity.possibleAnswers[0].word}}</strong></h5>
 				    	</div>
-				    	<p class="mb-1">Texto completo: {{activity.fullString}}</p>
-				    	<p class="mb-1">Nota importante: {{activity.comment}}</p>
-				    	<small>Donec id elit non mi porta.</small>
+				    	<h5 class="mb-1">Texto completo: {{activity.fullString}}</h5>
+				    	<h5 class="mb-1">Nota importante: {{activity.comment}}</h5>
 					</li>
 
 				</ul>

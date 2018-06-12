@@ -21,6 +21,14 @@
 
 .selected-button {
 	color: #fff;
-	background-color: blue;
-	border-color: blue;
+	background-color: #007bff;
+	border-color: #007bff;
+}
+.selected-word {
+    color: #007bff;
+    font-size: larger;
+}
+
+.activity-text {
+    font-size: larger;
 }

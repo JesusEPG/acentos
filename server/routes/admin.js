@@ -230,14 +230,24 @@ app.post('/updateUser', async (req, res) => {
 			console.log('Usuario Actualizado: ')
 			console.log(userUpdated)
 
-			res.status(201).json({
-				message: 'Usuario Actualizado',
-				userId: userUpdated._id,
-				firstName: userUpdated.firstName,
-				lastName: userUpdated.lastName,
-				school: userUpdated.school,
-				grade: userUpdated.grade
-			})
+			if (userUpdated) {
+					res.status(201).json({
+					message: 'Usuario Actualizado',
+					userId: userUpdated._id,
+					firstName: userUpdated.firstName,
+					lastName: userUpdated.lastName,
+					school: userUpdated.school,
+					grade: userUpdated.grade
+				})
+			} else {
+				console.log("entre al else")
+				res.status(500).json({
+					message: 'Ha ocurrido un error. Contacte al profesor',
+					error: {error: 'No se encontró el usuario', message: 'Contactar al profesor', name: 'User has been modified' }
+				})
+			}
+
+			
 		} catch(err) {
 			// statements
 			console.log(err)

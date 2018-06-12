@@ -54,7 +54,20 @@ export class AuthService {
 				return json;
 			})
 			.catch((error: Response) => {
-				return Observable.throw(error.json());
+				const res = error.json();
+				
+				if(res){
+					if(res.message){
+						
+						//Error arrojado desde el servidor
+						return Observable.throw(res.message);
+
+					} else {
+							
+						//Error por servidor caído
+						return Observable.throw('Presentamos problema con el servidor. Intenta más tarde');
+					}
+				}
 
 			});
 	}
@@ -63,9 +76,6 @@ export class AuthService {
 		const body = JSON.stringify(user);
 		const headers = new Headers({'Content-Type': 'application/json'});
 		const url = urljoin(this.usersURL, 'signin');
-		//const url = urljoin(this.questionsUrl, answer.question._id, 'answers');
-
-		////'http://localhost:3000/api/auth' + signin
 		return this.http.post(url, body, { headers })
 			.map((response: Response) => {
 				const json = response.json(); //Lo que responde la ruta
@@ -73,8 +83,21 @@ export class AuthService {
 				return json;
 			})
 			.catch((error: Response) => {
-				console.log(error);
-				return Observable.throw(error.json());
+				const res = error.json();
+				
+				if(res){
+					if(res.message){
+						
+						//Error arrojado desde el servidor
+						return Observable.throw(res.message);
+
+					} else {
+							
+						//Error por servidor caído
+						return Observable.throw('Presentamos problema con el servidor. Intenta más tarde');
+					}
+				}
+
 			});
 	}
 
@@ -82,9 +105,6 @@ export class AuthService {
 		const body = JSON.stringify(user);
 		const headers = new Headers({'Content-Type': 'application/json'});
 		const url = urljoin(this.usersURL, 'adminSignin');
-		//const url = urljoin(this.questionsUrl, answer.question._id, 'answers');
-
-		////'http://localhost:3000/api/auth' + signin
 		return this.http.post(url, body, { headers })
 			.map((response: Response) => {
 				const json = response.json(); //Lo que responde la ruta

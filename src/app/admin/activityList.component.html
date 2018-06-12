@@ -18,42 +18,46 @@
 	    </div>
 
 		<ul class="list-group mb-3">
-		  <!--<li class="list-group-item" *ngFor="let a of array | paginate: { itemsPerPage: 10, currentPage: p }"> {{a}} </li>-->
 
-		  <li *ngFor="let activity of activities | filterBy: ['type', 'comment' ,'fullString']: filter  | paginate: { itemsPerPage: 10, currentPage: p }" class="list-group-item list-group-item-action flex-column align-items-start">
-		    <h5 class="mb-1">{{activity.fullString}}</h5>
-		    <div class="d-flex w-100 justify-content-between">
-		      <h6 class="mt-2">Type: {{activity.type}}</h6>
-		      <div>
-			    	<button *ngIf="activity.type === 'Mistake'" [routerLink]="['updateMistakeActivity', activity._id]" class="btn btn-primary btn-sm mb-1">Modificar</button>
-			      
-			    	<button *ngIf="activity.type === 'Selection'" [routerLink]="['updateSelectionActivity', activity._id]" class="btn btn-primary btn-sm mb-1">Modificar</button>
+		  	<li *ngFor="let activity of activities | filterBy: ['type', 'comment' ,'fullString']: filter  | paginate: { itemsPerPage: 10, currentPage: p }" class="list-group-item list-group-item-action flex-column align-items-start">
+			    <h5><strong>{{activity.fullString}}</strong></h5>
+			    <h6 class="mt-3">Comentario: {{activity.comment}}</h6>
+			    <div class="d-flex w-100 justify-content-between">
+			      <h6 class="mt-2">Tipo: {{activity.type}}</h6>
+			      <div>
+				    	<button *ngIf="activity.type === 'Mistake'" [routerLink]="['updateMistakeActivity', activity._id]" class="btn btn-primary btn-sm mb-1">Modificar</button>
+				      
+				    	<button *ngIf="activity.type === 'Selection'" [routerLink]="['updateSelectionActivity', activity._id]" class="btn btn-primary btn-sm mb-1">Modificar</button>
 
-			    	<button type="button" class="btn btn-primary btn-sm mb-1" (click)="openModal(template)">Eliminar</button>
-				    <ng-template class="mt-5" #template>
-				      <div class="modal-body text-center">
-				        <p>¿Está seguro que desea eliminar la actividad?</p>
-				        <button type="button" class="btn btn-default" (click)="confirm(activity._id)" >Sí</button>
-				        <button type="button" class="btn btn-primary" (click)="decline()" >No</button>
-				      </div>
-				    </ng-template>
+				    	<button type="button" class="btn btn-primary btn-sm mb-1" (click)="openModal(template)">Eliminar</button>
+					    <ng-template class="mt-5" #template>
+					      <div class="modal-body text-center">
+					        <p>¿Está seguro que desea eliminar la actividad?</p>
+					        <button type="button" class="btn btn-default" (click)="confirm(activity._id)" >Sí</button>
+					        <button type="button" class="btn btn-primary" (click)="decline()" >No</button>
+					      </div>
+					    </ng-template>
 
-		      	
-		      </div>
+			      	
+			      </div>
 
-		      <!--<div *ngIf="activity.type === 'Selection'">
-			      <button [routerLink]="['updateSelectionActivity', activity._id]" class="btn btn-primary btn-sm">Modificar</button>
-			      <button class="btn btn-primary btn-sm" (click)="deleteActivity(activity._id)">Eliminar</button>
-		      	
-		      </div>-->
-
-		    </div>
+			    </div>
 		    
-		  </li>
+		  	</li>
 
 		</ul>
 		               
-		<pagination-controls (pageChange)="p = $event"></pagination-controls>
+		<pagination-controls (pageChange)="p = $event"
+							maxSize="9"
+		                    directionLinks="true"
+		                    autoHide="true"
+		                    previousLabel="Anterior"
+		                    nextLabel="Siguiente"
+		                    screenReaderPaginationLabel="Paginador"
+		                    screenReaderPageLabel="página"
+		                    screenReaderCurrentLabel="Estás en la página">
+			
+		</pagination-controls>
 	</div>
 
 	<div *ngIf="!loading&&activities.length<1">

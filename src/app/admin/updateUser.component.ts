@@ -62,17 +62,40 @@ export class UpdateUserComponent implements OnInit, ComponentCanDeactivate {
 			.getUser(params['_id'])
 			.then((user: User) => {
 				this.user = user;
-				console.log('User: ');
-				console.log(this.user);
-				//console.log(this.activities.length);
-				this.userUpdateForm.patchValue({
-				  firstName: this.user.firstName,
-				  lastName: this.user.lastName,
-				  userName: this.user.userName,
-				  school: this.user.school,
-				  grade: this.user.grade
-				});
-				this.loading = false;
+				if(this.user) { 
+					this.userUpdateForm.patchValue({
+					  firstName: this.user.firstName,
+					  lastName: this.user.lastName,
+					  userName: this.user.userName,
+					  school: this.user.school,
+					  grade: this.user.grade
+					});
+					this.loading = false;
+				} else {
+					//Cuando no se consigue
+					this.snackBar.open(`Problemas al obtener la actividad. Intenta más tarde`,
+											'x',
+											{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']}
+					);
+					this.router.navigateByUrl('/admin');
+
+				}
+				
+			}, (error) => {
+				//Error en el servidor
+				this.snackBar.open(error.message,
+									'x',
+									{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']}
+				);
+				this.router.navigateByUrl('/admin');
+			})
+			.catch((error) => {
+				//Error en el then
+				this.snackBar.open(`Problemas al obtener la actividad. Intenta más tarde`,
+									'x',
+									{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']}
+				);
+				this.router.navigateByUrl('/admin');
 			}))
 
 	}
@@ -96,14 +119,31 @@ export class UpdateUserComponent implements OnInit, ComponentCanDeactivate {
 
 						this.router.navigate(['/admin'])
 					},
-					//err => console.log(err)
-					this.adminService.handleError
+					(error) => {
+						//Error en el servidor
+						console.log('Función de error en el subscribe');
+						console.log(error);
+						if (error.error==='Nombre de usuario ingresado ya está en uso') {
+							this.snackBar.open(error.error,
+												'x',
+												{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']}
+							);
+							this.loading=false;
+						} else {
+							this.snackBar.open(error,
+												'x',
+												{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']}
+							);
+							//this.loading = false
+							this.router.navigateByUrl('/admin');
+						}
+						
+					}
 				);
-			this.userUpdateForm.reset();
 		} else {
-			this.snackBar.open(`Verificar los datos e intentar nuevamente!`,
+			this.snackBar.open(`¡Verifica los datos e intenta nuevamente!`,
 								'x',
-								{ duration: 2500, verticalPosition: 'top'}
+								{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']}
 			);
 		}
 

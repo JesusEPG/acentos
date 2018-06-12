@@ -4,11 +4,11 @@
     </ol>
 </nav> 
 
-<div class="container mt-5 container-fixed-footer">
+<div class="container mt-5">
 	<mat-spinner *ngIf="loading" class="spinner" style="margin:0 auto;" color='primary'>
 	</mat-spinner>
 
-	<div *ngIf="!loading&&!preview">
+	<div *ngIf="!loading&&!preview" class="container-fixed-footer">
 		<form [formGroup]="activityForm" (ngSubmit)="onSubmit()">
 			<div class="input-group mb-2" tooltip="Dificultad de la actividad">
 				<div class="input-group-prepend">
@@ -87,13 +87,13 @@
 	    			</div>	
 			</div>
 
-			<div *ngIf="correctAnswer" class="clearfix">
+			<div *ngIf="correctAnswer" class="clearfix text-center">
 
-					
+					<h6>Ingrese las respuestas posibles</h6>
 					<div class="input-group mb-2">
 						  	<!--<input type="text" class="form-control" placeholder="Ingrese respuesta a agregar" aria-label="Recipient's username" aria-describedby="basic-addon2" formControlName="possibleAnswer" onkeydown="if (event.keyCode == 13 || event.keyCode == 32) return false">-->
 
-						  	<input type="text" class="form-control" placeholder="Ingrese la respuesta correcta" aria-label="Respuesta posible" aria-describedby="basic-addon2" formControlName="possibleAnswer" onkeydown="if ((event.keyCode >= 65 && event.keyCode <= 90 ) || (event.keyCode >= 97 && event.keyCode <= 122 ) || event.keyCode == 8 || event.key == 'Ñ' || event.key == 'ñ' ) return true
+						  	<input type="text" class="form-control" placeholder="Respuesta posible" aria-label="Respuesta posible" aria-describedby="basic-addon2" formControlName="possibleAnswer" onkeydown="if ((event.keyCode >= 65 && event.keyCode <= 90 ) || (event.keyCode >= 97 && event.keyCode <= 122 ) || event.keyCode == 8 || event.key == 'Ñ' || event.key == 'ñ' ) return true
 								else return false">
 
 						  	<div class="input-group-append" *ngIf="possibleAnswers.length<4">
@@ -114,7 +114,7 @@
 
 					<div class="row mb-4" style="text-align: center;">
 				        <div class="col">
-				        	<button type="button" class="btn btn-secondary submitButton" disabled color="accent">{{ correctAnswer.word }}</button>
+				        	<button type="button" class="btn btn-secondary selected-button" disabled color="accent">{{ correctAnswer.word }}</button>
 
 					        <ng-container *ngFor="let word of possibleAnswers">
 					        	<button *ngIf="!word.hidden" type="button" class="btn btn-secondary submitButton" color="accent" (click)="deletePossibleAnswer(word)">{{ word.word }}</button>
@@ -130,7 +130,7 @@
 			</div>-->
 			
 			<div *ngIf="possibleAnswers.length===4" class="row submit-button">
-				<button type="submit" class="btn btn-success submitButton" color="accent">Submit</button>		
+				<button type="submit" class="btn btn-success submitButton" color="accent">Agregar</button>		
 			</div>
 		</form>
 	</div>

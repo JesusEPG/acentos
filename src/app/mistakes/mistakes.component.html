@@ -42,11 +42,6 @@
 				  ¡Tienes más de los caracteres permitidos!
 			</div>
 
-			<div *ngIf="activityForm.controls['comment'].hasError('whitespace')" class="alert alert-warning mb-2" role="alert">
-				  ¡Inserta datos validos!
-			</div>
-
-
 			<div class="input-group mb-2">
 				  	
 				<textarea tooltip="Texto que conformará la actividad. Presionar el botón 'Dividir' tantas veces se quiera para separar el texto en palabras. Máximo 100 caracteres" class="form-control" placeholder="Ingrese texto" aria-label="With textarea" formControlName="fullString" #fullString onkeydown="if (event.keyCode == 13) return false"></textarea>
@@ -75,13 +70,15 @@
 	    			</div>	
 
 			</div>
-			<div *ngIf="correctAnswer" class="clearfix">
+			<div *ngIf="correctAnswer" class="clearfix text-center">
+
+					<h6>Ingrese la respuesta correcta</h6>
 			
 					<div class="input-group mb-2">
 						  	<!--<input type="text" class="form-control" placeholder="Ingrese la respuesta correcta" aria-label="Recipient's username" aria-describedby="basic-addon2" formControlName="possibleAnswer" onkeydown="if ((event.keyCode >= 65 && event.keyCode <= 90 ) || (event.keyCode >= 97 && event.keyCode <= 122 ) || event.keyCode == 8 || event.keyCode == 164 ) return true
 								else return false">-->
 
-							<input type="text" class="form-control" placeholder="Ingrese la respuesta correcta" aria-label="Recipient's username" aria-describedby="basic-addon2" formControlName="possibleAnswer" onkeydown="if ((event.keyCode >= 65 && event.keyCode <= 90 ) || (event.keyCode >= 97 && event.keyCode <= 122 ) || event.keyCode == 8 || event.key == 'Ñ' || event.key == 'ñ' ) return true
+							<input type="text" class="form-control" placeholder="Respuesta correcta" aria-label="Recipient's username" aria-describedby="basic-addon2" formControlName="possibleAnswer" onkeydown="if ((event.keyCode >= 65 && event.keyCode <= 90 ) || (event.keyCode >= 97 && event.keyCode <= 122 ) || event.keyCode == 8 || event.key == 'Ñ' || event.key == 'ñ' ) return true
 								else return false">
 
 						  	<div class="input-group-append" *ngIf="possibleAnswers.length===0">
@@ -94,7 +91,7 @@
 
 					<div class="row mb-4" style="text-align: center;">
 				        <div class="col">
-				        	<button type="button" class="btn btn-secondary submitButton" disabled color="accent">{{ correctAnswer.word }}</button>
+				        	<button type="button" class="btn btn-secondary selected-button" disabled>{{ correctAnswer.word }}</button>
 					  		
 							<button *ngIf="possibleAnswers.length>0" type="button" class="btn btn-secondary submitButton" color="accent" (click)="deletePossibleAnswer()">{{ possibleAnswers[0].word }}</button>
 							
@@ -104,7 +101,7 @@
 			</div>
 			
 			<div *ngIf="possibleAnswers.length===1" class="row submit-button">
-				<button type="submit" class="btn btn-success submitButton" color="accent">Submit</button>		
+				<button type="submit" class="btn btn-success submitButton">Agregar</button>		
 			</div>
 		</form>
 	</div>
