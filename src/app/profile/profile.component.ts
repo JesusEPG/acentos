@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth/auth.service';
 import { ProfileService } from './profile.service';
 import { TabDirective } from 'ngx-bootstrap/tabs';
-
+import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
 	selector: 'app-profile-component',
@@ -69,7 +70,10 @@ export class ProfileComponent implements OnInit {
 	private value: string;
 	
 
-	constructor(private authService: AuthService, private profileService: ProfileService) {}
+	constructor(private authService: AuthService,
+				public snackBar: MatSnackBar,
+				private router: Router,
+				private profileService: ProfileService) {}
 
 	ngOnInit(){
 
@@ -162,9 +166,8 @@ export class ProfileComponent implements OnInit {
 				this.loading = false;
 			})
 			.catch((err: any) => {
-				console.log('Entre al error')
-				console.log('Error: ' + err);
-				//this.loading = false;
+				this.snackBar.open(`Hubo un problema al traer la información. Intenta más tarde`, 'x', { duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color'] });
+				this.router.navigateByUrl('/');
 			});
 	}
 
@@ -267,9 +270,8 @@ export class ProfileComponent implements OnInit {
 					this.loading = false;
 				})
 				.catch((err: any) => {
-					console.log('Entre al error')
-					console.log('Error ' + err);
-					//this.loading = false;
+					this.snackBar.open(`Hubo un problema al traer la información. Intenta más tarde`, 'x', { duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color'] });
+					this.router.navigateByUrl('/');
 				});
 
 	    }

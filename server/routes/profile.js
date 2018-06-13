@@ -73,8 +73,10 @@ app.get('/', required, async (req, res) => {
 	try{
 		//const data = await activities.prueba(req.user._id, dates.pastDate)
 		const data = await statistics.getProfileStatistics(req.user._id)
+		//console.log(data1)
 		console.log(data)
-		res.status(200).json(data)
+		//res.status(200).json(data)
+		res.status(200).json({})
 
 	} catch (err) {
 		handleError(err, res)

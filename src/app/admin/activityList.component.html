@@ -23,7 +23,8 @@
 			    <h5><strong>{{activity.fullString}}</strong></h5>
 			    <h6 class="mt-3">Comentario: {{activity.comment}}</h6>
 			    <div class="d-flex w-100 justify-content-between">
-			      <h6 class="mt-2">Tipo: {{activity.type}}</h6>
+			      <h6 *ngIf="activity.type === 'Mistake'" class="mt-2" >Tipo: Error</h6>
+			      <h6 *ngIf="activity.type === 'Selection'" class="mt-2">Tipo: Selección</h6>
 			      <div>
 				    	<button *ngIf="activity.type === 'Mistake'" [routerLink]="['updateMistakeActivity', activity._id]" class="btn btn-primary btn-sm mb-1">Modificar</button>
 				      
@@ -32,7 +33,7 @@
 				    	<button type="button" class="btn btn-primary btn-sm mb-1" (click)="openModal(template)">Eliminar</button>
 					    <ng-template class="mt-5" #template>
 					      <div class="modal-body text-center">
-					        <p>¿Está seguro que desea eliminar la actividad?</p>
+					        <p>¿Estás seguro que deseas eliminar la actividad?</p>
 					        <button type="button" class="btn btn-default" (click)="confirm(activity._id)" >Sí</button>
 					        <button type="button" class="btn btn-primary" (click)="decline()" >No</button>
 					      </div>

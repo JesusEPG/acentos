@@ -3,6 +3,10 @@ import { required, simpleSelectionActivityMiddleware } from '../middleware'
 import { activities} from '../db-api'
 import { handleError } from '../utils'
 import { User, Activity } from '../models'
+import {
+	hashSync as hash,
+	compareSync as comparePasswords
+} from 'bcryptjs'
 
 
 const app = express.Router()
@@ -169,7 +173,7 @@ app.post('/updateUser', async (req, res) => {
 
 	const { firstName, lastName, userName, password, school, grade, _id } = req.body
 
-	console.log(userName)
+	console.log(password)
 
 	if(userName){
 		//verificar que userName no este almacenado en base de datos
@@ -185,28 +189,49 @@ app.post('/updateUser', async (req, res) => {
 		//si no está almacenado ese userName se actualiza
 		try {
 			// statements
-			const userUpdated = await User.findOneAndUpdate({"_id": _id}, { $set: { 
+			let userUpdated
+			if (password) {
+				userUpdated = await User.findOneAndUpdate({"_id": _id}, { $set: { 
 					
 					"firstName": firstName,
 					"lastName": lastName,
-					"userName": userName,
 					"modified": true,
 					"school": school,
-					"grade": grade
+					"grade": grade,
+					"password": hash(password, 10)
 				} 
 			}, {new: true})
+			} else {
+				userUpdated = await User.findOneAndUpdate({"_id": _id}, { $set: { 
+					
+						"firstName": firstName,
+						"lastName": lastName,
+						"modified": true,
+						"school": school,
+						"grade": grade
+					} 
+				}, {new: true})
+			}
 			console.log('Usuario Actualizado: ')
 			console.log(userUpdated)
 
-			res.status(201).json({
-				message: 'Usuario Actualizado',
-				userId: userUpdated._id,
-				firstName: userUpdated.firstName,
-				lastName: userUpdated.lastName,
-				userName: userUpdated.userName,
-				school: userUpdated.school,
-				grade: userUpdated.grade
-			})
+			if (userUpdated) {
+					res.status(201).json({
+					message: 'Usuario Actualizado',
+					userId: userUpdated._id,
+					firstName: userUpdated.firstName,
+					lastName: userUpdated.lastName,
+					userName: userUpdated.userName,
+					school: userUpdated.school,
+					grade: userUpdated.grade
+				})
+			} else {
+				console.log("entre al else")
+				res.status(500).json({
+					message: 'Ha ocurrido un error. Contacte al profesor',
+					error: {error: 'No se encontró el usuario', message: 'Contactar al profesor', name: 'User has been modified' }
+				})
+			}
 		} catch(err) {
 			// statements
 			console.log(err)
@@ -217,15 +242,29 @@ app.post('/updateUser', async (req, res) => {
 		//Update normal de nombre y apellido
 		try {
 			// statements
-			const userUpdated = await User.findOneAndUpdate({"_id": _id}, { $set: { 
+			let userUpdated
+			if (password) {
+				userUpdated = await User.findOneAndUpdate({"_id": _id}, { $set: { 
 					
 					"firstName": firstName,
 					"lastName": lastName,
 					"modified": true,
 					"school": school,
-					"grade": grade
+					"grade": grade,
+					"password": hash(password, 10)
 				} 
 			}, {new: true})
+			} else {
+				userUpdated = await User.findOneAndUpdate({"_id": _id}, { $set: { 
+					
+						"firstName": firstName,
+						"lastName": lastName,
+						"modified": true,
+						"school": school,
+						"grade": grade
+					} 
+				}, {new: true})
+			}
 
 			console.log('Usuario Actualizado: ')
 			console.log(userUpdated)

@@ -104,8 +104,10 @@ export class UpdateUserComponent implements OnInit, ComponentCanDeactivate {
 		if(this.userUpdateForm.valid){
 			this.loading = true;
 			const {firstName, lastName, userName, password, school, grade} = this.userUpdateForm.value;
+			console.log("PASSWORD");
+			console.log(password);
 			const username = userName === this.user.userName? null : userName;
-			const user = new User(username, null, firstName, lastName, school, grade, this.user._id);
+			const user = new User(username, password, firstName, lastName, school, grade, this.user._id);
 			console.log(user);
 			console.log(`Nombre Completo: ${firstName} ${lastName}, Username: ${userName}, Contraseña: ${password}`);
 			this.adminService.updateUser(user)

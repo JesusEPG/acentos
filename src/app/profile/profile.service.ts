@@ -45,12 +45,15 @@ export class ProfileService {
 					if(res.error){
 						
 						if(res.error.error === 'Usuario modificado'){
-							this.snackBar.open(`${res.error.error}. ${res.error.message}`, 'x', { duration: 2500, verticalPosition: 'top'});
+							this.snackBar.open(`${res.error.error}. ${res.error.message}`,
+												'x', 
+												{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']});
 							//this.authService.logout()
 							localStorage.clear();
 							//this.authService.currentUser = null;
 
 							this.authService.currentUser = new User(res.userName, null, res.firstName, res.lastName, res.userId);
+							console.log(`New user: ${this.authService.currentUser}`);
 							//localStorage.setItem('token', JSON.stringify({token: res.token});
 							localStorage.setItem('token', res.token);
 
@@ -60,16 +63,19 @@ export class ProfileService {
 																		 userName: res.userName}));
 							return this.getData();
 							//this.router.navigateByUrl('/');
-						} else {
+						} else if(res.error.error === 'Usuario no disponible') {
 							//Usuario eliminado
-							this.snackBar.open(`${res.error.error}. ${res.error.message}`, 'x', { duration: 2500, verticalPosition: 'top'});
-							//this.authService.logout()
+							this.snackBar.open(`${res.error.error}. ${res.error.message}`, 'x', { duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color'] });
+							this.authService.logout()
 							//this.getMistakeActivities()
+							this.router.navigateByUrl('/');
+						} else {
+							this.snackBar.open(`Hubo un problema al traer la información. Intenta más tarde`, 'x', { duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color'] });
 							this.router.navigateByUrl('/');
 						}
 
 					} else {
-						this.snackBar.open(`Presentamos problema con el servidor. Intentar más tarde`, 'x', { duration: 2500, verticalPosition: 'top'});
+						this.snackBar.open(`Presentamos problema con el servidor. Intenta más tarde`, 'x', { duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color'] });
 						this.router.navigateByUrl('/');
 					}
 				}
@@ -82,7 +88,52 @@ export class ProfileService {
 		return this.http.get(url)
 			.toPromise()
 			.then(response => response.json() as any[])		//Exitoso
-			.catch(this.handleError);								//Error
+			.catch((response) => {
+				console.log('Catch del profile.service');
+				const res = response.json();
+
+				console.log(res);
+				console.log(res.error);
+
+				if(res){
+					if(res.error){
+						
+						if(res.error.error === 'Usuario modificado'){
+							this.snackBar.open(`${res.error.error}. ${res.error.message}`,
+												'x', 
+												{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']});
+							//this.authService.logout()
+							localStorage.clear();
+							//this.authService.currentUser = null;
+
+							this.authService.currentUser = new User(res.userName, null, res.firstName, res.lastName, res.userId);
+							console.log(`New user: ${this.authService.currentUser}`);
+							//localStorage.setItem('token', JSON.stringify({token: res.token});
+							localStorage.setItem('token', res.token);
+
+							localStorage.setItem('user', JSON.stringify({userId: res.userId,
+																		 firstName: res.firstName,
+																		 lastName: res.lastName,
+																		 userName: res.userName}));
+							return this.getData();
+							//this.router.navigateByUrl('/');
+						} else if(res.error.error === 'Usuario no disponible') {
+							//Usuario eliminado
+							this.snackBar.open(`${res.error.error}. ${res.error.message}`, 'x', { duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color'] });
+							this.authService.logout()
+							//this.getMistakeActivities()
+							this.router.navigateByUrl('/');
+						} else {
+							this.snackBar.open(`Hubo un problema al traer la información. Intenta más tarde`, 'x', { duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color'] });
+							this.router.navigateByUrl('/');
+						}
+
+					} else {
+						this.snackBar.open(`Presentamos problema con el servidor. Intenta más tarde`, 'x', { duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color'] });
+						this.router.navigateByUrl('/');
+					}
+				}
+			});								//Error
 	}
 
 	getMonthlyData(): Promise<void | any[]>{
@@ -91,7 +142,52 @@ export class ProfileService {
 		return this.http.get(url)
 			.toPromise()
 			.then(response => response.json() as any[])		//Exitoso
-			.catch(this.handleError);								//Error
+			.catch((response) => {
+				console.log('Catch del profile.service');
+				const res = response.json();
+
+				console.log(res);
+				console.log(res.error);
+
+				if(res){
+					if(res.error){
+						
+						if(res.error.error === 'Usuario modificado'){
+							this.snackBar.open(`${res.error.error}. ${res.error.message}`,
+												'x', 
+												{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']});
+							//this.authService.logout()
+							localStorage.clear();
+							//this.authService.currentUser = null;
+
+							this.authService.currentUser = new User(res.userName, null, res.firstName, res.lastName, res.userId);
+							console.log(`New user: ${this.authService.currentUser}`);
+							//localStorage.setItem('token', JSON.stringify({token: res.token});
+							localStorage.setItem('token', res.token);
+
+							localStorage.setItem('user', JSON.stringify({userId: res.userId,
+																		 firstName: res.firstName,
+																		 lastName: res.lastName,
+																		 userName: res.userName}));
+							return this.getData();
+							//this.router.navigateByUrl('/');
+						} else if(res.error.error === 'Usuario no disponible') {
+							//Usuario eliminado
+							this.snackBar.open(`${res.error.error}. ${res.error.message}`, 'x', { duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color'] });
+							//this.authService.logout()
+							//this.getMistakeActivities()
+							this.router.navigateByUrl('/');
+						} else {
+							this.snackBar.open(`Hubo un problema al traer la información. Intenta más tarde`, 'x', { duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color'] });
+							this.router.navigateByUrl('/');
+						}
+
+					} else {
+						this.snackBar.open(`Presentamos problema con el servidor. Intenta más tarde`, 'x', { duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color'] });
+						this.router.navigateByUrl('/');
+					}
+				}
+			});								//Error
 	}
 
 	getToken(){

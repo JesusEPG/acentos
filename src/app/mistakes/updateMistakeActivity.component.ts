@@ -230,17 +230,22 @@ export class UpdateMistakeActivityComponent implements OnInit, ComponentCanDeact
 
 	deletePossibleAnswer(word){
 		//word.clickeable = !word.clickeable;
-		this.remove(this.possibleAnswers, word);
+		//console.log(this.possibleAnswers);
+		//this.remove(this.possibleAnswers, word);
+		//console.log(this.possibleAnswers);
+		this.possibleAnswers.pop();
 	}
 
 	hasOnlywords(word){}
 
 	remove(array, element) {
 	    const index = array.indexOf(element);
+	    console.log(index);
     
 	    if (index !== -1) {
 	        array.splice(index, 1);
 	    }
+	    console.log(this.possibleAnswers);
 	}
 
 	round(value, precision) {
@@ -301,7 +306,7 @@ export class UpdateMistakeActivityComponent implements OnInit, ComponentCanDeact
 		} else {
 			//snackbar con mensaje 'Verificar los datos ingresados e intentar de nuevo'
 			console.log('Not valid');
-			this.snackBar.open(`Verificar los datos e intentar nuevamente!`,
+			this.snackBar.open(`¡Verifica los datos e intenta nuevamente!`,
 								'x',
 								{ duration: 2500, verticalPosition: 'top', panelClass:['snackbar-color']}
 			);

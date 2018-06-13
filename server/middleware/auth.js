@@ -19,27 +19,6 @@ export const required = (req, res, next) => {
 			})
 		}
 
-		/*User.findOne({ _id: token.user._id }, function(err, user){
-			
-			if(user){
-				debug(`Token verified ${token}`)
-				debug(token)
-				req.user = token.user
-				next()
-				
-			} else {
-
-				console.log(err)
-
-				//err es null si no consigue nada
-
-				return res.status(401).json({
-					message: 'Sin autorización',
-					error: {error: 'Usuario no disponible', message: 'Contactar al profesor', name: 'User no longer available' }
-				})
-			}
-		})*/
-
 		User.findOne({ _id: token.user._id }, async function(err, user){
 			
 			if(user&&!user.modified){
@@ -54,10 +33,10 @@ export const required = (req, res, next) => {
 				
 				try {
 					const modifiedUser = await user.save()
-
+					console.log(modifiedUser)
 					return res.status(401).json({
 						message: 'Sin autorización',
-						error: {error: 'Usuario modificado', message: 'Contactar al profesor', name: 'User has been modified' },
+						error: {error: 'Usuario modificado', message: 'Contacta al profesor para más información', name: 'User has been modified' },
 						token: req.query.token,
 						userId: modifiedUser._id,
 						firstName: modifiedUser.firstName,
@@ -79,7 +58,7 @@ export const required = (req, res, next) => {
 
 				return res.status(401).json({
 					message: 'Sin autorización',
-					error: {error: 'Usuario no disponible', message: 'Contactar al profesor', name: 'User no longer available' }
+					error: {error: 'Usuario no disponible', message: 'Contacta al profesor', name: 'User no longer available' }
 				})
 			}
 		})
