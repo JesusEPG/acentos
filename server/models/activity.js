@@ -8,13 +8,9 @@ const ActivitySchema = Schema({
 	comment: { type: String, required: true, default: 'Seguir Repasando' },
 	fullString: { type: String, required: true },
 	splittedString: [{}],
-	//correctAnswer: {type: Object, required: true},
 	correctAnswer: {id: Number, word: String, hidden: Boolean, clickeable: {type: Boolean, required: true}, selected: {type: Boolean}}, //correcto
-	//possibleAnswers: [{type: Object, required: true}],
 	possibleAnswers: [{}],
 	createdAt: { type: Date, required: true, default: new Date()}
-	//user: {type: Schema.Types.ObjectId, ref: 'User', required: true },
-	//answers: [{ type: Schema.Types.ObjectId, ref: 'Answer', default: [] }]
 })
 
 ActivitySchema.pre('remove', async function(next){
