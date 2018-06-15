@@ -29,7 +29,7 @@ export class SessionGuard implements CanDeactivate<ComponentCanDeactivate> {
             return true;
         } else {
 
-           if(confirm('ATENCIÓN: Aún no has terminado. Presiona Cancel para seguir aquí, u OK para salir.')) {
+           if(confirm('ATENCIÓN: Aún no has terminado. Presiona Cancelar para seguir aquí, o Aceptar para salir.')) {
                return true;
            } else 
                return false;

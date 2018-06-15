@@ -163,12 +163,12 @@ export class UpdateSelectionActivityComponent implements OnInit, ComponentCanDea
 
 		if(!word.hidden){
 			
-			//this.addCorrectAnswer(word);
 			if(this.correctAnswer){
 				this.correctAnswer.hidden=!this.correctAnswer.hidden;
 				this.splittedString[this.correctAnswer.id].hidden = this.correctAnswer.hidden;
 				this.correctAnswer = null;
 			}
+			this.possibleAnswers.push(word);
 			this.correctAnswer=word;
 			
 		} else {
@@ -181,21 +181,6 @@ export class UpdateSelectionActivityComponent implements OnInit, ComponentCanDea
 		//console.log(word);
 		console.log(this.splittedString);
 		//De lo contrario se debe buscar el objeto en los arreglos y luego sacarlo
-	}
-
-	addCorrectAnswer(word){
-		//word.clickeable = !word.clickeable;
-
-		this.possibleAnswers.push(word);
-		/*const newAnswer = {
-			id: word.id,
-			word: word.word,
-			hidden: false,
-			clickeable: false,
-			possibleAnswers: [word]
-			
-		}*/
-		this.correctAnswer=word;
 	}
 
 	deleteCorrectAnswer(word){

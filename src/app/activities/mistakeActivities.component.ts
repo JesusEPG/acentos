@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SelectionActivity } from './selectionActivity.model';
 import { ActivitiesService } from './activities.service';
 import { WORST, BEST, CORRECT, INCORRECT, review } from './sm2-plus.module';
-import { Router, NavigationEnd } from '@angular/router';
+import { Router} from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ComponentCanDeactivate } from './session-guard.service';
 import { HostListener } from '@angular/core';

@@ -158,7 +158,7 @@ export class UpdateMistakeActivityComponent implements OnInit, ComponentCanDeact
 			   	clickeable: false,
 			   	selected: false
 			}   
-		});
+		}, this);
 	}
 
 	hideAnswer(word){

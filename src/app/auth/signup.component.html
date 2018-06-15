@@ -4,6 +4,7 @@
 	</mat-spinner>
 
 	<div *ngIf="!loading">
+		<h3 class="text-center mb-4"><strong>Regístrate</strong></h3>
 		<div class="row justify-content-center">
 			<div class="col-md-5">
 				<form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
@@ -39,13 +40,13 @@
 					</div>
 					<fieldset class="form-group form-row">
 						<div class="col-sm-12">
-							<label for="user_name">Username</label>
+							<label for="user_name">Nombre de usuario</label>
 							<input class="form-control" placeholder="Nombre de Usuario" formControlName="userName" id="userName">
 						</div>
 					</fieldset>
 					<fieldset class="form-group form-row">
 						<div class="col-sm-12">
-							<label for="password">Password</label>
+							<label for="password">Contraseña</label>
 							<input type="password" class="form-control" placeholder="Contraseña" formControlName="password" id="password">
 						</div>
 					</fieldset>

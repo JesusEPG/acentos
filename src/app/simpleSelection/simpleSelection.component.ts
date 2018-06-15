@@ -123,7 +123,8 @@ export class SimpleSelectionComponent implements OnInit, ComponentCanDeactivate 
 				this.correctAnswer = null;
 			}
 
-			this.addCorrectAnswer(word);
+			this.possibleAnswers.push(word);
+			this.correctAnswer=word;
 			
 		} else {
 			this.deleteCorrectAnswer(word);
@@ -131,21 +132,6 @@ export class SimpleSelectionComponent implements OnInit, ComponentCanDeactivate 
 		word.hidden = !word.hidden;
 		console.log(this.splittedString);
 		//De lo contrario se debe buscar el objeto en los arreglos y luego sacarlo
-	}
-
-	addCorrectAnswer(word){
-		//word.clickeable = !word.clickeable;
-
-		this.possibleAnswers.push(word);
-		/*const newAnswer = {
-			id: word.id,
-			word: word.word,
-			hidden: false,
-			clickeable: false,
-			possibleAnswers: [word]
-			
-		}*/
-		this.correctAnswer=word;
 	}
 
 	deleteCorrectAnswer(word){

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SelectionActivity } from './selectionActivity.model';
 import { ActivitiesService } from './activities.service';
 import { WORST, BEST, CORRECT, INCORRECT, review } from './sm2-plus.module';
@@ -7,6 +7,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ComponentCanDeactivate } from './session-guard.service';
 import { HostListener } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { Subject } from "rxjs/Subject";
+import "rxjs/add/operator/takeUntil";
+import 'rxjs/add/operator/filter';
 
 @Component({
 	selector: 'app-selection-component',
@@ -17,6 +20,7 @@ import { Observable } from 'rxjs/Observable';
 
 export class SelectionActivitiesComponent implements OnInit, ComponentCanDeactivate {
 
+	private unsubscribe = new Subject<void>();
 	activities: SelectionActivity[];
 	updatedActivities: SelectionActivity[];
 	//Verificar si selectedAnswers será object o String
@@ -196,6 +200,7 @@ export class SelectionActivitiesComponent implements OnInit, ComponentCanDeactiv
 
 			//const q = new Question(form.value.title, form.value.description, new Date(), form.value.icon);
 			this.activitiesService.updateActivities(this.updatedActivities)
+				.takeUntil(this.unsubscribe)
 				.subscribe(
 					//( {_id} ) => this.router.navigate(['/', _id]),
 					() => {
@@ -209,6 +214,40 @@ export class SelectionActivitiesComponent implements OnInit, ComponentCanDeactiv
 			//En el cliente hacer un *ngIf="!loading && selectedAnswers.length === 9"
 			//this.counter = 0;
 		}
+	}
+
+	ngOnDestroy(){
+
+		console.log('NgOnDestroy!')
+
+		if(!this.result){
+			
+			console.log('Me fui demasiado');
+			if(this.activities){
+				if(this.activities.length>0){
+					console.log('Mejor Caso');
+					this.activitiesService.updateActivities(this.activities)
+						.takeUntil(this.unsubscribe)
+						.subscribe(
+								//( {_id} ) => this.router.navigate(['/', _id]),
+								() => {}
+						);
+				} 
+			} else {
+				console.log('Prueba bien');
+				
+				this.activitiesService.prueba(this.activities)
+					.takeUntil(this.unsubscribe)
+					.subscribe(
+						//( {_id} ) => this.router.navigate(['/', _id]),
+						() => {}
+					);
+			}
+		}
+		setTimeout(()=>{    //<<<---    using ()=> syntax
+		    this.unsubscribe.next();
+	    	this.unsubscribe.complete();
+		 }, 1000);
 	}
 	
 }
