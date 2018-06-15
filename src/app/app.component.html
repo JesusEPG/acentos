@@ -32,8 +32,6 @@
                 {{ fullAdminName() }}
             </a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown" *dropdownMenu>
-                <button class="dropdown-item" type="button" [routerLink]="['/profile']">Perfil</button>
-                <div class="dropdown-divider"></div>
                 <button class="dropdown-item" type="button" (click)="adminLogout()">Cerrar Sesión</button>
             </div>
         </li>

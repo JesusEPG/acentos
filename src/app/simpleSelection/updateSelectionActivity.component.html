@@ -1,6 +1,6 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item active" aria-current="page">Actividades</li>
+        <li class="breadcrumb-item active" aria-current="page">Modificación de actividad</li>
     </ol>
 </nav> 
 
@@ -58,7 +58,7 @@
 			<div *ngIf="splittedString" class="clearfix mb-2">
 				<div class="row" style="text-align: center;">
 				    <div class="col">
-				       	<h6>Seleccione la respuesta correcta</h6>
+				       	<h6>Selecciona la respuesta correcta</h6>
 					    <ng-container *ngFor="let word of splittedString">
 					        <button *ngIf="word.clickeable" type="button" class="btn btn-secondary submitButton mb-2" [ngClass]="{'selected-button': word.hidden}" color="accent" (click)="hideAnswer(word)">{{ word.word }}</button>
 					    </ng-container>	
@@ -67,7 +67,7 @@
 			</div>
 
 			<div *ngIf="correctAnswer" class="clearfix text-center">
-				<h6>Ingrese las respuestas posibles</h6>
+				<h6>Ingresa las respuestas posibles</h6>
 
 				<div class="input-group mb-2">
 					<input type="text" class="form-control" placeholder="Respuesta posible" aria-label="Respuesta posible" aria-describedby="basic-addon2" formControlName="possibleAnswer" onkeydown="if ((event.keyCode >= 65 && event.keyCode <= 90 ) || (event.keyCode >= 97 && event.keyCode <= 122 ) || event.keyCode == 8 || event.key == 'Ñ' || event.key == 'ñ' ) return true

@@ -40,6 +40,7 @@ export class AdminUserSignupComponent implements OnInit {
 			this.loading = true;
 			const {firstName, lastName, userName, password, school, grade} = this.signupForm.value;
 			const user = new User(userName, password, firstName, lastName, school, grade);
+			console.log(user);
 			this.authService.signup(user)
 				.subscribe(
 					( user ) => {
@@ -78,7 +79,7 @@ export class AdminUserSignupComponent implements OnInit {
 
 			this.snackBar.open(`Verificar los datos e intentar nuevamente!`,
 								'x',
-								{ duration: 5000,verticalPosition: 'top' }
+								{ duration: 5000,verticalPosition: 'top', panelClass: ['snackbar-color']}
 			);
 		}
 	}

@@ -21,7 +21,7 @@
 
 		<ul class="list-group mb-3">
 
-			<li *ngFor="let user of users | filterBy: ['firstName', 'lastName' ,'userName', 'grade', 'school']: filter | paginate: { itemsPerPage: 10, currentPage: p }" class="list-group-item list-group-item-action flex-column align-items-start">
+			<li *ngFor="let user of users | filterBy: ['firstName', 'lastName' ,'userName', 'grade', 'school']: filter | paginate: { itemsPerPage: 2, currentPage: p }" class="list-group-item list-group-item-action flex-column align-items-start">
 			    <h5><strong>{{user.firstName}} {{user.lastName}}</strong></h5>
 			    <h6 class="mt-3">Nombre de usuario: {{user.userName}}</h6>
 			    <h6 class="mt-3">Escuela: {{user.school}}</h6>
@@ -30,7 +30,7 @@
 			      <div>
 				    	<button [routerLink]="['updateUser', user._id]" class="btn btn-primary btn-sm mb-1">Modificar</button>
 
-				    	<button type="button" class="btn btn-primary btn-sm mb-1" (click)="openModal(template)">Eliminar</button>
+				    	<button type="button" class="btn btn-danger btn-sm mb-1" (click)="openModal(template)">Eliminar</button>
 					    <ng-template class="mt-5" #template>
 					      <div class="modal-body text-center">
 					        <p>¿Estás seguro que deseas eliminar al usuario {{user.userName}}?</p>

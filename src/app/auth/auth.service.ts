@@ -34,8 +34,8 @@ export class AuthService {
 		this.usersURL = urljoin(environment.apiUrl, 'auth');
 		
 		if(this.isLoggedIn()){
-			const { userId, userName, firstName, lastName } = JSON.parse(localStorage.getItem('user'));
-			this.currentUser = new User(userName, null, firstName, lastName, userId);
+			const { userId, userName, firstName, lastName, school, grade } = JSON.parse(localStorage.getItem('user'));
+			this.currentUser = new User(userName, null, firstName, lastName, school, grade, userId);
 		}
 		if(this.isAdminLoggedIn()){
 			const { userId, email, firstName, lastName } = JSON.parse(localStorage.getItem('adminUser'));
@@ -132,10 +132,10 @@ export class AuthService {
 			});
 	}
 
-	login = ({token, userId, firstName, lastName, userName }) => {
-		this.currentUser = new User(userName, null, firstName, lastName, userId)
+	login = ({token, userId, firstName, lastName, userName, grade, school }) => {
+		this.currentUser = new User(userName, null, firstName, lastName, school, grade, userId)
 		localStorage.setItem('token', token);
-		localStorage.setItem('user', JSON.stringify({userId, firstName , lastName, userName}));
+		localStorage.setItem('user', JSON.stringify({userId, firstName , lastName, userName, school, grade}));
 		this.router.navigateByUrl('/');
 	}
 

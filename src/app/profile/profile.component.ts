@@ -183,6 +183,14 @@ export class ProfileComponent implements OnInit {
 		return this.authService.currentUser.userName;
 	}
 
+	grade() {
+		return this.authService.currentUser.grade;
+	}
+
+	school() {
+		return this.authService.currentUser.school;
+	}
+
 	onSelect(data: TabDirective): void {
 	    this.value = data.heading;
 

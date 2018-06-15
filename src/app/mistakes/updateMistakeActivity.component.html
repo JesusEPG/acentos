@@ -1,6 +1,6 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item active" aria-current="page">Actividades</li>
+        <li class="breadcrumb-item active" aria-current="page">Modificación de actividad</li>
     </ol>
 </nav> 
 
@@ -62,7 +62,7 @@
 				
 					<div class="row">
 				        <div class="col">
-				        	<h6>Seleccione la palabra incorrecta</h6>
+				        	<h6>Selecciona la palabra incorrecta</h6>
 				        	<ng-container *ngFor="let word of activityWords">
 					       		<button *ngIf="word.clickeable" type="button" class="btn btn-secondary submitButton mb-2" [ngClass]="{'selected-button': word.hidden}" color="accent" (click)="hideAnswer(word)">{{ word.word }}</button>
 					        </ng-container>
@@ -70,7 +70,7 @@
 	    			</div>	
 			</div>
 			<div *ngIf="correctAnswer" class="clearfix text-center">
-				<h6>Ingrese la respuesta correcta</h6>
+				<h6>Ingresa la respuesta correcta</h6>
 			
 					<div class="input-group mb-2">
 						  	<input type="text" class="form-control" placeholder="Ingrese respuesta a agregar" aria-label="Recipient's username" aria-describedby="basic-addon2" formControlName="possibleAnswer" onkeydown="if ((event.keyCode >= 65 && event.keyCode <= 90 ) || (event.keyCode >= 97 && event.keyCode <= 122 ) || event.keyCode == 8 || event.key == 'Ñ' || event.key == 'ñ' ) return true

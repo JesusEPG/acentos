@@ -46,7 +46,9 @@ app.post('/signin', async (req, res, next) => {
 		userId: user._id,
 		firstName: user.firstName,
 		lastName: user.lastName,
-		userName: user.userName
+		userName: user.userName,
+		grade: user.grade,
+		school: user.school
 	})
 
 })
@@ -86,6 +88,8 @@ app.post('/signup', async (req, res) => {
 
 	let newActivities = []
 
+	console.log(req.body)
+
 	const { firstName, lastName, userName, password, school, grade } = req.body
 	
 	//VALIDAR QUE EL USUARIO NO EXISTA
@@ -100,6 +104,9 @@ app.post('/signup', async (req, res) => {
 
 		//Inicializar campos del algoritmo en usuario para cada actividad
 		const result = await activities.findAllActivities()
+
+		console.log("RESULT:")
+		console.log(result)
 
 		result.forEach(function(activity){
 			

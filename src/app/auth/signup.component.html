@@ -1,10 +1,14 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item active" aria-current="page">Registro de usuario</li>
+    </ol>
+</nav>
 <div class="container mt-5 container-fixed-footer">
 
 	<mat-spinner *ngIf="loading" class="spinner" style="margin:0 auto;" color='primary'>
 	</mat-spinner>
 
 	<div *ngIf="!loading">
-		<h3 class="text-center mb-4"><strong>Regístrate</strong></h3>
 		<div class="row justify-content-center">
 			<div class="col-md-5">
 				<form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
@@ -24,12 +28,12 @@
 							<!--<input class="form-control" placeholder="Grado" formControlName="grade" id="grade">-->
 							<select class="custom-select form-control" formControlName="grade" id="grade">
 								<option></option>
-								<option value="1">1</option>
-								<option value="2">2</option>
-								<option value="3">3</option>
-								<option value="4">4</option>
-								<option value="5">5</option>
-								<option value="6">6</option>
+								<option value="1ro">1ro</option>
+								<option value="2do">2do</option>
+								<option value="3ro">3ro</option>
+								<option value="4to">4to</option>
+								<option value="5to">5to</option>
+								<option value="6to">6to</option>
 
 							</select>
 						</div>
