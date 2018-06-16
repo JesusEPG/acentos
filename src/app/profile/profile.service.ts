@@ -38,44 +38,49 @@ export class ProfileService {
 				console.log('Catch del profile.service');
 				const res = response.json();
 
-				console.log(res);
-				console.log(res.error);
-
 				if(res){
 					if(res.error){
-						
 						if(res.error.error === 'Usuario modificado'){
 							this.snackBar.open(`${res.error.error}. ${res.error.message}`,
 												'x', 
 												{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']});
-							//this.authService.logout()
+							
 							localStorage.clear();
-							//this.authService.currentUser = null;
 
-							this.authService.currentUser = new User(res.userName, null, res.firstName, res.lastName, res.userId);
-							console.log(`New user: ${this.authService.currentUser}`);
-							//localStorage.setItem('token', JSON.stringify({token: res.token});
+							this.authService.currentUser = new User(res.userName,
+																	null,
+																	res.firstName,
+																	res.lastName,
+																	res.school,
+																	res.grade,
+																	res.userId);
+
 							localStorage.setItem('token', res.token);
-
 							localStorage.setItem('user', JSON.stringify({userId: res.userId,
-																		 firstName: res.firstName,
-																		 lastName: res.lastName,
-																		 userName: res.userName}));
+																		firstName: res.firstName,
+																		lastName: res.lastName,
+																		userName: res.userName,
+																		school: res.school,
+																		grade: res.grade}));
 							return this.getData();
-							//this.router.navigateByUrl('/');
-						} else if(res.error.error === 'Usuario no disponible') {
+						} else if (res.error.error === 'Usuario no disponible') {
 							//Usuario eliminado
-							this.snackBar.open(`${res.error.error}. ${res.error.message}`, 'x', { duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color'] });
+							this.snackBar.open(`${res.error.error}. ${res.error.message}`,
+												'x',
+												{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color'] });
 							this.authService.logout()
-							//this.getMistakeActivities()
 							this.router.navigateByUrl('/');
 						} else {
-							this.snackBar.open(`Hubo un problema al traer la información. Intenta más tarde`, 'x', { duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color'] });
+							this.snackBar.open(`Hubo un problema al traer la información. Intenta más tarde`,
+												'x',
+												{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color'] });
 							this.router.navigateByUrl('/');
 						}
 
 					} else {
-						this.snackBar.open(`Presentamos problema con el servidor. Intenta más tarde`, 'x', { duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color'] });
+						this.snackBar.open(`Presentamos problema con el servidor. Intenta más tarde`,
+											'x',
+											{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']});
 						this.router.navigateByUrl('/');
 					}
 				}
@@ -106,22 +111,29 @@ export class ProfileService {
 							localStorage.clear();
 							//this.authService.currentUser = null;
 
-							this.authService.currentUser = new User(res.userName, null, res.firstName, res.lastName, res.userId);
-							console.log(`New user: ${this.authService.currentUser}`);
-							//localStorage.setItem('token', JSON.stringify({token: res.token});
+							this.authService.currentUser = new User(res.userName,
+																	null,
+																	res.firstName,
+																	res.lastName,
+																	res.school,
+																	res.grade,
+																	res.userId);
+							
 							localStorage.setItem('token', res.token);
-
 							localStorage.setItem('user', JSON.stringify({userId: res.userId,
-																		 firstName: res.firstName,
-																		 lastName: res.lastName,
-																		 userName: res.userName}));
-							return this.getData();
+																		firstName: res.firstName,
+																		lastName: res.lastName,
+																		userName: res.userName,
+																		school: res.school,
+																		grade: res.grade}));
+							return this.getWeeklyData();
 							//this.router.navigateByUrl('/');
 						} else if(res.error.error === 'Usuario no disponible') {
 							//Usuario eliminado
-							this.snackBar.open(`${res.error.error}. ${res.error.message}`, 'x', { duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color'] });
+							this.snackBar.open(`${res.error.error}. ${res.error.message}`,
+												'x',
+												{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color'] });
 							this.authService.logout()
-							//this.getMistakeActivities()
 							this.router.navigateByUrl('/');
 						} else {
 							this.snackBar.open(`Hubo un problema al traer la información. Intenta más tarde`, 'x', { duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color'] });
@@ -160,22 +172,29 @@ export class ProfileService {
 							localStorage.clear();
 							//this.authService.currentUser = null;
 
-							this.authService.currentUser = new User(res.userName, null, res.firstName, res.lastName, res.userId);
-							console.log(`New user: ${this.authService.currentUser}`);
-							//localStorage.setItem('token', JSON.stringify({token: res.token});
+							this.authService.currentUser = new User(res.userName,
+																	null,
+																	res.firstName,
+																	res.lastName,
+																	res.school,
+																	res.grade,
+																	res.userId);
+							
 							localStorage.setItem('token', res.token);
-
 							localStorage.setItem('user', JSON.stringify({userId: res.userId,
-																		 firstName: res.firstName,
-																		 lastName: res.lastName,
-																		 userName: res.userName}));
-							return this.getData();
+																		firstName: res.firstName,
+																		lastName: res.lastName,
+																		userName: res.userName,
+																		school: res.school,
+																		grade: res.grade}));
+							return this.getMonthlyData();
 							//this.router.navigateByUrl('/');
 						} else if(res.error.error === 'Usuario no disponible') {
 							//Usuario eliminado
-							this.snackBar.open(`${res.error.error}. ${res.error.message}`, 'x', { duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color'] });
-							//this.authService.logout()
-							//this.getMistakeActivities()
+							this.snackBar.open(`${res.error.error}. ${res.error.message}`,
+												'x',
+												{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color'] });
+							this.authService.logout()
 							this.router.navigateByUrl('/');
 						} else {
 							this.snackBar.open(`Hubo un problema al traer la información. Intenta más tarde`, 'x', { duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color'] });
@@ -187,7 +206,7 @@ export class ProfileService {
 						this.router.navigateByUrl('/');
 					}
 				}
-			});								//Error
+			});									//Error
 	}
 
 	getToken(){

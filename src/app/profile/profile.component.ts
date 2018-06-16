@@ -166,7 +166,9 @@ export class ProfileComponent implements OnInit {
 				this.loading = false;
 			})
 			.catch((err: any) => {
-				this.snackBar.open(`Hubo un problema al traer la información. Intenta más tarde`, 'x', { duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color'] });
+				this.snackBar.open(`Hubo un problema al traer la información. Intenta más tarde`,
+									'x',
+									{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color'] });
 				this.router.navigateByUrl('/');
 			});
 	}

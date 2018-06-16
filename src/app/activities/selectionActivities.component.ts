@@ -75,13 +75,16 @@ export class SelectionActivitiesComponent implements OnInit, ComponentCanDeactiv
 					
 				} else {
 
-					console.log(this.activities);
-					console.log(this.activities.length);
-					console.log(this.activities[0].correctAnswer.word);
 					this.renderSpace(this.activities[0].correctAnswer.word);
 					this.loading = false;
 					
 				}
+			})
+			.catch((err: any) => {
+				this.snackBar.open(`Hubo un problema al traer la información. Intenta más tarde`,
+									'x',
+									{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color'] });
+				this.router.navigateByUrl('/');
 			});
 	}
 
@@ -208,7 +211,16 @@ export class SelectionActivitiesComponent implements OnInit, ComponentCanDeactiv
 						this.loading=false;
 						console.log(this.selectedAnswers);
 					},
-					this.activitiesService.handleError
+					//this.activitiesService.handleError
+					() => {
+						console.log("Error")
+						/*
+						this.snackBar.open(`Presentamos problema con el servidor. Intenta más tarde`,
+											'x',
+											{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']});
+						this.router.navigateByUrl('/');
+						*/
+					}
 				);//recibe dos funciones como parametros, la función de exito y la función de error
 			//Cuando responda la bdd hacer loading = false
 			//En el cliente hacer un *ngIf="!loading && selectedAnswers.length === 9"

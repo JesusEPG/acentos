@@ -71,7 +71,6 @@ export class MistakeActivitiesComponent implements OnInit, OnDestroy, ComponentC
 		this.activitiesService
 			.getMistakeActivities()
 			.then((activities: SelectionActivity[]) => {
-				console.log('Then');
 				this.activities = activities;
 				if(this.activities.length<1){
 
@@ -83,16 +82,15 @@ export class MistakeActivitiesComponent implements OnInit, OnDestroy, ComponentC
 					
 				} else {
 
-					console.log(this.activities);
-					console.log(this.activities.length);
 					this.loading = false;
 					
 				}
 			})
 			.catch((err: any) => {
-				console.log('Entre al error')
-				console.log('Error ' + err);
-				//this.loading = false;
+				this.snackBar.open(`Hubo un problema al traer la información. Intenta más tarde`,
+									'x',
+									{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color'] });
+				this.router.navigateByUrl('/');
 			});
 
 		console.log('NgOnInit!')
@@ -224,7 +222,16 @@ export class MistakeActivitiesComponent implements OnInit, OnDestroy, ComponentC
 						this.loading=false;
 						console.log(this.selectedAnswers);
 					},
-					this.activitiesService.handleError
+					//this.activitiesService.handleError
+					() => {
+						console.log("Error")
+						/*
+						this.snackBar.open(`Presentamos problema con el servidor. Intenta más tarde`,
+											'x',
+											{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']});
+						this.router.navigateByUrl('/');
+						*/
+					}
 				);//recibe dos funciones como parametros, la función de exito y la función de error
 			//Cuando responda la bdd hacer loading = false
 			//En el cliente hacer un *ngIf="!loading && selectedAnswers.length === 9"

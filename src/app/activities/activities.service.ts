@@ -45,55 +45,53 @@ export class ActivitiesService {
 				console.log('Catch del mistakesActivities.service');
 				const res = response.json();
 
-				console.log(res);
-				console.log(res.error);
-
-				/*if(res){
-					if(res.error){
-						this.snackBar.open(`${res.error.error}. ${res.error.message}`, 'x', { duration: 2500, verticalPosition: 'top'});
-						//this.authService.logout()
-						//this.getMistakeActivities()
-						this.router.navigateByUrl('/');
-					} else {
-						this.snackBar.open(`Presentamos problema con el servidor. Intentar más tarde`, 'x', { duration: 2500, verticalPosition: 'top'});
-						this.router.navigateByUrl('/');
-					}
-				}*/
-
 				if(res){
 					if(res.error){
-						
 						if(res.error.error === 'Usuario modificado'){
-							this.snackBar.open(`${res.error.error}. ${res.error.message}`, 'x', { duration: 2500, verticalPosition: 'top'});
-							//this.authService.logout()
+							this.snackBar.open(`${res.error.error}. ${res.error.message}`,
+												'x',
+												{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']});
+							
 							localStorage.clear();
-							//this.authService.currentUser = null;
 
-							this.authService.currentUser = new User(res.userName, null, res.firstName, res.lastName, res.userId);
-							//localStorage.setItem('token', JSON.stringify({token: res.token});
+							this.authService.currentUser = new User(res.userName,
+																	null,
+																	res.firstName,
+																	res.lastName,
+																	res.school,
+																	res.grade,
+																	res.userId);
+							
 							localStorage.setItem('token', res.token);
-
 							localStorage.setItem('user', JSON.stringify({userId: res.userId,
-																		 firstName: res.firstName,
-																		 lastName: res.lastName,
-																		 userName: res.userName}));
+																		firstName: res.firstName,
+																		lastName: res.lastName,
+																		userName: res.userName,
+																		school: res.school,
+																		grade: res.grade}));
 							return this.getMistakeActivities();
-							//this.router.navigateByUrl('/');
+						} else if (res.error.error === 'Usuario no disponible') {
+							//Usuario eliminado
+							this.snackBar.open(`${res.error.error}. ${res.error.message}`,
+												'x',
+												{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color'] });
+							this.authService.logout()
+							this.router.navigateByUrl('/');
 						} else {
-							this.snackBar.open(`${res.error.error}. ${res.error.message}`, 'x', { duration: 2500, verticalPosition: 'top'});
-							//this.authService.logout()
-							//this.getMistakeActivities()
+							this.snackBar.open(`Hubo un problema al traer la información. Intenta más tarde`,
+												'x',
+												{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color'] });
 							this.router.navigateByUrl('/');
 						}
 
 					} else {
-						this.snackBar.open(`Presentamos problema con el servidor. Intentar más tarde`, 'x', { duration: 2500, verticalPosition: 'top'});
+						this.snackBar.open(`Presentamos problema con el servidor. Intenta más tarde`,
+											'x',
+											{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']});
 						this.router.navigateByUrl('/');
 					}
 				}
-
 			});
-			//.catch((error: Response) => Observable.throw(error.json()));							//Error
 	}
 
 	getSelectionActivities(): Promise<void | SelectionActivity[]>{
@@ -104,43 +102,67 @@ export class ActivitiesService {
 			.then(response => response.json() as SelectionActivity[])		//Exitoso
 			//.catch(this.handleError);							//Error
 			.catch((response) => {
-				console.log('Catch del selectionActivities.service');
+				console.log('Catch del mistakesActivities.service');
 				const res = response.json();
 
 				if(res){
 					if(res.error){
-						
 						if(res.error.error === 'Usuario modificado'){
-							this.snackBar.open(`${res.error.error}. ${res.error.message}`, 'x', { duration: 2500, verticalPosition: 'top'});
-							//this.authService.logout()
+							this.snackBar.open(`${res.error.error}. ${res.error.message}`,
+												'x',
+												{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']});
+							
 							localStorage.clear();
-							//this.authService.currentUser = null;
 
-							this.authService.currentUser = new User(res.userName, null, res.firstName, res.lastName, res.userId);
-							//localStorage.setItem('token', JSON.stringify({token: res.token});
+							this.authService.currentUser = new User(res.userName,
+																	null,
+																	res.firstName,
+																	res.lastName,
+																	res.school,
+																	res.grade,
+																	res.userId);
+							
 							localStorage.setItem('token', res.token);
-
 							localStorage.setItem('user', JSON.stringify({userId: res.userId,
-																		 firstName: res.firstName,
-																		 lastName: res.lastName,
-																		 userName: res.userName}));
+																		firstName: res.firstName,
+																		lastName: res.lastName,
+																		userName: res.userName,
+																		school: res.school,
+																		grade: res.grade}));
 							return this.getSelectionActivities();
-							//this.router.navigateByUrl('/');
+						} else if (res.error.error === 'Usuario no disponible') {
+							//Usuario eliminado
+							this.snackBar.open(`${res.error.error}. ${res.error.message}`,
+												'x',
+												{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color'] });
+							this.authService.logout()
+							this.router.navigateByUrl('/');
 						} else {
-							this.snackBar.open(`${res.error.error}. ${res.error.message}`, 'x', { duration: 2500, verticalPosition: 'top'});
-							//this.authService.logout()
-							//this.getMistakeActivities()
+							this.snackBar.open(`Hubo un problema al traer la información. Intenta más tarde`,
+												'x',
+												{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color'] });
 							this.router.navigateByUrl('/');
 						}
 
 					} else {
-						this.snackBar.open(`Presentamos problema con el servidor. Intentar más tarde`, 'x', { duration: 2500, verticalPosition: 'top'});
+						this.snackBar.open(`Presentamos problema con el servidor. Intenta más tarde`,
+											'x',
+											{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']});
 						this.router.navigateByUrl('/');
 					}
 				}
-
 			});
 	}
+
+	/*updateActivities(activities: SelectionActivity[]) {
+		const body = JSON.stringify(activities);
+		const headers = new Headers({'Content-Type': 'application/json'});
+		const token = this.getToken();
+		const url = this.activitiesUrl + '/updateActivities' + token;
+		return this.http.post(url, body, { headers })
+			.map((response: Response) => response.json())
+			.catch((error: Response) => Observable.throw(error.json()));
+	}*/
 
 	updateActivities(activities: SelectionActivity[]) {
 		const body = JSON.stringify(activities);
@@ -149,7 +171,60 @@ export class ActivitiesService {
 		const url = this.activitiesUrl + '/updateActivities' + token;
 		return this.http.post(url, body, { headers })
 			.map((response: Response) => response.json())
-			.catch((error: Response) => Observable.throw(error.json()));
+			//.catch((error: Response) => Observable.throw(error.json()));
+			.catch((response) => {
+				console.log('Catch del mistakesActivities.service');
+				const res = response.json();
+
+				if(res){
+					if(res.error){
+						if(res.error.error === 'Usuario modificado'){
+							this.snackBar.open(`${res.error.error}. ${res.error.message}`,
+												'x',
+												{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']});
+							
+							localStorage.clear();
+
+							this.authService.currentUser = new User(res.userName,
+																	null,
+																	res.firstName,
+																	res.lastName,
+																	res.school,
+																	res.grade,
+																	res.userId);
+							
+							localStorage.setItem('token', res.token);
+							localStorage.setItem('user', JSON.stringify({userId: res.userId,
+																		firstName: res.firstName,
+																		lastName: res.lastName,
+																		userName: res.userName,
+																		school: res.school,
+																		grade: res.grade}));
+							return this.updateActivities(activities);
+						} else if (res.error.error === 'Usuario no disponible') {
+							//Usuario eliminado
+							this.snackBar.open(`${res.error.error}. ${res.error.message}`,
+												'x',
+												{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color'] });
+							this.authService.logout()
+							this.router.navigateByUrl('/');
+						} else {
+							this.snackBar.open(`Hubo un problema al traer la información. Intenta más tarde`,
+												'x',
+												{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color'] });
+							this.router.navigateByUrl('/');
+							//Observable.throw(error.json())
+						}
+
+					} else {
+						this.snackBar.open(`Presentamos problema con el servidor. Intenta más tarde`,
+											'x',
+											{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']});
+						this.router.navigateByUrl('/');
+						//Observable.throw(error.json())
+					}
+				}
+			});
 	}
 
 	updateTakenActivities(activities: SelectionActivity[]) {
@@ -175,42 +250,6 @@ export class ActivitiesService {
 
 	}
 
-	/*getQuestion(id): Promise<void | Question>{
-		const url = urljoin(this.questionsUrl, id);
-		return this.http.get(url)
-			.toPromise()
-			.then(response => response.json() as Question)
-			.catch(this.handleError);
-	}
-
-	addQuestion(question: Question) {
-		const body = JSON.stringify(question);
-		const headers = new Headers({'Content-Type': 'application/json'});
-		const token = this.getToken();
-		const url = this.questionsUrl + token;
-		return this.http.post(url, body, { headers })
-			.map((response: Response) => response.json())
-			.catch((error: Response) => Observable.throw(error.json()));
-	}
-
-	addAnswer(answer: Answer) {
-
-		const a = {
-			description: answer.description,
-			question: {
-				_id: answer.question._id
-			}
-		}
-
-		const body = JSON.stringify(a);
-		const headers = new Headers({'Content-Type': 'application/json'});
-		const token = this.getToken();
-		//const url = urljoin(this.questionsUrl, answer.question._id, 'answers'); //en strings los aspectos de la ruta que no son parametros
-		return this.http.post(`${this.questionsUrl}/${answer.question._id}/answers${token}`, body, { headers })
-			.map((response: Response) => response.json())
-			.catch((error: Response) => Observable.throw(error.json()));
-	}*/
-
 	getToken(){
 		const token = localStorage.getItem('token');
 		return `?token=${token}`;
@@ -219,13 +258,6 @@ export class ActivitiesService {
 	handleError(error: any) {
 		const errMsg = error.message ? error.message :
 		error.status ? `${error.status} - ${error.statusText}` : 'Server error';
-		console.log('Entre al handler');
-
-
-		console.log(errMsg);
-
-				console.log(this)
-
 
 		this.router.navigateByUrl('/');
 
