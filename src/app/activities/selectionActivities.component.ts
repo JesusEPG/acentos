@@ -67,7 +67,7 @@ export class SelectionActivitiesComponent implements OnInit, ComponentCanDeactiv
 				this.activities = activities;
 				if(this.activities.length<1){
 
-					this.snackBar.open(`No hay actividades de selección disponbles. Intente más tarde`,
+					this.snackBar.open(`No hay actividades de completarb oración disponbles. Intente más tarde`,
 										'x', 
 										{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']}
 					);
@@ -100,11 +100,9 @@ export class SelectionActivitiesComponent implements OnInit, ComponentCanDeactiv
 
 	selectAnswer(word){
 		
-		//Debo recibir la respuesta, puede ser el string
 		//Si no se ha seleccionado se pushea
 		//Hago un push de la respuesta a selectedAnswers
 		if(word.clickeable){
-			//push
 
 			//Se verifica si hay una respuesta ya seleccionada
 			if(this.selectedAnswers[this.counter]){
@@ -115,27 +113,15 @@ export class SelectionActivitiesComponent implements OnInit, ComponentCanDeactiv
 			this.selectedAnswers.push(word);
 			console.log(this.selectedAnswers);
 		} else {
-			//pop
-			//le quito la clase agregada
+
 			this.selectedAnswers.pop();
-			console.log(this.selectedAnswers);
-
-
-			//this.selectedAnswers.splice(this.counter, 1);
 		}
 
 		word.clickeable = !word.clickeable
-
-		//Si ya se había seleccionado
-		//Se elimina el elemento en la posición this.counter
-
-		//Traer la función desde simpleSelection.component
 	}
 	
 	next() {
-		//validar con this.activities.length en vez de 9, asi siempre funciona en base a lo que se traiga
 		if (this.counter < this.activities.length-1) {
-			// code...
 			this.counter++;
 		} else {
 			this.loading = true;
@@ -143,14 +129,9 @@ export class SelectionActivitiesComponent implements OnInit, ComponentCanDeactiv
 			this.updatedActivities = this.activities.map(function(activity, index){
 				if(this.selectedAnswers[index].word === activity.correctAnswer.word){
 					//respuesta correcta
-					console.log('Correcto');
 					activity.correctCount++;
 					this.selectedAnswers[index].correct=true;
-					//calcular cambios del algoritmo
 					const newValues = review(activity, CORRECT)
-					console.log(newValues);
-
-					//new values
 					return new SelectionActivity(
 						activity.activity,
 						newValues.difficulty,
@@ -162,22 +143,11 @@ export class SelectionActivitiesComponent implements OnInit, ComponentCanDeactiv
 						true,
 						activity._id
 					);
-			/*		return {
-						activity: activity.activity ,
-						difficulty: ,
-						percentOverDue: , 
-						reviewInterval: ,
-						lastAttempt:
-					}*/
 				} else {
 					//respuesta erronea
-					console.log('Incorrecto');
 					activity.incorrectCount++;
 					this.selectedAnswers[index].correct=false;
-					//const newValues = calculate(activity, WORST, Math.round(new Date().getTime() / DAY_IN_MINISECONDS))
-					//console.log(newValues);
 					const newValues = review(activity, INCORRECT)
-					console.log(newValues);
 					//new values
 					return new SelectionActivity(
 						activity.activity,
@@ -190,18 +160,9 @@ export class SelectionActivitiesComponent implements OnInit, ComponentCanDeactiv
 						false,
 						activity._id
 					);
-					/*return {
-						activity: activity.activity ,
-						difficulty: ,
-						percentOverDue: , 
-						reviewInterval: ,
-						lastAttempt:
-					}*/
 				}
 			},this)
-			//Hacer el post para actualizar las actividades enviando updatedAnswers
 
-			//const q = new Question(form.value.title, form.value.description, new Date(), form.value.icon);
 			this.activitiesService.updateActivities(this.updatedActivities)
 				.takeUntil(this.unsubscribe)
 				.subscribe(
@@ -221,16 +182,11 @@ export class SelectionActivitiesComponent implements OnInit, ComponentCanDeactiv
 						this.router.navigateByUrl('/');
 						*/
 					}
-				);//recibe dos funciones como parametros, la función de exito y la función de error
-			//Cuando responda la bdd hacer loading = false
-			//En el cliente hacer un *ngIf="!loading && selectedAnswers.length === 9"
-			//this.counter = 0;
+				);
 		}
 	}
 
 	ngOnDestroy(){
-
-		console.log('NgOnDestroy!')
 
 		if(!this.result){
 			
@@ -256,7 +212,7 @@ export class SelectionActivitiesComponent implements OnInit, ComponentCanDeactiv
 					);
 			}
 		}
-		setTimeout(()=>{    //<<<---    using ()=> syntax
+		setTimeout(()=>{
 		    this.unsubscribe.next();
 	    	this.unsubscribe.complete();
 		 }, 1000);

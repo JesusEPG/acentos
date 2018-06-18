@@ -7,86 +7,17 @@
 
 <div class="container mt-5 container-fixed-footer">
 
-    <!--<alert *ngIf="loading" type="info">
-      <strong>Heads up!</strong> This alert needs your attention, but it's not super important.
-    </alert>-->
-
-    <!--<div *ngIf="!loading&&generalChartData.length>0" class="row">
-
-
-        <div>
-            <h4>Repasos: {{generalChartData[0]+generalChartData[1]}}</h4>
-        </div>
-
-        <div style="display: block" class="col col-md-6">
-            <canvas baseChart
-                    [data]="doughnutChartData"
-                    [labels]="doughnutChartLabels"
-                    [chartType]="doughnutChartType"
-                    [colors]="doughnutChartColors"
-                    (chartHover)="chartHovered($event)"
-                    (chartClick)="chartClicked($event)">
-                        
-            </canvas>
-        </div>
-        
-    </div>
-
-    <div *ngIf="!loading&&generalChartData.length>0" class="row">
-        <div class="col col-md-6">
-            <label class="mb-3">Historial de Correctas e Incorrectas</label>
-        </div>
-        <div style="display: block" class="col col-md-6">
-            <canvas baseChart
-                    [data]="generalChartData"
-                    [labels]="generalChartLabels"
-                    [chartType]="generalChartType"
-                    [colors]="generalChartColors"
-                    (chartHover)="chartHovered($event)"
-                    (chartClick)="chartClicked($event)">
-                        
-            </canvas>
-        </div>     
-        
-    </div>
-
-    <div *ngIf="!loading&&generalChartData.length<1" class="alert alert-info" role="alert">
-        ¡Aún no hay disponible datos de actividad!
-    </div>-->
-    
-
     <div class="card bg-light mb-3">
-        <!--<div class="card-header">Perfil</div>-->
         <div class="card-header">
-            <h5 class="card-title"><strong>{{fullName()}}, {{grade()}}</strong></h5>
+            <h5 class="card-title"><strong>{{fullName()}}</strong></h5>
             <h6 class="card-subtitle text-muted">{{username()}}</h6>
-            <h5 class="card-title"><strong>Escuela: {{school()}}</strong></h5>
+            <h5 class="card-title mt-3"><strong>Escuela: {{school()}}</strong></h5>
             <h5 class="card-title"><strong>Grado: {{grade()}}</strong></h5>
         </div>
 
         <div class="card-body">
-            
-            <!--<p class="card-text ml-4">Some quick example text to build on the card title and make up the bulk of the card's content.</p>-->
 
             <h5 class="card-title"><strong>Historial de Actividad</strong></h5>
-
-            <!--<div *ngIf="!loading&&generalChartData.length>0" class="row align-items-center">
-                
-
-                <div class="col col-md-6">-->
-                    <!--<label class="mb-3">Historial de Correctas e Incorrectas</label>-->
-                    <!--<ul class=" mb-2">
-                        <li style="list-style: none" class="text-dark">Actividades repasadas: {{numberOfActivities}}</li>
-                        <li style="list-style: none" class="text-dark mt-4">Actividades de errores repasadas: {{numberOfMistakesActivities}}</li>
-                        <li style="list-style: none" class="text-dark mt-4">Actividades de selección repasadas: {{numberOfSelectionActivities}}</li>
-                        <li style="list-style: none" class="text-dark mt-4">Repasos realizados: {{generalChartData[0]+generalChartData[1]}}</li>
-                    </ul>
-                </div>
-                
-                    
-            </div>-->
-
-            <!--<hr>-->
 
             <div>
                 <tabset>
@@ -255,17 +186,6 @@
                         </div> 
 
                         <div *ngIf="!loading&&(mistakesWeeklyChartData.length>0&&selectionWeeklyChartData.length>0)" class="row align-items-center">
-                                <!--<div style="display: block" class="col-md-8 offset-md-2">
-                                    <canvas baseChart
-                                        [data]="generalChartData"
-                                        [labels]="generalChartLabels"
-                                        [chartType]="generalChartType"
-                                        [colors]="generalChartColors"
-                                        (chartHover)="chartHovered($event)"
-                                        (chartClick)="chartClicked($event)">
-                                                
-                                    </canvas>
-                                </div>-->
                                 <div class="col-md-6 mb-3">
                                     <h5 style="text-align: center;">Actividades de error</h5>
                                     <div style="display: block"> 

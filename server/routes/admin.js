@@ -195,6 +195,7 @@ app.post('/updateUser', async (req, res) => {
 					
 					"firstName": firstName,
 					"lastName": lastName,
+					"userName": userName,
 					"modified": true,
 					"school": school,
 					"grade": grade,
@@ -206,6 +207,7 @@ app.post('/updateUser', async (req, res) => {
 					
 						"firstName": firstName,
 						"lastName": lastName,
+						"userName": userName,
 						"modified": true,
 						"school": school,
 						"grade": grade

@@ -7,6 +7,7 @@ import { AdminService } from './admin.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ComponentCanDeactivate } from '../activities/session-guard.service';
 import { Observable } from 'rxjs/Observable';
+import { noWhitespaceValidator } from '../utils/noWhitespaces.validator';
 
 @Component({
 	selector: 'app-update-user-component',
@@ -30,10 +31,8 @@ export class UpdateUserComponent implements OnInit, ComponentCanDeactivate {
 	// @HostListener allows us to also guard against browser refresh, close, etc.
   	@HostListener('window:beforeunload')
   	canDeactivate(): Observable<boolean> | boolean {
-    	// insert logic to check if there are pending changes here;
     	// returning true will navigate without confirmation
     	// returning false will show a confirm dialog before navigating away
-    	//return false;
     	if((this.userUpdateForm.value.firstName||this.userUpdateForm.value.lastName||this.userUpdateForm.value.userName)&&!this.done) {
 
     		return false;
@@ -46,15 +45,12 @@ export class UpdateUserComponent implements OnInit, ComponentCanDeactivate {
 
 	ngOnInit(){
 		this.userUpdateForm = new FormGroup({
-			firstName: new FormControl(null, Validators.required),
-			lastName: new FormControl(null, Validators.required),
-			userName: new FormControl(null, [
-			Validators.required//,
-				//Validators.pattern(/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)
-			]),
-			school: new FormControl(null, Validators.required),
+			firstName: new FormControl(null, [Validators.required, Validators.maxLength(50), noWhitespaceValidator, Validators.pattern(/^[a-zA-ZáÁéÉíÍóÓúÚñÑ]+$/)]),
+			lastName: new FormControl(null, [Validators.required, Validators.maxLength(50), noWhitespaceValidator, Validators.pattern(/^[a-zA-ZáÁéÉíÍóÓúÚñÑ]+$/)]),
+			userName: new FormControl(null, [Validators.required, Validators.maxLength(20), noWhitespaceValidator]),
+			school: new FormControl(null, [Validators.required, Validators.maxLength(100), noWhitespaceValidator]),
 			grade: new FormControl(null, [Validators.required]),
-			password: new FormControl(null)
+			password: new FormControl(null, Validators.maxLength(10))
 		});
 
 		this.route.params.subscribe( params => 

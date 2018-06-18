@@ -51,32 +51,6 @@
 		
 	</div>
 
-	<!--<div *ngIf="!loading&&result">
-	
-		<div class="col-sm-12 mb-3">
-			<ul class="list-group" *ngFor="let activity of activities; let i = index">
-
-				<li *ngIf="selectedAnswers[i].correct" class="list-group-item list-group-item-success">
-					<h5>Correcto!!!!!</h5>
-				</li>
-			  
-				<li *ngIf="!selectedAnswers[i].correct" class="list-group-item list-group-item-danger">
-					<div class="d-flex w-100 justify-content-between">
-			      		
-			      		<small class="mb-1">Respuesta: {{selectedAnswers[i].word}}</small>
-
-			      		<small>Correct Answer: {{activity.possibleAnswers[0].word}}</small>
-			    	</div>
-			    	<p class="mb-1">Texto completo: {{activity.fullString}}</p>
-			    	<p class="mb-1">Nota importante: {{activity.comment}}</p>
-			    	<small>Donec id elit non mi porta.</small>
-				</li>
-
-			</ul>
-		</div>
-		
-	</div>-->
-
 	<div *ngIf="!loading&&result">
 		
 		<div class="row">

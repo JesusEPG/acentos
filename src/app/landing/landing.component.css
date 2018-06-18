@@ -50,6 +50,15 @@ a.btn-primary:hover {
  }
 }*/
 
+.feature-icon {
+
+	max-width: 200px;
+}
+
+
+.activities {
+	color: black;
+}
 
 #middle-row {
 
@@ -61,12 +70,10 @@ a.btn-primary:hover {
 	margin-top: 100px;
 }
 
-.feature-icon {
+#repeat-icon {
 
-	max-width: 200px;
+	max-width: 150px;
 }
 
-.activities {
-	color: black;
-}
+
 

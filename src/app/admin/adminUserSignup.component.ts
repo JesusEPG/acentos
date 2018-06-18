@@ -4,6 +4,7 @@ import { AuthService } from '../auth/auth.service';
 import { User } from '../auth/user.model';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { noWhitespaceValidator } from '../utils/noWhitespaces.validator';
 
 @Component({
 	selector: 'app-admin-user-signup-component',
@@ -22,15 +23,12 @@ export class AdminUserSignupComponent implements OnInit {
 
 	ngOnInit(){
 		this.signupForm = new FormGroup({
-			firstName: new FormControl(null, Validators.required),
-			lastName: new FormControl(null, Validators.required),
-			userName: new FormControl(null, [
-				Validators.required//,
-				//Validators.pattern(/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)
-			]),
-			school: new FormControl(null, Validators.required),
+			firstName: new FormControl(null, [Validators.required, Validators.maxLength(50), noWhitespaceValidator, Validators.pattern(/^[a-zA-ZáÁéÉíÍóÓúÚñÑ]+$/)]),
+			lastName: new FormControl(null, [Validators.required, Validators.maxLength(50), noWhitespaceValidator, Validators.pattern(/^[a-zA-ZáÁéÉíÍóÓúÚñÑ]+$/)]),
+			userName: new FormControl(null, [Validators.required, Validators.maxLength(20), noWhitespaceValidator]),
+			school: new FormControl(null, [Validators.required, Validators.maxLength(100), noWhitespaceValidator]),
 			grade: new FormControl(null, [Validators.required]),
-			password: new FormControl(null, Validators.required)
+			password: new FormControl(null, [Validators.required, Validators.maxLength(10), noWhitespaceValidator])
 		});
 
 	}
@@ -40,7 +38,6 @@ export class AdminUserSignupComponent implements OnInit {
 			this.loading = true;
 			const {firstName, lastName, userName, password, school, grade} = this.signupForm.value;
 			const user = new User(userName, password, firstName, lastName, school, grade);
-			console.log(user);
 			this.authService.signup(user)
 				.subscribe(
 					( user ) => {
@@ -52,8 +49,6 @@ export class AdminUserSignupComponent implements OnInit {
 						
 						this.router.navigate(['/admin']);
 					},
-					//err => console.log(err)
-					//this.authService.handleAdminError
 					(error) => {
 						//Error en el servidor
 						console.log('Función de error en el then');

@@ -74,7 +74,7 @@ export class MistakeActivitiesComponent implements OnInit, OnDestroy, ComponentC
 				this.activities = activities;
 				if(this.activities.length<1){
 
-					this.snackBar.open(`No hay actividades de selección disponibles. Intente más tarde`,
+					this.snackBar.open(`No hay actividades de identificación de error disponibles. Intente más tarde`,
 										'x', 
 										{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']}
 					);
@@ -92,18 +92,6 @@ export class MistakeActivitiesComponent implements OnInit, OnDestroy, ComponentC
 									{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color'] });
 				this.router.navigateByUrl('/');
 			});
-
-		console.log('NgOnInit!')
-
-		/*console.log('Prueba bien');
-				
-		this.activitiesService.prueba(this.activities)
-			.takeUntil(this.unsubscribe)
-			.subscribe(
-				//( {_id} ) => this.router.navigate(['/', _id]),
-				() => {console.log('Subscribe')}
-			);*/
-		//setTimeout(function(){console.log('Luego del timeout');},55000);
 	}
 
 	selectAnswer(word){
@@ -130,17 +118,10 @@ export class MistakeActivitiesComponent implements OnInit, OnDestroy, ComponentC
 		}
 
 		word.selected = !word.selected
-
-		//Si ya se había seleccionado
-		//Se elimina el elemento en la posición this.counter
-
-		//Traer la función desde simpleSelection.component
 	}
 	
 	next() {
-		//validar con this.activities.length en vez de 9, asi siempre funciona en base a lo que se traiga
 		if (this.counter < this.activities.length-1) {
-			// code...
 			this.counter++;
 		} else {
 			this.loading = true;
@@ -148,17 +129,12 @@ export class MistakeActivitiesComponent implements OnInit, OnDestroy, ComponentC
 			this.updatedActivities = this.activities.map(function(activity, index){
 				if(this.selectedAnswers[index].word === activity.correctAnswer.word){
 					//respuesta correcta
-					console.log('Correcto');
-					console.log(activity);
 					activity.correctCount++;
-					console.log(activity);
-
 
 					this.selectedAnswers[index].correct=true;
 
 					//calcular cambios del algoritmo
 					const newValues = review(activity, CORRECT)
-					console.log(newValues);
 
 					//new values
 					return new SelectionActivity(
@@ -172,24 +148,13 @@ export class MistakeActivitiesComponent implements OnInit, OnDestroy, ComponentC
 						true,
 						activity._id
 					);
-			/*		return {
-						activity: activity.activity ,
-						difficulty: ,
-						percentOverDue: , 
-						reviewInterval: ,
-						lastAttempt:
-					}*/
 				} else {
 					//respuesta erronea
-					//const newValues = calculate(activity, WORST, Math.round(new Date().getTime() / DAY_IN_MINISECONDS))
-					//console.log(newValues);
 					this.selectedAnswers[index].correct=false;
 					activity.incorrectCount++;
 
 
 					const newValues = review(activity, INCORRECT)
-					console.log(newValues);
-					//new values
 					return new SelectionActivity(
 						activity.activity,
 						newValues.difficulty,
@@ -201,18 +166,9 @@ export class MistakeActivitiesComponent implements OnInit, OnDestroy, ComponentC
 						false,
 						activity._id
 					);
-					/*return {
-						activity: activity.activity ,
-						difficulty: ,
-						percentOverDue: , 
-						reviewInterval: ,
-						lastAttempt:
-					}*/
 				}
 			},this)
-			//Hacer el post para actualizar las actividades enviando updatedAnswers
-
-			//const q = new Question(form.value.title, form.value.description, new Date(), form.value.icon);
+			
 			this.activitiesService.updateActivities(this.updatedActivities)
 				.takeUntil(this.unsubscribe)
 				.subscribe(
@@ -232,16 +188,11 @@ export class MistakeActivitiesComponent implements OnInit, OnDestroy, ComponentC
 						this.router.navigateByUrl('/');
 						*/
 					}
-				);//recibe dos funciones como parametros, la función de exito y la función de error
-			//Cuando responda la bdd hacer loading = false
-			//En el cliente hacer un *ngIf="!loading && selectedAnswers.length === 9"
-			//this.counter = 0;
+				);
 		}
 	}
 	
 	ngOnDestroy(){
-
-		console.log('NgOnDestroy!')
 
 		if(!this.result){
 			
@@ -267,33 +218,9 @@ export class MistakeActivitiesComponent implements OnInit, OnDestroy, ComponentC
 					);
 			}
 		}
-
-		/*this.activitiesService.prueba(this.activities)
-			.takeUntil(this.unsubscribe)
-			.subscribe(
-					//( {_id} ) => this.router.navigate(['/', _id]),
-					() => {}
-			);*/
-		setTimeout(()=>{    //<<<---    using ()=> syntax
+		setTimeout(()=>{
 		    this.unsubscribe.next();
 	    	this.unsubscribe.complete();
 		 }, 1000);
-
-	    //this.unsubscribe.next();
-	    //this.unsubscribe.complete();
-
-
-		/*if(this.activities){
-			if(this.activities.length>0){
-				this.activitiesService.updateActivities(this.updatedActivities);
-			} else {
-				console.log('Prueba');
-				this.activitiesService.prueba(this.activities);
-			}
-		} else {
-			console.log('Prueba');
-			
-			this.activitiesService.prueba(this.activities);
-		}*/
 	}
 }

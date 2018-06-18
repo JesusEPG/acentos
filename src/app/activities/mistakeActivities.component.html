@@ -31,12 +31,6 @@
 		
 	</div>
 
-  	<!--<div class="list-group" *ngIf="!loading&&result">
-	  
-		<a href="#" class="list-group-item list-group-item-action list-group-item-success">This is a success list group item</a>
-		<a href="#" class="list-group-item list-group-item-action list-group-item-danger">This is a danger list group item</a>
-	</div>-->
-
 	<div *ngIf="!loading&&result">
 		
 		<div class="row">
@@ -44,7 +38,7 @@
 			<div class="col-sm-12 mb-3">
 				<ul class="list-group" *ngFor="let activity of activities; let i = index">
 
-					<li *ngIf="selectedAnswers[i].correct" class="list-group-item list-group-item-success">
+					<li *ngIf="selectedAnswers[i].correct" class="list-group-item list-group-item-success mb-1">
 						<div class="text-center">
 							<h4 *ngIf="activity.difficulty>0.5">¡Impresionante!</h4>
 							<h4 *ngIf="activity.difficulty<0.5">¡Acertaste!</h4>
@@ -54,7 +48,7 @@
 						<h5 class="mb-1">Texto completo: {{activity.fullString}}</h5>
 					</li>
 				  
-					<li *ngIf="!selectedAnswers[i].correct" class="list-group-item list-group-item-danger">
+					<li *ngIf="!selectedAnswers[i].correct" class="list-group-item list-group-item-danger mb-1">
 
 				    	<div class="text-center">
 							<h4 *ngIf="activity.difficulty>0.5">¡Casi lo tienes!</h4>

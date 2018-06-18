@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AuthService } from './auth.service';
 import { User } from './user.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { noWhitespaceValidator } from '../utils/noWhitespaces.validator';
 
 @Component({
 	selector: 'app-signup-component',
@@ -20,15 +21,12 @@ export class SignupComponent implements OnInit {
 
 	ngOnInit(){
 		this.signupForm = new FormGroup({
-			firstName: new FormControl(null, Validators.required),
-			lastName: new FormControl(null, Validators.required),
-			userName: new FormControl(null, [
-				Validators.required//,
-				//Validators.pattern(/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)
-			]),
-			school: new FormControl(null, Validators.required),
+			firstName: new FormControl(null, [Validators.required, Validators.maxLength(50), noWhitespaceValidator, Validators.pattern(/^[a-zA-ZáÁéÉíÍóÓúÚñÑ]+$/)]),
+			lastName: new FormControl(null, [Validators.required, Validators.maxLength(50), noWhitespaceValidator, Validators.pattern(/^[a-zA-ZáÁéÉíÍóÓúÚñÑ]+$/)]),
+			userName: new FormControl(null, [Validators.required, Validators.maxLength(20), noWhitespaceValidator]),
+			school: new FormControl(null, [Validators.required, Validators.maxLength(100), noWhitespaceValidator]),
 			grade: new FormControl(null, [Validators.required]),
-			password: new FormControl(null, Validators.required)
+			password: new FormControl(null, [Validators.required, Validators.maxLength(10), noWhitespaceValidator])
 		});
 
 	}
@@ -41,8 +39,6 @@ export class SignupComponent implements OnInit {
 			this.authService.signup(user)
 				.subscribe(
 					this.authService.login,
-					//err => console.log(err)
-					//this.authService.handleError
 					(error) => {
 						//Error en el servidor
 						console.log('Función de error en el then');
@@ -60,11 +56,10 @@ export class SignupComponent implements OnInit {
 												{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']}
 							);
 							//this.router.navigateByUrl('/admin');
-							this.authService.adminLogout();
+							this.authService.logout();
 						}
 					}
 				);
-			this.signupForm.reset();
 		} else {
 			//Not valid
 			this.snackBar.open(`Verifica los datos e intenta nuevamente!`,
