@@ -81,87 +81,80 @@ export class ProfileComponent implements OnInit {
 			.getData()
 			.then((data: any[]) => {
 
-				console.log(data);
+				if (data){
 
-				if(data.length===1){
-					console.log('Entré a 1');
-					//Si hay ejercicios de un tipo
-					if(data[0].totalCorrect>0||data[0].totalIncorrect>0){
-						//El usuario ha tenido actividad en un tipo de actividad
-						if(data[0]._id==='Mistake'){
-							this.numberOfMistakesActivities = data[0].count;
-							this.mistakesChartData.push(data[0].totalCorrect);
-							this.mistakesChartData.push(data[0].totalIncorrect);
-						} else {
-							this.numberOfSelectionActivities = data[0].count;
-							this.selectionChartData.push(data[0].totalCorrect);
-							this.selectionChartData.push(data[0].totalIncorrect);
-						}
-						this.generalChartData.push(data[0].totalCorrect);
-						this.generalChartData.push(data[0].totalIncorrect);
-						this.numberOfActivities = data[0].count;
-					}
-
-				} else if(data.length===2) {
-
-					console.log('Entré a 2');
-
-					//Si hay ejercicios de los dos tipos
-					if((data[0].totalCorrect>0||data[0].totalIncorrect>0)&&(data[1].totalCorrect>0||data[1].totalIncorrect>0)) {
-						//El usuario ha tenido actividad
-						data.forEach(function(dataset, index){
-
-							if(dataset._id==='Mistake'){
-								this.numberOfMistakesActivities = dataset.count;
-								this.mistakesChartData.push(dataset.totalCorrect);
-								this.mistakesChartData.push(dataset.totalIncorrect);
-							} else {
-								this.numberOfSelectionActivities = dataset.count;
-								this.selectionChartData.push(dataset.totalCorrect);
-								this.selectionChartData.push(dataset.totalIncorrect);
-
-							}
-						}, this)
-						
-						this.generalChartData.push(data[0].totalCorrect + data[1].totalCorrect);
-						this.generalChartData.push(data[0].totalIncorrect + data[1].totalIncorrect);
-						this.numberOfActivities = data[0].count + data[1].count;
-					} else {
-
-						//Solo hay ejercicios de un tipo
+					if(data.length===1){
+						console.log('Entré a 1');
+						//Si hay ejercicios de un tipo
 						if(data[0].totalCorrect>0||data[0].totalIncorrect>0){
 							//El usuario ha tenido actividad en un tipo de actividad
 							if(data[0]._id==='Mistake'){
 								this.numberOfMistakesActivities = data[0].count;
+								this.mistakesChartData.push(data[0].totalCorrect);
+								this.mistakesChartData.push(data[0].totalIncorrect);
 							} else {
 								this.numberOfSelectionActivities = data[0].count;
+								this.selectionChartData.push(data[0].totalCorrect);
+								this.selectionChartData.push(data[0].totalIncorrect);
 							}
 							this.generalChartData.push(data[0].totalCorrect);
 							this.generalChartData.push(data[0].totalIncorrect);
 							this.numberOfActivities = data[0].count;
-						}else {
-							//El usuario ha tenido actividad en un tipo de actividad
-							if(data[1]._id==='Mistake'){
-								this.numberOfMistakesActivities = data[1].count;
-							} else {
-								this.numberOfSelectionActivities = data[1].count;
+						}
+
+					} else if(data.length===2) {
+
+						console.log('Entré a 2');
+
+						//Si hay ejercicios de los dos tipos
+						if((data[0].totalCorrect>0||data[0].totalIncorrect>0)&&(data[1].totalCorrect>0||data[1].totalIncorrect>0)) {
+							//El usuario ha tenido actividad
+							data.forEach(function(dataset, index){
+
+								if(dataset._id==='Mistake'){
+									this.numberOfMistakesActivities = dataset.count;
+									this.mistakesChartData.push(dataset.totalCorrect);
+									this.mistakesChartData.push(dataset.totalIncorrect);
+								} else {
+									this.numberOfSelectionActivities = dataset.count;
+									this.selectionChartData.push(dataset.totalCorrect);
+									this.selectionChartData.push(dataset.totalIncorrect);
+
+								}
+							}, this)
+							
+							this.generalChartData.push(data[0].totalCorrect + data[1].totalCorrect);
+							this.generalChartData.push(data[0].totalIncorrect + data[1].totalIncorrect);
+							this.numberOfActivities = data[0].count + data[1].count;
+						} else {
+
+							//Solo hay ejercicios de un tipo
+							if(data[0].totalCorrect>0||data[0].totalIncorrect>0){
+								//El usuario ha tenido actividad en un tipo de actividad
+								if(data[0]._id==='Mistake'){
+									this.numberOfMistakesActivities = data[0].count;
+								} else {
+									this.numberOfSelectionActivities = data[0].count;
+								}
+								this.generalChartData.push(data[0].totalCorrect);
+								this.generalChartData.push(data[0].totalIncorrect);
+								this.numberOfActivities = data[0].count;
+							}else {
+								//El usuario ha tenido actividad en un tipo de actividad
+								if(data[1]._id==='Mistake'){
+									this.numberOfMistakesActivities = data[1].count;
+								} else {
+									this.numberOfSelectionActivities = data[1].count;
+								}
+								this.generalChartData.push(data[1].totalCorrect);
+								this.generalChartData.push(data[1].totalIncorrect);
+								this.numberOfActivities = data[1].count;
 							}
-							this.generalChartData.push(data[1].totalCorrect);
-							this.generalChartData.push(data[1].totalIncorrect);
-							this.numberOfActivities = data[1].count;
+
 						}
 
 					}
-
 				}
-				//Si correctos en incorrectos es 0 (no se ha intententado), no genera error pero hay que validar
-				//Si no hay ejercicios devuelve un arreglo vacio
-				//Validar si hay ejercicios, de haberlos, verificar que hayan sido intentados
-				//es decir, si hay algun correcto o incorrecto
-				//this.generalChartData.push(this.data[0].totalCorrect);
-				//this.generalChartData.push(this.data[0].totalIncorrect);
-				/*this.doughnutChartData.push(this.data[1].totalCorrect);
-				this.doughnutChartData.push(this.data[1].totalIncorrect);*/
 
 				this.loading = false;
 			})
@@ -203,78 +196,78 @@ export class ProfileComponent implements OnInit {
 				.getWeeklyData()
 				.then((data: any[]) => {
 					
-					console.log(data);
+					if (data){
+						if(data.length===1){
 
-					if(data.length===1){
-
-						//Si hay ejercicios de un tipo
-						if(data[0].totalCorrect>0||data[0].totalIncorrect>0){
-							//El usuario ha tenido actividad en un tipo de actividad
-							if(data[0]._id==='Mistake'){
-								this.numberOfWeeklyMistakesActivities = data[0].count;
-								this.mistakesWeeklyChartData.push(data[0].totalCorrect);
-								this.mistakesWeeklyChartData.push(data[0].totalIncorrect);
-							} else {
-								this.numberOfWeeklySelectionActivities = data[0].count;
-								this.selectionWeeklyChartData.push(data[0].totalCorrect);
-								this.selectionWeeklyChartData.push(data[0].totalIncorrect);
-							}
-							this.generalWeeklyChartData.push(data[0].totalCorrect);
-							this.generalWeeklyChartData.push(data[0].totalIncorrect);
-							this.numberOfWeeklyActivities = data[0].count;
-						}
-
-					} else if(data.length===2) {
-
-						console.log('Entré')
-
-						//Si hay ejercicios de los dos tipos
-						if((data[0].totalCorrect>0||data[0].totalIncorrect>0)&&(data[1].totalCorrect>0||data[1].totalIncorrect>0)) {
-							//El usuario ha tenido actividad
-							data.forEach(function(dataset, index){
-
-								if(dataset._id==='Mistake'){
-									this.numberOfWeeklyMistakesActivities = dataset.count;
-									this.mistakesWeeklyChartData.push(dataset.totalCorrect);
-									this.mistakesWeeklyChartData.push(dataset.totalIncorrect);
-								} else {
-									this.numberOfWeeklySelectionActivities = dataset.count;
-									this.selectionWeeklyChartData.push(dataset.totalCorrect);
-									this.selectionWeeklyChartData.push(dataset.totalIncorrect);
-
-								}
-							}, this)
-							
-							this.generalWeeklyChartData.push(data[0].totalCorrect + data[1].totalCorrect);
-							this.generalWeeklyChartData.push(data[0].totalIncorrect + data[1].totalIncorrect);
-							this.numberOfWeeklyActivities = data[0].count + data[1].count;
-						} else {
-
-							//Solo hay ejercicios de un tipo
+							//Si hay ejercicios de un tipo
 							if(data[0].totalCorrect>0||data[0].totalIncorrect>0){
 								//El usuario ha tenido actividad en un tipo de actividad
 								if(data[0]._id==='Mistake'){
 									this.numberOfWeeklyMistakesActivities = data[0].count;
+									this.mistakesWeeklyChartData.push(data[0].totalCorrect);
+									this.mistakesWeeklyChartData.push(data[0].totalIncorrect);
 								} else {
 									this.numberOfWeeklySelectionActivities = data[0].count;
+									this.selectionWeeklyChartData.push(data[0].totalCorrect);
+									this.selectionWeeklyChartData.push(data[0].totalIncorrect);
 								}
 								this.generalWeeklyChartData.push(data[0].totalCorrect);
 								this.generalWeeklyChartData.push(data[0].totalIncorrect);
 								this.numberOfWeeklyActivities = data[0].count;
-							}else {
-								//El usuario ha tenido actividad en un tipo de actividad
-								if(data[1]._id==='Mistake'){
-									this.numberOfWeeklyMistakesActivities = data[1].count;
-								} else {
-									this.numberOfWeeklySelectionActivities = data[1].count;
+							}
+
+						} else if(data.length===2) {
+
+							console.log('Entré')
+
+							//Si hay ejercicios de los dos tipos
+							if((data[0].totalCorrect>0||data[0].totalIncorrect>0)&&(data[1].totalCorrect>0||data[1].totalIncorrect>0)) {
+								//El usuario ha tenido actividad
+								data.forEach(function(dataset, index){
+
+									if(dataset._id==='Mistake'){
+										this.numberOfWeeklyMistakesActivities = dataset.count;
+										this.mistakesWeeklyChartData.push(dataset.totalCorrect);
+										this.mistakesWeeklyChartData.push(dataset.totalIncorrect);
+									} else {
+										this.numberOfWeeklySelectionActivities = dataset.count;
+										this.selectionWeeklyChartData.push(dataset.totalCorrect);
+										this.selectionWeeklyChartData.push(dataset.totalIncorrect);
+
+									}
+								}, this)
+								
+								this.generalWeeklyChartData.push(data[0].totalCorrect + data[1].totalCorrect);
+								this.generalWeeklyChartData.push(data[0].totalIncorrect + data[1].totalIncorrect);
+								this.numberOfWeeklyActivities = data[0].count + data[1].count;
+							} else {
+
+								//Solo hay ejercicios de un tipo
+								if(data[0].totalCorrect>0||data[0].totalIncorrect>0){
+									//El usuario ha tenido actividad en un tipo de actividad
+									if(data[0]._id==='Mistake'){
+										this.numberOfWeeklyMistakesActivities = data[0].count;
+									} else {
+										this.numberOfWeeklySelectionActivities = data[0].count;
+									}
+									this.generalWeeklyChartData.push(data[0].totalCorrect);
+									this.generalWeeklyChartData.push(data[0].totalIncorrect);
+									this.numberOfWeeklyActivities = data[0].count;
+								}else {
+									//El usuario ha tenido actividad en un tipo de actividad
+									if(data[1]._id==='Mistake'){
+										this.numberOfWeeklyMistakesActivities = data[1].count;
+									} else {
+										this.numberOfWeeklySelectionActivities = data[1].count;
+									}
+									this.generalWeeklyChartData.push(data[1].totalCorrect);
+									this.generalWeeklyChartData.push(data[1].totalIncorrect);
+									this.numberOfWeeklyActivities = data[1].count;
 								}
-								this.generalWeeklyChartData.push(data[1].totalCorrect);
-								this.generalWeeklyChartData.push(data[1].totalIncorrect);
-								this.numberOfWeeklyActivities = data[1].count;
+
 							}
 
 						}
-
 					}
 
 					this.loading = false;

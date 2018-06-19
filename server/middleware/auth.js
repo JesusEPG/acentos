@@ -14,7 +14,7 @@ export const required = (req, res, next) => {
 		if(err){
 			debug('JWT was not encrypted with our secret')
 			return res.status(401).json({
-				message: 'Unauthorized',
+				message: 'Sin autorización',
 				error: err
 			})
 		}
@@ -23,7 +23,6 @@ export const required = (req, res, next) => {
 			
 			if(user&&!user.modified){
 				debug(`Token verified ${token}`)
-				//debug(token)
 				req.user = token.user
 				next()
 			 	
@@ -41,18 +40,21 @@ export const required = (req, res, next) => {
 						userId: modifiedUser._id,
 						firstName: modifiedUser.firstName,
 						lastName: modifiedUser.lastName,
-						userName: modifiedUser.userName
+						userName: modifiedUser.userName,
+						school: modifiedUser.school,
+						grade: modifiedUser.grade
 
 					})
 				} catch(error) {
-					// statements
-					console.log(error);
+					return res.status(401).json({
+						message: 'Sin autorización',
+						error: error
+					})
+
 				}
 
 			 	
 			} else {
-
-				console.log(err)
 
 				//err es null si no consigue nada
 

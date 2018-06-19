@@ -1,15 +1,12 @@
 import { Injectable } from '@angular/core';
 import { AuthService } from '../auth/auth.service';
 import { User } from '../auth/user.model';
-//Models
 import { Activity } from './activity.model';
 import { SelectionActivity } from './selectionActivity.model';
-//import { Answer } from '../answer/answer.model';
 import { Http, Headers, Response } from '@angular/http';
 import { environment } from '../../environments/environment';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-//import urljoin from 'url-join';
 import * as urljoin from 'url-join';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/toPromise';
@@ -28,19 +25,12 @@ export class ActivitiesService {
 		this.activitiesUrl = urljoin(environment.apiUrl, 'activities');
 	}
 
-	/*getQuestions(): Promise<void | SelectionActivity[]>{
-		return this.http.get(this.activitiesUrl)
-			.toPromise()
-			.then(response => response.json() as SelectionActivity[])		//Exitoso
-			.catch(this.handleError);								//Error
-	}*/
-
 	getMistakeActivities(): Promise<void | SelectionActivity[]>{
 		const token = this.getToken();
 		const url = this.activitiesUrl+ '/mistakes' + token;
 		return this.http.get(url)
 			.toPromise()
-			.then(response => response.json() as SelectionActivity[])		//Exitoso
+			.then(response => response.json() as SelectionActivity[])
 			.catch((response) => {
 				console.log('Catch del mistakesActivities.service');
 				const res = response.json();
@@ -99,8 +89,7 @@ export class ActivitiesService {
 		const url = this.activitiesUrl+ '/selection' + token;
 		return this.http.get(url)
 			.toPromise()
-			.then(response => response.json() as SelectionActivity[])		//Exitoso
-			//.catch(this.handleError);							//Error
+			.then(response => response.json() as SelectionActivity[])
 			.catch((response) => {
 				console.log('Catch del mistakesActivities.service');
 				const res = response.json();
@@ -154,16 +143,6 @@ export class ActivitiesService {
 			});
 	}
 
-	/*updateActivities(activities: SelectionActivity[]) {
-		const body = JSON.stringify(activities);
-		const headers = new Headers({'Content-Type': 'application/json'});
-		const token = this.getToken();
-		const url = this.activitiesUrl + '/updateActivities' + token;
-		return this.http.post(url, body, { headers })
-			.map((response: Response) => response.json())
-			.catch((error: Response) => Observable.throw(error.json()));
-	}*/
-
 	updateActivities(activities: SelectionActivity[]) {
 		const body = JSON.stringify(activities);
 		const headers = new Headers({'Content-Type': 'application/json'});
@@ -171,7 +150,6 @@ export class ActivitiesService {
 		const url = this.activitiesUrl + '/updateActivities' + token;
 		return this.http.post(url, body, { headers })
 			.map((response: Response) => response.json())
-			//.catch((error: Response) => Observable.throw(error.json()));
 			.catch((response) => {
 				console.log('Catch del mistakesActivities.service');
 				const res = response.json();
@@ -213,7 +191,6 @@ export class ActivitiesService {
 												'x',
 												{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color'] });
 							this.router.navigateByUrl('/');
-							//Observable.throw(error.json())
 						}
 
 					} else {
@@ -221,7 +198,6 @@ export class ActivitiesService {
 											'x',
 											{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']});
 						this.router.navigateByUrl('/');
-						//Observable.throw(error.json())
 					}
 				}
 			});
@@ -237,7 +213,7 @@ export class ActivitiesService {
 			.catch((error: Response) => Observable.throw(error.json()));
 	}
 
-	prueba(activities: SelectionActivity[]) {
+	/*updateLostActivities(activities: SelectionActivity[]) {
 		console.log('Actividades');
 		console.log(activities);
 		const body = JSON.stringify(activities);
@@ -248,19 +224,10 @@ export class ActivitiesService {
 			.map((response: Response) => response.json())
 			.catch((error: Response) => Observable.throw(error.json()));
 
-	}
+	}*/
 
 	getToken(){
 		const token = localStorage.getItem('token');
 		return `?token=${token}`;
-	}
-
-	handleError(error: any) {
-		const errMsg = error.message ? error.message :
-		error.status ? `${error.status} - ${error.statusText}` : 'Server error';
-
-		this.router.navigateByUrl('/');
-
-		//this.authService.logout()
 	}
 }

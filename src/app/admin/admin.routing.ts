@@ -13,9 +13,6 @@ import { ActivityListComponent } from './activityList.component';
 import { UpdateUserComponent } from './updateUser.component';
 import { AdminUserSignupComponent } from './adminUserSignup.component';
 import { SessionGuard } from '../activities/session-guard.service';
-//import { ActivitiesComponent } from './activities.component';
-//import { SelectionActivitiesComponent } from './selectionActivities.component';
-//import { QuestionFormComponent } from './question-form.component';
 
 export const ADMIN_ROUTES = [
 	{ path: '', component: AdminDashboardComponent, canActivate: [AdminGuardService]},
@@ -31,5 +28,4 @@ export const ADMIN_ROUTES = [
 	{ path: 'users/userList', component: UserListComponent, canActivate:[AdminGuardService]},
 	{ path: 'users/userList/updateUser/:_id', component: UpdateUserComponent, canActivate:[AdminGuardService], canDeactivate: [SessionGuard] }
 
-	//{ path: ':id', component: QuestionDetailComponent }
 ];

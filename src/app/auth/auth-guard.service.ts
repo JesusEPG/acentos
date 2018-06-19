@@ -10,10 +10,7 @@ export class AuthGuard implements CanActivate {
 	    private authService: AuthService) {}
 
 	  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-	    /*if (!this.authService.isTokenExpired()) {
-	      return true;
-	    }*/
-
+	    
 	    if (this.authService.isTokenExpired()) {
 	      	if(this.authService.isAdminLoggedIn()){
 	      		this.router.navigate(['/admin']);
@@ -23,11 +20,6 @@ export class AuthGuard implements CanActivate {
 	      		return false;
 	      	}
 	    }
-
-	    //this.router.navigate(['/signin']);
-
-	    // not logged in so redirect to login page with the return url and return false
-        //this.router.navigate(['/signin'], { queryParams: { returnUrl: state.url }});
 	    return true;
 	}
 }

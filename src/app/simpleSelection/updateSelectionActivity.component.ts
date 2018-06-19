@@ -30,13 +30,9 @@ export class UpdateSelectionActivityComponent implements OnInit, ComponentCanDea
 				private authService: AuthService,
 				public snackBar: MatSnackBar){}
 
-	// @HostListener allows us to also guard against browser refresh, close, etc.
   	@HostListener('window:beforeunload')
   	canDeactivate(): Observable<boolean> | boolean {
-    	// insert logic to check if there are pending changes here;
-    	// returning true will navigate without confirmation
-    	// returning false will show a confirm dialog before navigating away
-    	//return false;
+    	
     	if((this.activityForm.value.fullString||this.activityForm.value.difficulty||this.activityForm.value.comment)&&!this.done) {
 
     		return false;
@@ -53,13 +49,8 @@ export class UpdateSelectionActivityComponent implements OnInit, ComponentCanDea
 			difficulty: new FormControl(null, Validators.required),
 			possibleAnswer: new FormControl(null, Validators.pattern(/^\S*$/) ), //Validar que solo acepte
 			fullString: new FormControl(null, [Validators.required, Validators.maxLength(50)])
-			/*fullString: new FormControl(null, [
-				Validators.required//,
-				Validators.pattern(/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)
-			]),*/
 		});
 
-		//Hacer que vaya a list si no consigue la actividad
 
 		this.route.params.subscribe( params => 
 			this.selectionService
@@ -76,7 +67,6 @@ export class UpdateSelectionActivityComponent implements OnInit, ComponentCanDea
 					});
 					
 					this.splittedString = this.activity.splittedString;
-					console.log(this.splittedString)
 					this.correctAnswer = this.activity.correctAnswer;
 					this.possibleAnswers = this.activity.possibleAnswers;
 					this.loading = false;
@@ -91,10 +81,9 @@ export class UpdateSelectionActivityComponent implements OnInit, ComponentCanDea
 				
 			}, (error) => { 
 				//Error en el servidor
-				console.log('Función de error en el then');
 				this.snackBar.open(error.message,
 									'x',
-									{ duration: 4500, verticalPosition: 'top', panelClass: ['snackbar-color']}
+									{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']}
 				);
 				this.router.navigateByUrl('/admin');
 
@@ -114,18 +103,11 @@ export class UpdateSelectionActivityComponent implements OnInit, ComponentCanDea
 		this.correctAnswer=null;
 		this.possibleAnswers=[];
 
-
-		//Obtengo el texto del formulario
 		let str = this.activityForm.value.fullString;
 		str.trim();
 
-		//Se debe usar una expresión regular para que solo forme las palabras
-		//Y guarde los signos de puntuación
-		//Se separa en espacios
-		//let tokens = str.split(/(;\s|:\s|,|,\s|\?\s|\?|\s)/);
 		let tokens = str.split(/(;|;\s|:|:\s|,|,\s|\?|\?\s|\¿|\¿\s|\s\¿|\s|\.|\.\s|-|-\s|\s-|\!|\!\s|\¡|\¡\s|\s\¡)/);
 
-		console.log(tokens);
 
 		//Validar que si 'token' es un signo de puntuación, se debe colocar 'cliackeable:false'
 		//Y en el cliente solo se muestran los que tengan 'clickeable:true'
@@ -134,8 +116,7 @@ export class UpdateSelectionActivityComponent implements OnInit, ComponentCanDea
 			//Verificar si es un caracter especial, no es clickeable.
 			if(/^[a-zA-ZáÁéÉíÍóÓúÚñÑ]+$/.test(token)){
 				
-				return {
-					//id: window.performance && window.performance.now && window.performance.timing && window.performance.timing.navigationStart ? window.performance.now() + window.performance.timing.navigationStart : Date.now(),				
+				return {				
 				   	id: index,
 				   	word: token,
 				   	hidden: false,
@@ -144,7 +125,6 @@ export class UpdateSelectionActivityComponent implements OnInit, ComponentCanDea
 				}
 			}
 			return {
-				//id: window.performance && window.performance.now && window.performance.timing && window.performance.timing.navigationStart ? window.performance.now() + window.performance.timing.navigationStart : Date.now(),
 				id: index,
 				word: token,
 			   	hidden: false,
@@ -155,9 +135,6 @@ export class UpdateSelectionActivityComponent implements OnInit, ComponentCanDea
 	}
 
 	hideAnswer(word){
-
-		console.log(word);
-		console.log(this.correctAnswer);
 
 		this.possibleAnswers=[];
 
@@ -172,23 +149,13 @@ export class UpdateSelectionActivityComponent implements OnInit, ComponentCanDea
 			this.correctAnswer=word;
 			
 		} else {
-			//this.deleteCorrectAnswer(word);
 			this.correctAnswer = null;
 		}
 		word.hidden = !word.hidden;
-
-		console.log(this.correctAnswer);
-		//console.log(word);
-		console.log(this.splittedString);
-		//De lo contrario se debe buscar el objeto en los arreglos y luego sacarlo
 	}
 
 	deleteCorrectAnswer(word){
-		//word.clickeable = !word.clickeable;
-		//Buscar el objeto y luego eliminarlo
-		//this.remove(this.correctAnswer, word);
 		this.correctAnswer = null;
-		//this.remove(this.possibleAnswers, word);
 		this.possibleAnswers=[];
 
 	}
@@ -196,8 +163,6 @@ export class UpdateSelectionActivityComponent implements OnInit, ComponentCanDea
 	addPossibleAnswer(){
 		let str = this.activityForm.value.possibleAnswer;
 		this.activityForm.patchValue({possibleAnswer: null});
-		console.log(str);
-		console.log(this.possibleAnswers.length)
 
 		const word = {
 				   	id: this.possibleAnswers.length,
@@ -210,11 +175,8 @@ export class UpdateSelectionActivityComponent implements OnInit, ComponentCanDea
 	}
 
 	deletePossibleAnswer(word){
-		//word.clickeable = !word.clickeable;
 		this.remove(this.possibleAnswers, word);
 	}
-
-	hasOnlywords(word){}
 
 	remove(array, element) {
 	    const index = array.indexOf(element);
@@ -246,13 +208,6 @@ export class UpdateSelectionActivityComponent implements OnInit, ComponentCanDea
 				null,
 				this.activity._id
 			);
-			console.log(newActivity);
-			/*this.mistakeService.signin(user)
-				.subscribe(
-					this.authService.login,
-					this.authService.handleError
-				);
-			*/
 			this.selectionService.updateSelectionActivity(newActivity)
 				.subscribe(
 					//( {_id} ) => this.router.navigate(['/questions', _id]),
@@ -267,19 +222,15 @@ export class UpdateSelectionActivityComponent implements OnInit, ComponentCanDea
 						this.router.navigate(['/admin'])
 					},
 					(error) => {
-						console.log('En el component');
-						console.log(error);
 
 						//Error en el servidor
-						console.log('Función de error en el subscribe');
 						this.snackBar.open(error,
 											'x',
 											{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']}
 						);
-						//this.loading = false
 						this.router.navigateByUrl('/admin');
 					}
-				);//recibe dos funciones como parametros, la función de exito y la función de error
+				);
 		} else {
 			//Not valid
 			this.snackBar.open(`¡Verifica los datos e intenta nuevamente!`,

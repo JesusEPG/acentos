@@ -8,9 +8,6 @@
   <div class="collapse navbar-collapse" [collapse]="isCollapsed" id="navbarSupportedContent">
     
     <ul class="navbar-nav mr-auto">
-      <!--<li class="nav-item" routerLinkActive="active">
-        <a class="nav-link" [routerLink]="['/admin']">Dashboard</a>
-      </li>-->
       <li class="nav-item" routerLinkActive="active">
         <a class="nav-link" [routerLink]="['/admin/activities']">Actividades</a>
       </li>
@@ -18,14 +15,6 @@
         <a class="nav-link" [routerLink]="['/admin/users']">Usuarios</a>
       </li>      
     </ul>
-    <!--<ul class="navbar-nav ml-auto" *ngIf="!isAdminLoggedIn()">
-        <li class="nav-item">
-            <a class="nav-link" [routerLink]="['/signin']">Iniciar Sesión</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" [routerLink]="['/signup']">Registrarse</a>
-        </li>
-    </ul>-->
     <ul class="navbar-nav ml-auto" *ngIf="isAdminLoggedIn()">
         <li class="nav-item dropdown" dropdown>
             <a class="nav-link dropdown-toggle" dropdownToggle id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

@@ -41,7 +41,6 @@ export class AdminUserSignupComponent implements OnInit {
 			this.authService.signup(user)
 				.subscribe(
 					( user ) => {
-						console.log(user);
 						this.snackBar.open(`Se ha creado el usuario ${user.userName} exitosamente`,
 											'x', 
 											{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']}
@@ -51,21 +50,17 @@ export class AdminUserSignupComponent implements OnInit {
 					},
 					(error) => {
 						//Error en el servidor
-						console.log('Función de error en el then');
-						console.log(error);
 						if(error==="Registro de usuario falló. Nombre de usuario ya está en uso"){
 							this.snackBar.open(error,
 												'x',
 												{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']}
 							);
 							this.loading = false;
-							//this.signupForm.reset();
 						} else {
 							this.snackBar.open(error,
 												'x',
 												{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']}
 							);
-							//this.router.navigateByUrl('/admin');
 							this.authService.adminLogout();
 						}
 					}

@@ -1,4 +1,4 @@
-<div class="container mt-5">
+<div class="container mt-5 container-fixed-footer">
 
 	<mat-spinner *ngIf="loading" class="spinner" style="margin:0 auto;" color='primary'>
 	</mat-spinner>
@@ -35,7 +35,6 @@
 					<div class="form-row">
 						<div class="form-group col-md-3">
 							<label for="first_name">Grado</label>
-							<!--<input class="form-control" placeholder="Grado" formControlName="grade" id="grade">-->
 							<select class="custom-select form-control" formControlName="grade" id="grade" tooltip="Selecciona el grado que estudias">
 								<option></option>
 								<option value="1ro">1ro</option>
@@ -57,7 +56,7 @@
 					</div>
 					<fieldset class="form-group form-row">
 						<div class="col-sm-12">
-							<label for="user_name">Username</label>
+							<label for="user_name">Nombre de usuario</label>
 							<input class="form-control" placeholder="Nombre de Usuario" formControlName="userName" id="userName" tooltip="Máximo 20 caracteres" onkeydown="if (event.keyCode == 13) return false">
 							<div *ngIf="userUpdateForm.controls['userName'].hasError('maxlength')" class="alert alert-warning mb-2" role="alert">
 								  ¡Tienes más de los caracteres permitidos!
@@ -66,15 +65,15 @@
 					</fieldset>
 					<fieldset class="form-group form-row">
 						<div class="col-sm-12">
-							<label for="password">Password</label>
+							<label for="password">Contraseña</label>
 							<input type="password" class="form-control" placeholder="Contraseña" formControlName="password" id="password" tooltip="Máximo 10 caracteres" onkeydown="if (event.keyCode == 13) return false">
-							<div *ngIf="signupForm.controls['password'].hasError('maxlength')" class="alert alert-warning mb-2" role="alert">
+							<div *ngIf="userUpdateForm.controls['password'].hasError('maxlength')" class="alert alert-warning mb-2" role="alert">
 								  ¡Tienes más de los caracteres permitidos!
 							</div>
 						</div>
 					</fieldset>
 					<div class="row submit-button">
-						<button type="submit" class="btn btn-primary submitButton" color="accent">Modificar usuario</button>		
+						<button type="submit" class="btn btn-success submitButton" color="accent">Modificar usuario</button>		
 					</div>
 				</form>
 

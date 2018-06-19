@@ -23,10 +23,6 @@ export class SelectionActivitiesComponent implements OnInit, ComponentCanDeactiv
 	private unsubscribe = new Subject<void>();
 	activities: SelectionActivity[];
 	updatedActivities: SelectionActivity[];
-	//Verificar si selectedAnswers será object o String
-	//En el html, si selectedAnswers[counter] está vació
-	//Se muestra la oración con una ralla en donde toque la respuesta correcta
-	//De no estar vacío se muestra lo que se haya seleccionado
 	selectedAnswers: any[] =[];
 	counter:number = 0;
 	loading = true;
@@ -38,13 +34,8 @@ export class SelectionActivitiesComponent implements OnInit, ComponentCanDeactiv
 				private router: Router){
 
 	}
-
-	// @HostListener allows us to also guard against browser refresh, close, etc.
   	@HostListener('window:beforeunload')
   	canDeactivate(): Observable<boolean> | boolean {
-    	// insert logic to check if there are pending changes here;
-    	// returning true will navigate without confirmation
-    	// returning false will show a confirm dialog before navigating away
 
     	if(this.preview){
     		return true;
@@ -57,27 +48,27 @@ export class SelectionActivitiesComponent implements OnInit, ComponentCanDeactiv
   	}
 
 	ngOnInit() {
-		console.log(WORST)
-		console.log(BEST)
-		console.log(CORRECT)
-		//console.log(calculate)
 		this.activitiesService
 			.getSelectionActivities()
 			.then((activities: SelectionActivity[]) => {
 				this.activities = activities;
-				if(this.activities.length<1){
 
-					this.snackBar.open(`No hay actividades de completarb oración disponbles. Intente más tarde`,
-										'x', 
-										{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']}
-					);
-					this.router.navigateByUrl('/');
-					
-				} else {
+				if (this.activities) {		
 
-					this.renderSpace(this.activities[0].correctAnswer.word);
-					this.loading = false;
-					
+					if(this.activities.length<1){
+
+						this.snackBar.open(`No hay actividades de completar oración disponbles. Intente más tarde`,
+											'x', 
+											{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']}
+						);
+						this.router.navigateByUrl('/');
+						
+					} else {
+
+						this.renderSpace(this.activities[0].correctAnswer.word);
+						this.loading = false;
+						
+					}
 				}
 			})
 			.catch((err: any) => {
@@ -101,7 +92,6 @@ export class SelectionActivitiesComponent implements OnInit, ComponentCanDeactiv
 	selectAnswer(word){
 		
 		//Si no se ha seleccionado se pushea
-		//Hago un push de la respuesta a selectedAnswers
 		if(word.clickeable){
 
 			//Se verifica si hay una respuesta ya seleccionada
@@ -111,7 +101,6 @@ export class SelectionActivitiesComponent implements OnInit, ComponentCanDeactiv
 			}
 
 			this.selectedAnswers.push(word);
-			console.log(this.selectedAnswers);
 		} else {
 
 			this.selectedAnswers.pop();
@@ -148,7 +137,6 @@ export class SelectionActivitiesComponent implements OnInit, ComponentCanDeactiv
 					activity.incorrectCount++;
 					this.selectedAnswers[index].correct=false;
 					const newValues = review(activity, INCORRECT)
-					//new values
 					return new SelectionActivity(
 						activity.activity,
 						newValues.difficulty,
@@ -166,21 +154,9 @@ export class SelectionActivitiesComponent implements OnInit, ComponentCanDeactiv
 			this.activitiesService.updateActivities(this.updatedActivities)
 				.takeUntil(this.unsubscribe)
 				.subscribe(
-					//( {_id} ) => this.router.navigate(['/', _id]),
 					() => {
 						this.result=true;
 						this.loading=false;
-						console.log(this.selectedAnswers);
-					},
-					//this.activitiesService.handleError
-					() => {
-						console.log("Error")
-						/*
-						this.snackBar.open(`Presentamos problema con el servidor. Intenta más tarde`,
-											'x',
-											{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']});
-						this.router.navigateByUrl('/');
-						*/
 					}
 				);
 		}
@@ -190,32 +166,34 @@ export class SelectionActivitiesComponent implements OnInit, ComponentCanDeactiv
 
 		if(!this.result){
 			
-			console.log('Me fui demasiado');
 			if(this.activities){
 				if(this.activities.length>0){
-					console.log('Mejor Caso');
 					this.activitiesService.updateActivities(this.activities)
 						.takeUntil(this.unsubscribe)
 						.subscribe(
-								//( {_id} ) => this.router.navigate(['/', _id]),
 								() => {}
 						);
 				} 
 			} else {
-				console.log('Prueba bien');
 				
-				this.activitiesService.prueba(this.activities)
+				//Aquí se deben actualizar los datos que se pidieron a la base datos
+				//Cuando se abandona la sesión antes de obtener la respuesta del servidor
+
+				
+				/* 
+					this.activitiesService.updateLostActivities(this.activities)
 					.takeUntil(this.unsubscribe)
 					.subscribe(
 						//( {_id} ) => this.router.navigate(['/', _id]),
 						() => {}
 					);
+				*/
 			}
 		}
 		setTimeout(()=>{
 		    this.unsubscribe.next();
 	    	this.unsubscribe.complete();
-		 }, 1000);
+		 }, 2000);
 	}
 	
 }

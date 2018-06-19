@@ -38,10 +38,9 @@ export class UserListComponent implements OnInit {
 				this.loading = false;
 			}, (error) => { 
 				//Error en el servidor
-				console.log('Función de error en el subscribe');
 				this.snackBar.open(error.message,
 									'x',
-									{ duration: 4500, verticalPosition: 'top', panelClass: ['snackbar-color']}
+									{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']}
 				);
 				this.router.navigateByUrl('/admin');
 
@@ -76,11 +75,8 @@ export class UserListComponent implements OnInit {
 						this.router.navigate(['/admin']);
 					},
 					(error) => {
-						console.log('En el component');
-						console.log(error);
 
 						//Error en el servidor
-						console.log('Función de error en el subscribe');
 						this.snackBar.open(error,
 											'x',
 											{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']}

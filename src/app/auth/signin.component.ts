@@ -26,14 +26,10 @@ export class SigninComponent implements OnInit {
 
 	ngOnInit() {
 		this.signinForm = new FormGroup({
-			userName: new FormControl(null, [
-				Validators.required//,
-				//Validators.pattern(/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)
-			]),//valor por default y array de validaciones
+			userName: new FormControl(null, [Validators.required]),
 			password: new FormControl(null, Validators.required)
 		})
 
-		// get return url from route parameters or default to '/'
         this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
 	}
 
@@ -41,30 +37,23 @@ export class SigninComponent implements OnInit {
 		if(this.signinForm.valid){
 			this.loading = true;
 			const { userName, password} = this.signinForm.value;
-			//this.signinForm.reset();
 
 			const user = new User (userName, password);
 			this.authService.signin(user)
 				.subscribe(
-					//this.router.navigateByUrl(this.returnUrl),
-					//this.authService.login,
 					() => {
-	                    // login successful so redirect to return url or profile
 	                    if(this.returnUrl==='/'){
 	                    	this.router.navigateByUrl('/profile');
 	                    } else {
 	                    	this.router.navigateByUrl(this.returnUrl);
 	                    } 
 	                },
-					//this.authService.handleError
 					(error) => {
 						//Error en el servidor
-						console.log('Función de error en el then');
 						this.snackBar.open(error,
 											'x',
 											{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']}
 						);
-						//this.router.navigateByUrl('/admin');
 						this.authService.logout();
 						this.loading = false;
 					}

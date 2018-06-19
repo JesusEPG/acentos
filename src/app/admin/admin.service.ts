@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-//Models
 import { User } from '../auth/user.model';
 import { Activity } from './activity.model';
 import { Http, Headers, Response } from '@angular/http';
@@ -24,16 +23,14 @@ export class AdminService {
 	}
 
 	getUsers(): Promise<void | User[]>{
-		return this.http.get(this.adminUrl+'/users')
+		const token = this.getAdminToken();
+		return this.http.get(this.adminUrl+ '/users' + token)
 			.toPromise()
-			.then(response => response.json() as User[])		//Exitoso
+			.then(response => response.json() as User[])
 			.catch((response) => {
-				console.log('Catch del mistake service');
 				const res = response.json();
 				
 				if(res){
-					console.log('Entré al if del catch service');
-					console.log(res);
 					if(res.message){
 						
 						//Error arrojado desde el servidor
@@ -44,21 +41,19 @@ export class AdminService {
 						throw new Error('Presentamos problema con el servidor. Intenta más tarde');
 					}
 				}
-			});							//Error
+			});
 	}
 
 	getUser(id): Promise<void | User>{
-		const url = urljoin(this.adminUrl, 'user', id);
+		const token = this.getAdminToken();
+		const url = urljoin(this.adminUrl, 'user', id, token);
 		return this.http.get(url)
 			.toPromise()
-			.then(response => response.json() as User)		//Exitoso
+			.then(response => response.json() as User)
 			.catch((response) => {
-				console.log('Catch del mistake service');
 				const res = response.json();
 				
 				if(res){
-					console.log('Entré al if del catch service');
-					console.log(res);
 					if(res.message){
 						
 						//Error arrojado desde el servidor
@@ -69,20 +64,18 @@ export class AdminService {
 						throw new Error('Presentamos problema con el servidor. Intenta más tarde');
 					}
 				}
-			});								//Error
+			});
 	}
 
 	getActivities(): Promise<void | Activity[]>{
-		return this.http.get(this.adminUrl+'/activities')
+		const token = this.getAdminToken();
+		return this.http.get(this.adminUrl+'/activities'+token)
 			.toPromise()
-			.then(response => response.json() as Activity[])		//Exitoso
+			.then(response => response.json() as Activity[])
 			.catch((response) => {
-				console.log('Catch del mistake service');
 				const res = response.json();
 				
 				if(res){
-					console.log('Entré al if del catch service');
-					console.log(res);
 					if(res.message){
 						
 						//Error arrojado desde el servidor
@@ -99,12 +92,11 @@ export class AdminService {
 	updateUser(user: User) {
 		const body = JSON.stringify(user);
 		const headers = new Headers({'Content-Type': 'application/json'});
-		const url = this.adminUrl + '/updateUser';
+		const token = this.getAdminToken();
+		const url = this.adminUrl + '/updateUser' + token;
 		return this.http.post(url, body, { headers })
 			.map((response: Response) => response.json())
 			.catch((error: Response) => {
-				console.log(error);
-				console.log(error.json());
 
 				const res = error.json();
 				
@@ -125,22 +117,18 @@ export class AdminService {
 	}
 
 	deleteActivity(activityId) {
-		//Obtener adminToken y asignarlo al body
 		const body = JSON.stringify({_id: activityId});
 		const headers = new Headers({'Content-Type': 'application/json'});
-		const url = this.adminUrl + '/deleteActivity';
+		const token = this.getAdminToken();
+		const url = this.adminUrl + '/deleteActivity' + token;
 
 		return this.http.post(url, body, { headers })
 			.map((response: Response) => response.json())
 			.catch((error: Response) => {
-				console.log(error);
-				console.log(error.json());
 
 				const res = error.json();
 				
 				if(res){
-					console.log('Entré al if del catch service');
-					console.log(res);
 					if(res.message){
 						
 						//Error arrojado desde el servidor
@@ -160,22 +148,16 @@ export class AdminService {
 		//Obtener adminToken y asignarlo al body
 		const body = JSON.stringify({_id: userId});
 		const headers = new Headers({'Content-Type': 'application/json'});
-		//const token = this.getAdminToken();
-		//const url = this.activitiesUrl + '/updateActivities' + token;
-		const url = this.adminUrl + '/deleteUser';
+		const token = this.getAdminToken();
+		const url = this.adminUrl + '/deleteUser' + token;
 
 		return this.http.post(url, body, { headers })
 			.map((response: Response) => response.json())
-			//.catch((error: Response) => Observable.throw(error.json()));
 			.catch((error: Response) => {
-				console.log(error);
-				console.log(error.json());
 
 				const res = error.json();
 				
 				if(res){
-					console.log('Entré al if del catch service');
-					console.log(res);
 					if(res.message){
 						
 						//Error arrojado desde el servidor

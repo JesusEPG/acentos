@@ -38,18 +38,6 @@ a.btn-primary:hover {
 	background: darken(#1096fc, 7%);
 }
 
-
-
-/* Custom button */
-/*.btn-primary {
- background: #1096fc;
- border: 0;
- 
- &:hover {
-  background: darken(#1096fc, 7%);
- }
-}*/
-
 .feature-icon {
 
 	max-width: 200px;

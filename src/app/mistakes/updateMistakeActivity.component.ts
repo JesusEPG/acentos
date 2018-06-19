@@ -32,13 +32,9 @@ export class UpdateMistakeActivityComponent implements OnInit, ComponentCanDeact
 				private authService: AuthService,
 				public snackBar: MatSnackBar){}
 
-	// @HostListener allows us to also guard against browser refresh, close, etc.
   	@HostListener('window:beforeunload')
   	canDeactivate(): Observable<boolean> | boolean {
-    	// insert logic to check if there are pending changes here;
-    	// returning true will navigate without confirmation
-    	// returning false will show a confirm dialog before navigating away
-    	//return false;
+    	
     	if((this.activityForm.value.fullString||this.activityForm.value.difficulty||this.activityForm.value.comment)&&!this.done) {
 
     		return false;
@@ -64,10 +60,6 @@ export class UpdateMistakeActivityComponent implements OnInit, ComponentCanDeact
 				//Exitoso
 				this.activity = activity;
 				if(this.activity){
-					console.log(this.activity);
-					console.log((this.activity.difficulty/0.1).toString());
-					console.log((Math.round(this.activity.difficulty/0.1)).toString());
-					//console.log(this.activities.length);
 					this.activityForm.patchValue({
 					  difficulty: (Math.round(this.activity.difficulty/0.1)).toString(), 
 					  comment: this.activity.comment,
@@ -76,7 +68,6 @@ export class UpdateMistakeActivityComponent implements OnInit, ComponentCanDeact
 					
 					this.splittedString = this.activity.splittedString;
 					this.activity.splittedString.map(function(word){
-						console.log(word);
 						
 						this.activityWords.push(word);
 					}, this);
@@ -85,7 +76,6 @@ export class UpdateMistakeActivityComponent implements OnInit, ComponentCanDeact
 					this.loading = false;
 				} else {
 					//cuando no consigo
-					console.log('Catch del else en el component');
 					this.snackBar.open(`Problemas al obtener la actividad. Intenta más tarde`,
 											'x',
 											{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']}
@@ -95,7 +85,6 @@ export class UpdateMistakeActivityComponent implements OnInit, ComponentCanDeact
 				}
 			}, (error) => {
 				//Error en el servidor
-				console.log('Función de error en el then');
 				this.snackBar.open(error.message,
 									'x',
 									{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']}
@@ -124,7 +113,6 @@ export class UpdateMistakeActivityComponent implements OnInit, ComponentCanDeact
 		str.trim();
 		let tokens = str.split(/(;|;\s|:|:\s|,|,\s|\?|\?\s|\¿|\¿\s|\s\¿|\s|\.|\.\s|-|-\s|\s-|\!|\!\s|\¡|\¡\s|\s\¡)/);
 
-		console.log(tokens);
 
 		//Validar que si 'token' es un signo de puntuación, se debe colocar 'cliackeable:false'
 		//Y en el cliente solo se muestran los que tengan 'clickeable:true'
@@ -141,8 +129,7 @@ export class UpdateMistakeActivityComponent implements OnInit, ComponentCanDeact
 				   	selected: false
 				});
 
-				return {
-					//id: window.performance && window.performance.now && window.performance.timing && window.performance.timing.navigationStart ? window.performance.now() + window.performance.timing.navigationStart : Date.now(),				
+				return {			
 				   	id: index,
 				   	word: token,
 				   	hidden: false,
@@ -151,7 +138,6 @@ export class UpdateMistakeActivityComponent implements OnInit, ComponentCanDeact
 				}
 			}
 			return {
-				//id: window.performance && window.performance.now && window.performance.timing && window.performance.timing.navigationStart ? window.performance.now() + window.performance.timing.navigationStart : Date.now(),
 				id: index,
 				word: token,
 			   	hidden: false,
@@ -181,33 +167,16 @@ export class UpdateMistakeActivityComponent implements OnInit, ComponentCanDeact
 		word.hidden = !word.hidden;
 
 		this.splittedString[word.id].hidden = word.hidden;
-		console.log(this.correctAnswer);
-		console.log(word);
-		console.log(this.splittedString);
-		//De lo contrario se debe buscar el objeto en los arreglos y luego sacarlo
 	}
 
 	addCorrectAnswer(word){
-		//word.clickeable = !word.clickeable;
 
 		this.possibleAnswers.push(word);
-		/*const newAnswer = {
-			id: word.id,
-			word: word.word,
-			hidden: false,
-			clickeable: false,
-			possibleAnswers: [word]
-			
-		}*/
 		this.correctAnswer=word;
 	}
 
 	deleteCorrectAnswer(word){
-		//word.clickeable = !word.clickeable;
-		//Buscar el objeto y luego eliminarlo
-		//this.remove(this.correctAnswer, word);
 		this.correctAnswer = null;
-		//this.remove(this.possibleAnswers, word);
 		this.possibleAnswers=[];
 
 	}
@@ -215,8 +184,6 @@ export class UpdateMistakeActivityComponent implements OnInit, ComponentCanDeact
 	addPossibleAnswer(){
 		let str = this.activityForm.value.possibleAnswer;
 		this.activityForm.patchValue({possibleAnswer: null});
-		console.log(str);
-		console.log(this.possibleAnswers.length)
 
 		const word = {
 				   	id: this.possibleAnswers.length,
@@ -229,14 +196,8 @@ export class UpdateMistakeActivityComponent implements OnInit, ComponentCanDeact
 	}
 
 	deletePossibleAnswer(word){
-		//word.clickeable = !word.clickeable;
-		//console.log(this.possibleAnswers);
-		//this.remove(this.possibleAnswers, word);
-		//console.log(this.possibleAnswers);
 		this.possibleAnswers.pop();
 	}
-
-	hasOnlywords(word){}
 
 	remove(array, element) {
 	    const index = array.indexOf(element);
@@ -270,17 +231,8 @@ export class UpdateMistakeActivityComponent implements OnInit, ComponentCanDeact
 				null,
 				this.activity._id
 			);
-			console.log(newActivity);
-			/*this.mistakeService.signin(user)
-				.subscribe(
-					this.authService.login,
-					this.authService.handleError
-				);
-			*/
 			this.mistakeService.updateMistakeActivity(newActivity)
 				.subscribe(
-					//( {_id} ) => this.router.navigate(['/questions', _id]),
-					//this.router.navigate(['/']),
 					( {message} ) =>{ 
 						this.done = true;
 						this.snackBar.open(message,
@@ -290,22 +242,16 @@ export class UpdateMistakeActivityComponent implements OnInit, ComponentCanDeact
 						this.router.navigate(['/admin'])
 					},
 					(error) => {
-						console.log('En el component');
-						console.log(error);
 
 						//Error en el servidor
-						console.log('Función de error en el subscribe');
 						this.snackBar.open(error,
 											'x',
 											{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']}
 						);
-						//this.loading = false
 						this.router.navigateByUrl('/admin');
 					}
-				);//recibe dos funciones como parametros, la función de exito y la función de error
+				);
 		} else {
-			//snackbar con mensaje 'Verificar los datos ingresados e intentar de nuevo'
-			console.log('Not valid');
 			this.snackBar.open(`¡Verifica los datos e intenta nuevamente!`,
 								'x',
 								{ duration: 2500, verticalPosition: 'top', panelClass:['snackbar-color']}

@@ -32,13 +32,9 @@ export class MistakesComponent implements OnInit, ComponentCanDeactivate {
 				public snackBar: MatSnackBar){}
 
 
-	// @HostListener allows us to also guard against browser refresh, close, etc.
   	@HostListener('window:beforeunload')
   	canDeactivate(): Observable<boolean> | boolean {
-    	// insert logic to check if there are pending changes here;
-    	// returning true will navigate without confirmation
-    	// returning false will show a confirm dialog before navigating away
-    	//return false;
+    	
     	if((this.activityForm.value.fullString||this.activityForm.value.difficulty||this.activityForm.value.comment)&&!this.done&&!this.preview) {
 
     		return false;
@@ -55,10 +51,7 @@ export class MistakesComponent implements OnInit, ComponentCanDeactivate {
 			difficulty: new FormControl(null, Validators.required),
 			possibleAnswer: new FormControl(null), //Validar que solo acepte
 			fullString: new FormControl(null, [Validators.required, Validators.maxLength(100)])
-			/*fullString: new FormControl(null, [
-				Validators.required//,
-				Validators.pattern(/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)
-			]),*/
+			
 		});
 
 	}
@@ -76,13 +69,13 @@ export class MistakesComponent implements OnInit, ComponentCanDeactivate {
 
 			str.trim();
 			let tokens = str.split(/(;|;\s|:|:\s|,|,\s|\?|\?\s|\¿|\¿\s|\s\¿|\s|\.|\.\s|-|-\s|\s-|\!|\!\s|\¡|\¡\s|\s\¡)/);
-			console.log(tokens);
+			
 
 			//Si 'token' es un signo de puntuación, se coloca 'cliackeable:false'
 			//Y en el cliente solo se muestran los que tengan 'clickeable:true'
 			this.splittedString = tokens.map(function(token, index) {
 
-				//Verificar si es un caracter especial, no es clickeable.
+				//Si es un caracter especial, no es clickeable.
 				if(/^[a-zA-ZáÁéÉíÍóÓúÚñÑ]+$/.test(token)){
 					this.activityWords.push({			
 					   	id: index,
@@ -108,8 +101,6 @@ export class MistakesComponent implements OnInit, ComponentCanDeactivate {
 				   	selected: false
 				}   
 			}, this);
-
-			console.log(this.activityWords)
 		}
 		
 	}
@@ -130,38 +121,20 @@ export class MistakesComponent implements OnInit, ComponentCanDeactivate {
 			
 		} else {
 			//this.deleteCorrectAnswer(word);
-			console.log('entre al else');
 			this.correctAnswer = null;
 		}
 		word.hidden = !word.hidden;
 		this.splittedString[word.id].hidden = word.hidden;
-		console.log(this.correctAnswer);
-		console.log(word);
-		console.log(this.splittedString);
-		//De lo contrario se debe buscar el objeto en los arreglos y luego sacarlo
 	}
 
 	addCorrectAnswer(word){
-		//word.clickeable = !word.clickeable;
 
 		this.possibleAnswers.push(word);
-		/*const newAnswer = {
-			id: word.id,
-			word: word.word,
-			hidden: false,
-			clickeable: false,
-			possibleAnswers: [word]
-			
-		}*/
 		this.correctAnswer=word;
 	}
 
 	deleteCorrectAnswer(word){
-		//word.clickeable = !word.clickeable;
-		//Buscar el objeto y luego eliminarlo
-		//this.remove(this.correctAnswer, word);
 		this.correctAnswer = null;
-		//this.remove(this.possibleAnswers, word);
 		this.possibleAnswers=[];
 
 	}
@@ -169,7 +142,6 @@ export class MistakesComponent implements OnInit, ComponentCanDeactivate {
 	addPossibleAnswer(){
 		let str = this.activityForm.value.possibleAnswer;
 		this.activityForm.patchValue({possibleAnswer: null});
-		console.log(str);
 		if(str){
 
 			const word = {
@@ -184,8 +156,6 @@ export class MistakesComponent implements OnInit, ComponentCanDeactivate {
 	}
 
 	deletePossibleAnswer(){
-		//word.clickeable = !word.clickeable;
-		//this.remove(this.possibleAnswers, word);
 		this.possibleAnswers.pop();
 	}
 
@@ -208,9 +178,9 @@ export class MistakesComponent implements OnInit, ComponentCanDeactivate {
 		if(this.activityForm.valid){
 			this.loading=true;
 			const {difficulty, comment, fullString} = this.activityForm.value;
-			console.log(comment);
+			
 			const difficultyNumber = this.round(parseInt(difficulty, 10) * 0.1, 1);
-			//console.log(difficulty)
+			
 			const activity = new MistakeActivity(
 				difficultyNumber,
 				'Mistake',
@@ -220,12 +190,9 @@ export class MistakesComponent implements OnInit, ComponentCanDeactivate {
 				this.correctAnswer,
 				this.possibleAnswers
 			);
-			console.log(activity);
 			
 			this.mistakeService.addMistakeActivity(activity)
 				.subscribe(
-					//( {_id} ) => this.router.navigate(['/questions', _id]),
-					//this.router.navigate(['/']),
 					(  ) => {
 						this.done = true;
 						this.snackBar.open(`Se ha creado la actividad exitosamente`,
@@ -235,7 +202,7 @@ export class MistakesComponent implements OnInit, ComponentCanDeactivate {
 						this.router.navigate(['/admin']);
 					},
 					this.authService.handleError
-				);//recibe dos funciones como parametros, la función de exito y la función de error*/
+				);
 		} else {
 			//Not valid
 			this.snackBar.open(`Verificar los datos e intentar nuevamente!`,

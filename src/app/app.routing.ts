@@ -9,7 +9,6 @@ import { SigninGuard } from './auth/signin-guard.service';
 import { ActivitiesComponent } from './activities/activities.component';
 import { SimpleSelectionComponent } from './simpleSelection/simpleSelection.component';
 import { SelectionActivitiesComponent } from './activities/selectionActivities.component';
-import { StatisticsComponent } from './statistics/statistics.component';
 import { ACTIVITIES_ROUTES } from './activities/activities.routing';
 import { ADMIN_ROUTES } from './admin/admin.routing';
 
@@ -19,15 +18,9 @@ const APP_ROUTES: Routes = [
 	{ path: 'signin', component: SigninComponent, canActivate: [SigninGuard] },
 	{ path: 'signup', component: SignupComponent },
 	{ path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
-	{ path: 'statistics', component: StatisticsComponent, canActivate: [AuthGuard]},
-	//{ path: 'activities', component: ActivitiesComponent},
 	{ path: 'activities', children: ACTIVITIES_ROUTES, canActivate: [AuthGuard] },
 	{ path: 'admin', children: ADMIN_ROUTES },
-
-	//{ path: 'selection', component: SelectionActivitiesComponent},
 	{ path: 'simpleSelection', component: SimpleSelectionComponent}
-
-	//{ path: 'questions', children: QUESTION_ROUTES }
 ];
 
 export const Routing = RouterModule.forRoot(APP_ROUTES);

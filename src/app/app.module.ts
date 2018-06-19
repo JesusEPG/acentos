@@ -34,10 +34,6 @@ import { ActivityListComponent } from './admin/activityList.component';
 import { UpdateMistakeActivityComponent } from './mistakes/updateMistakeActivity.component';
 import { UpdateSelectionActivityComponent } from './simpleSelection/updateSelectionActivity.component';
 import { UpdateUserComponent } from './admin/updateUser.component';
-import { StatisticsComponent } from './statistics/statistics.component';
-
-
-
 
 //Services
 import { AuthService } from './auth/auth.service';
@@ -46,7 +42,6 @@ import { SigninGuard } from './auth/signin-guard.service';
 import { AdminSigninGuard } from './auth/adminSignin-guard.service';
 import { AdminGuardService } from './auth/admin-guard.service';
 import { SessionGuard } from './activities/session-guard.service';
-//import { JwtHelperService } from '@auth0/angular-jwt';
 
 //Routes
 import { Routing } from './app.routing';
@@ -73,8 +68,7 @@ import { Routing } from './app.routing';
     ActivityListComponent,
     UpdateMistakeActivityComponent,
     UpdateSelectionActivityComponent,
-    UpdateUserComponent,
-    StatisticsComponent
+    UpdateUserComponent
   ],
   imports: [
     BrowserModule,

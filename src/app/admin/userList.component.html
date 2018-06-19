@@ -61,51 +61,6 @@
 		</pagination-controls>
 	</div>
 
-	<!--<div *ngIf="!loading&&users.length>0">
-		
-		
-
-		<div class="mb-2">
-	        
-	        <input type="text" class="form-control" placeholder="Filtrar usuarios por: nombre, apellido, nombre de usuario" [(ngModel)]="filter">
-	        
-	        
-	    </div>
-
-	    
-	    	<ul class="list-group mb-3">
-
-				<li *ngFor="let user of users | filterBy: ['firstName', 'lastName' ,'userName']: filter | paginate: { itemsPerPage: 1, currentPage: p }" class="list-group-item list-group-item-action">
-					<div class="row">
-						<div class="col-sm-6">
-						
-					    	<h5 class="mb-1">{{user.firstName}} {{user.lastName}}</h5>
-
-					      	<h6 class="mt-2">Username: {{user.userName}}</h6>
-						</div>
-
-						<div class="col-sm-6">
-							<button [routerLink]="['updateUser', user._id]" class="btn btn-primary btn-sm mb-1">Modificar</button>
-
-						    	<button type="button" class="btn btn-primary btn-sm mb-1" (click)="openModal(template)">Eliminar</button>
-							    <ng-template class="mt-5" #template>
-							      <div class="modal-body text-center">
-							        <p>¿Está seguro que desea eliminar al usuario {{user.userName}}?</p>
-							        <button type="button" class="btn btn-default" (click)="confirm(user._id)" >Sí</button>
-							        <button type="button" class="btn btn-primary" (click)="decline()" >No</button>
-							      </div>
-							    </ng-template>
-						</div>
-				    
-					</div>
-					
-				</li>
-
-			</ul>
-	    <pagination-controls (pageChange)="p = $event"></pagination-controls>
-
-	</div>-->
-
 	<div *ngIf="!loading&&users.length<1">
 		<div class="alert alert-info" role="alert">
 			¡No hay usuarios registrados!

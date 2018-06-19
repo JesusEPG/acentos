@@ -58,16 +58,10 @@ export class ActivityListComponent implements OnInit {
 	}
 
 	deleteActivity(activityId){
-
-		console.log('Boton component list');
 		this.adminService.deleteActivity(activityId)
 				.subscribe(
-					//( {_id} ) => this.router.navigate(['/questions', _id]),
-					//this.router.navigate(['/']),
 					( {_id} ) => {
 						this.router.navigate(['/admin']);
-						console.log('Exitoso')
-						console.log(_id);
 					},
 					this.adminService.handleError
 				);
@@ -84,23 +78,16 @@ export class ActivityListComponent implements OnInit {
 	    this.modalRef.hide();
 	    this.adminService.deleteActivity(activityId)
 				.subscribe(
-					//( {_id} ) => this.router.navigate(['/questions', _id]),
-					//this.router.navigate(['/']),
 					( {message, id} ) => {
 						this.snackBar.open(	message, 
 											'x',
 											{duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']}
 						);
-						//this.loading = false;
 						this.router.navigate(['/admin']);
 					},
-					//this.adminService.handleError
 					(error) => {
-						console.log('En el component');
-						console.log(error);
 
 						//Error en el servidor
-						console.log('Función de error en el then');
 						this.snackBar.open(error,
 											'x',
 											{ duration: 4500, verticalPosition: 'top', panelClass: ['snackbar-color']}

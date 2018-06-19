@@ -41,26 +41,19 @@ export class AdminSigninComponent implements OnInit {
 		if(this.signinForm.valid){
 			this.loading = true;
 			const { email, password} = this.signinForm.value;
-			//this.signinForm.reset();
 
 			const user = new AdminUser (email, password);
 			this.authService.adminSignin(user)
 				.subscribe(
-					//this.router.navigateByUrl(this.returnUrl),
-					//this.authService.login,
 					() => {
-	                    // login successful so redirect to return url
 	                    this.router.navigateByUrl(this.returnUrl);
 	                },
-					//this.authService.handleError
 					(error) => {
 						//Error en el servidor
-						console.log('Función de error en el then');
 						this.snackBar.open(error,
 											'x',
 											{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']}
 						);
-						//this.router.navigateByUrl('/admin');
 						this.authService.adminLogout();
 						this.loading = false;
 					}

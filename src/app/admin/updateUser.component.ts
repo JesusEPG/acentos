@@ -28,11 +28,8 @@ export class UpdateUserComponent implements OnInit, ComponentCanDeactivate {
 				private route: ActivatedRoute,
 				public snackBar: MatSnackBar){}
 
-	// @HostListener allows us to also guard against browser refresh, close, etc.
   	@HostListener('window:beforeunload')
   	canDeactivate(): Observable<boolean> | boolean {
-    	// returning true will navigate without confirmation
-    	// returning false will show a confirm dialog before navigating away
     	if((this.userUpdateForm.value.firstName||this.userUpdateForm.value.lastName||this.userUpdateForm.value.userName)&&!this.done) {
 
     		return false;
@@ -100,12 +97,10 @@ export class UpdateUserComponent implements OnInit, ComponentCanDeactivate {
 		if(this.userUpdateForm.valid){
 			this.loading = true;
 			const {firstName, lastName, userName, password, school, grade} = this.userUpdateForm.value;
-			console.log("PASSWORD");
-			console.log(password);
+			
 			const username = userName === this.user.userName? null : userName;
 			const user = new User(username, password, firstName, lastName, school, grade, this.user._id);
-			console.log(user);
-			console.log(`Nombre Completo: ${firstName} ${lastName}, Username: ${userName}, Contraseña: ${password}`);
+			
 			this.adminService.updateUser(user)
 				.subscribe(
 					( {_id} ) =>{ 
@@ -119,8 +114,6 @@ export class UpdateUserComponent implements OnInit, ComponentCanDeactivate {
 					},
 					(error) => {
 						//Error en el servidor
-						console.log('Función de error en el subscribe');
-						console.log(error);
 						if (error.error==='Nombre de usuario ingresado ya está en uso') {
 							this.snackBar.open(error.error,
 												'x',
@@ -132,7 +125,6 @@ export class UpdateUserComponent implements OnInit, ComponentCanDeactivate {
 												'x',
 												{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']}
 							);
-							//this.loading = false
 							this.router.navigateByUrl('/admin');
 						}
 						

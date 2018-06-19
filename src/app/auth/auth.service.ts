@@ -7,14 +7,12 @@ import { Headers, Http, Response } from '@angular/http';
 //import { JwtHelperService } from '@auth0/angular-jwt';		<-- BORRAR del proyecto
 import * as jwt_decode from 'jwt-decode';
 import { Observable } from 'rxjs/Observable';
-//import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-//import { AlertComponent } from 'ngx-bootstrap/alert/alert.component';
 
 
 @Injectable()
@@ -27,10 +25,8 @@ export class AuthService {
 		private http: Http,
 		private router: Router,
 		public snackBar: MatSnackBar
-		/*,	public snackBar: MatSnackBar*/
 	){
 
-		//'http://localhost:3000/api/auth'
 		this.usersURL = urljoin(environment.apiUrl, 'auth');
 		
 		if(this.isLoggedIn()){
@@ -78,7 +74,7 @@ export class AuthService {
 		const url = urljoin(this.usersURL, 'signin');
 		return this.http.post(url, body, { headers })
 			.map((response: Response) => {
-				const json = response.json(); //Lo que responde la ruta
+				const json = response.json();
 				this.login(json);
 				return json;
 			})
@@ -107,7 +103,7 @@ export class AuthService {
 		const url = urljoin(this.usersURL, 'adminSignin');
 		return this.http.post(url, body, { headers })
 			.map((response: Response) => {
-				const json = response.json(); //Lo que responde la ruta
+				const json = response.json();
 				this.adminLogin(json);
 				return json;
 			})
@@ -115,8 +111,6 @@ export class AuthService {
 				const res = error.json();
 				
 				if(res){
-					console.log('Entré al if del catch service');
-					console.log(res);
 					if(res.message){
 						
 						//Error arrojado desde el servidor
@@ -149,23 +143,12 @@ export class AuthService {
 
 	isLoggedIn(){
 		
-		//console.log(this.isTokenExpired());
-		//return localStorage.getItem('token') !== null;
 		return !this.isTokenExpired();
 
 	}
 
 	isAdminLoggedIn(){
 		
-		//console.log(this.isTokenExpired());
-		//return localStorage.getItem('token') !== null;
-
-		//const adminToken = this.getAdminToken();
-
-		// decode the token to get its payload
-    	//const tokenPayload = jwt_decode(adminToken);
-
-		//return !this.isAdminTokenExpired() && tokenPayload.role === 'admin'
 		return !this.isAdminTokenExpired()
 
 
@@ -229,28 +212,12 @@ export class AuthService {
 	    return localStorage.getItem('adminToken');
 	}
 
-	/*showError(message) {
-		//recibe el mensaje, luego lo que queramos colocar para cerrar el mensaje, y las opciones
-		//this.snackBar.open(message, 'x', { duration: 2500 });
-		console.log(message);
-	}*/
-
 	showError(message) {
 		//recibe el mensaje, luego lo que queramos colocar para cerrar el mensaje, y las opciones
 		this.snackBar.open(message, 'x', { duration: 2500, verticalPosition: 'top'});
-		console.log(message);
-		/*return {
-					type: 'warning',
-				    msg: message,
-				    timeout: 2500
-				};*/
 	}
 
 	public handleError = (error: any) => {
-
-		console.log('Entré al handler de auth');
-
-		console.log(error);
 
 		const { error: {  name }, message } = error;
 		if(name === 'TokenExpiredError'){
@@ -266,10 +233,6 @@ export class AuthService {
 	}
 
 	public handleAdminError = (error: any) => {
-
-		console.log('Entré al handler de auth');
-
-		console.log(error);
 
 		const { error: {  name }, message } = error;
 		if(name === 'TokenExpiredError'){

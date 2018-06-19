@@ -32,8 +32,7 @@ export class ProfileService {
 		const url = this.profileUrl + token;
 		return this.http.get(url)
 			.toPromise()
-			.then(response => response.json() as any[])		//Exitoso
-			//.catch(this.handleError);								//Error
+			.then(response => response.json() as any[])
 			.catch((response) => {
 				console.log('Catch del profile.service');
 				const res = response.json();
@@ -94,11 +93,7 @@ export class ProfileService {
 			.toPromise()
 			.then(response => response.json() as any[])		//Exitoso
 			.catch((response) => {
-				console.log('Catch del profile.service');
 				const res = response.json();
-
-				console.log(res);
-				console.log(res.error);
 
 				if(res){
 					if(res.error){
@@ -107,9 +102,8 @@ export class ProfileService {
 							this.snackBar.open(`${res.error.error}. ${res.error.message}`,
 												'x', 
 												{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']});
-							//this.authService.logout()
+							
 							localStorage.clear();
-							//this.authService.currentUser = null;
 
 							this.authService.currentUser = new User(res.userName,
 																	null,
@@ -127,7 +121,6 @@ export class ProfileService {
 																		school: res.school,
 																		grade: res.grade}));
 							return this.getWeeklyData();
-							//this.router.navigateByUrl('/');
 						} else if(res.error.error === 'Usuario no disponible') {
 							//Usuario eliminado
 							this.snackBar.open(`${res.error.error}. ${res.error.message}`,
@@ -145,7 +138,7 @@ export class ProfileService {
 						this.router.navigateByUrl('/');
 					}
 				}
-			});								//Error
+			});
 	}
 
 	getMonthlyData(): Promise<void | any[]>{
@@ -153,13 +146,9 @@ export class ProfileService {
 		const url = this.profileUrl + '/monthly' + token;
 		return this.http.get(url)
 			.toPromise()
-			.then(response => response.json() as any[])		//Exitoso
+			.then(response => response.json() as any[])
 			.catch((response) => {
-				console.log('Catch del profile.service');
 				const res = response.json();
-
-				console.log(res);
-				console.log(res.error);
 
 				if(res){
 					if(res.error){
@@ -168,9 +157,8 @@ export class ProfileService {
 							this.snackBar.open(`${res.error.error}. ${res.error.message}`,
 												'x', 
 												{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']});
-							//this.authService.logout()
+							
 							localStorage.clear();
-							//this.authService.currentUser = null;
 
 							this.authService.currentUser = new User(res.userName,
 																	null,
@@ -188,7 +176,6 @@ export class ProfileService {
 																		school: res.school,
 																		grade: res.grade}));
 							return this.getMonthlyData();
-							//this.router.navigateByUrl('/');
 						} else if(res.error.error === 'Usuario no disponible') {
 							//Usuario eliminado
 							this.snackBar.open(`${res.error.error}. ${res.error.message}`,
@@ -206,18 +193,11 @@ export class ProfileService {
 						this.router.navigateByUrl('/');
 					}
 				}
-			});									//Error
+			});
 	}
 
 	getToken(){
 		const token = localStorage.getItem('token');
 		return `?token=${token}`;
-	}
-
-	handleError(error: any) {
-		const errMsg = error.message ? error.message :
-			error.status ? `${error.status} - ${error.statusText}` : 'Server error';
-
-		console.log(errMsg);
 	}
 }

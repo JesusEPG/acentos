@@ -30,13 +30,8 @@ export class SimpleSelectionComponent implements OnInit, ComponentCanDeactivate 
 				private authService: AuthService,
 				public snackBar: MatSnackBar){}
 
-	// @HostListener allows us to also guard against browser refresh, close, etc.
   	@HostListener('window:beforeunload')
   	canDeactivate(): Observable<boolean> | boolean {
-    	// insert logic to check if there are pending changes here;
-    	// returning true will navigate without confirmation
-    	// returning false will show a confirm dialog before navigating away
-    	//return false;
     	if((this.activityForm.value.fullString||this.activityForm.value.difficulty||this.activityForm.value.comment)&&!this.done&&!this.preview) {
 
     		return false;
@@ -53,10 +48,6 @@ export class SimpleSelectionComponent implements OnInit, ComponentCanDeactivate 
 			difficulty: new FormControl(null, Validators.required),
 			possibleAnswer: new FormControl(null), //Validar que solo acepte
 			fullString: new FormControl(null, [Validators.required, Validators.maxLength(100)])
-			/*fullString: new FormControl(null, [
-				Validators.required//,
-				Validators.pattern(/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)
-			]),*/
 		});
 
 	}
@@ -70,13 +61,8 @@ export class SimpleSelectionComponent implements OnInit, ComponentCanDeactivate 
 		let str = this.activityForm.value.fullString;
 		str.trim();
 
-		//Se debe usar una expresión regular para que solo forme las palabras
-		//Y guarde los signos de puntuación
-		//Se separa en espacios
-		//let tokens = str.split(/(;\s|:\s|,|,\s|\?\s|\?|\s)/);
 		let tokens = str.split(/(;|;\s|:|:\s|,|,\s|\?|\?\s|\¿|\¿\s|\s\¿|\s|\.|\.\s|-|-\s|\s-|\!|\!\s|\¡|\¡\s|\s\¡)/);
 
-		console.log(tokens);
 
 		//Validar que si 'token' es un signo de puntuación, se debe colocar 'cliackeable:false'
 		//Y en el cliente solo se muestran los que tengan 'clickeable:true'
@@ -85,8 +71,7 @@ export class SimpleSelectionComponent implements OnInit, ComponentCanDeactivate 
 			//Verificar si es un caracter especial, no es clickeable.
 			if(/^[a-zA-ZáÁéÉíÍóÓúÚñÑ]+$/.test(token)){
 				
-				return {
-					//id: window.performance && window.performance.now && window.performance.timing && window.performance.timing.navigationStart ? window.performance.now() + window.performance.timing.navigationStart : Date.now(),				
+				return {			
 				   	id: index,
 				   	word: token,
 				   	hidden: false,
@@ -94,7 +79,6 @@ export class SimpleSelectionComponent implements OnInit, ComponentCanDeactivate 
 				}
 			}
 			return {
-				//id: window.performance && window.performance.now && window.performance.timing && window.performance.timing.navigationStart ? window.performance.now() + window.performance.timing.navigationStart : Date.now(),
 				id: index,
 				word: token,
 			   	hidden: false,
@@ -105,18 +89,9 @@ export class SimpleSelectionComponent implements OnInit, ComponentCanDeactivate 
 
 	hideAnswer(word){
 
-		//De ser seleccionada una palabra, es decir word.hidden == false
-		//Se hace word.hidden = false y
-		//Se debe agregar al arreglo de respuestas correctas y de respuestas posibles
-		//Analizar los casos en que se deben ocultar o no estas palabras
-		//O si se les puede hacer click
-
 		this.possibleAnswers=[];
 
 		if(!word.hidden){
-			/*if(this.possibleAnswers[0]){
-				this.possibleAnswers[0].hidden=false;
-			}*/
 
 			if(this.correctAnswer){
 				this.correctAnswer.hidden=!this.correctAnswer.hidden;
@@ -130,16 +105,10 @@ export class SimpleSelectionComponent implements OnInit, ComponentCanDeactivate 
 			this.deleteCorrectAnswer(word);
 		}
 		word.hidden = !word.hidden;
-		console.log(this.splittedString);
-		//De lo contrario se debe buscar el objeto en los arreglos y luego sacarlo
 	}
 
 	deleteCorrectAnswer(word){
-		//word.clickeable = !word.clickeable;
-		//Buscar el objeto y luego eliminarlo
-		//this.remove(this.correctAnswer, word);
 		this.correctAnswer = null;
-		//this.remove(this.possibleAnswers, word);
 		this.possibleAnswers=[];
 
 	}
@@ -147,7 +116,6 @@ export class SimpleSelectionComponent implements OnInit, ComponentCanDeactivate 
 	addPossibleAnswer(){
 		let str = this.activityForm.value.possibleAnswer;
 		this.activityForm.patchValue({possibleAnswer: null});
-		console.log(str);
 		if(str){
 			const word = {
 					   	id: this.possibleAnswers.length,
@@ -160,11 +128,8 @@ export class SimpleSelectionComponent implements OnInit, ComponentCanDeactivate 
 	}
 
 	deletePossibleAnswer(word){
-		//word.clickeable = !word.clickeable;
 		this.remove(this.possibleAnswers, word);
 	}
-
-	hasOnlywords(word){}
 
 	remove(array, element) {
 	    const index = array.indexOf(element);
@@ -194,17 +159,8 @@ export class SimpleSelectionComponent implements OnInit, ComponentCanDeactivate 
 				this.correctAnswer,
 				this.possibleAnswers
 			);
-			console.log(activity);
-			/*this.simpleSelectionService.signin(user)
-				.subscribe(
-					this.authService.login,
-					this.authService.handleError
-				);
-			*/
 			this.simpleSelectionService.addSimpleSelectionActivity(activity)
 				.subscribe(
-					//( {_id} ) => this.router.navigate(['/questions', _id]),
-					//this.router.navigate(['/']),
 					( {_id} ) =>{
 						this.done = true;
 						this.snackBar.open(`Se ha creado la actividad exitosamente`,
@@ -215,10 +171,8 @@ export class SimpleSelectionComponent implements OnInit, ComponentCanDeactivate 
 						this.router.navigate(['/admin'])
 					},
 					this.authService.handleError
-				);//recibe dos funciones como parametros, la función de exito y la función de error
+				);
 		} else {
-			//snackbar con mensaje 'Verificar los datos ingresados e intentar de nuevo'
-			console.log('Not valid');
 			this.snackBar.open(`Verificar los datos e intentar nuevamente!`,
 								'x',
 								{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']}
