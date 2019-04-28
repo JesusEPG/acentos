@@ -61,7 +61,7 @@
 					<li *ngIf="selectedAnswers[i].correct" class="list-group-item list-group-item-success mb-1">
 						<div class="text-center">
 							<h4 *ngIf="activity.difficulty>0.5">¡Impresionante!</h4>
-							<h4 *ngIf="activity.difficulty<0.5">¡Acertaste!</h4>
+							<h4 *ngIf="activity.difficulty<=0.5">¡Acertaste!</h4>
 						</div>
 						<hr>
 						<h5 class="mb-1"><strong>Tu respuesta: {{selectedAnswers[i].word}}</strong></h5>
@@ -71,7 +71,7 @@
 					<li *ngIf="!selectedAnswers[i].correct" class="list-group-item list-group-item-danger mb-1">
 						<div class="text-center">
 							<h4 *ngIf="activity.difficulty>0.5">¡Casi lo tienes!</h4>
-							<h4 *ngIf="activity.difficulty<0.5">¡Sigue intentando!</h4>
+							<h4 *ngIf="activity.difficulty<=0.5">¡Sigue intentando!</h4>
 						</div>
 						<hr>
 						<div class="d-flex w-100 justify-content-between">

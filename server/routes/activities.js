@@ -11,12 +11,7 @@ const app = express.Router()
 // 	GET	/api/activities/mistakes
 app.get('/mistakes', required, async (req, res) => {
 
-	/*const test = [];
-
-	return res.status(200).json(test)*/
-
-	console.log('ENTRANDO A ACTIVITIES')
-	
+		
 	var result = []
 
 	try {
@@ -70,10 +65,7 @@ app.get('/mistakes', required, async (req, res) => {
 // 	GET	/api/activities/mistakes
 app.get('/selection', required, async (req, res) => {
 
-	/*const test = [];
-
-	return res.status(200).json(test)*/
-	
+		
 	var result = []
 
 	try {
@@ -88,12 +80,9 @@ app.get('/selection', required, async (req, res) => {
 			}
 
 			fetchedActivities.forEach(async function(activity, index) {
-				// statements
-				//Para cada actividad en fetchedactivities debo marcarlas como taken
-				//y debo crear el objeto con todos los datos para devolver al client
-
+				
+				
 				var subDoc = user.activities.id(activity.activities._id);
-			  	//console.log(`Subdocument: ${subDoc}`)
 				subDoc.set({taken: true})
 
 				result.push({
@@ -116,9 +105,6 @@ app.get('/selection', required, async (req, res) => {
 
 			})
 			const newUser = await user.save()
-			console.log(`New User ${newUser}`)
-			console.log('Result')
-			console.log(result)
 			res.status(200).json(result)
 
 
@@ -134,10 +120,8 @@ app.get('/:id', adminRequired, async (req, res) => {
 	try{
 		const activity = await activities.findActivityById(req.params.id)
 		res.status(200).json(activity)
-		//res.status(200).json({})
 
 	} catch (err) {
-		console.log('Catch del route')
 		return handleError(err, res)
 	}
 
@@ -145,8 +129,7 @@ app.get('/:id', adminRequired, async (req, res) => {
 
 app.post('/updateActivities', required, async (req, res) => {
 
-	console.log('ENTRANDO AL UPDATE')
-
+	
 	//activities to update
 	const toUpdate = req.body
 
@@ -159,10 +142,8 @@ app.post('/updateActivities', required, async (req, res) => {
 			toUpdate.forEach(async function(activity, index) {
 				
 				var subDoc = user.activities.id(activity._id);
-		  		console.log(`Subdocument: ${subDoc}`)
 
 		  		if(!subDoc.modified){
-					console.log('No se ha modificado')
 
 					subDoc.set({
 						difficulty: activity.difficulty,
@@ -176,27 +157,18 @@ app.post('/updateActivities', required, async (req, res) => {
 					})
 
 					try {
-						//const savedActivity = await activities.updateUserActivities(req.user._id, activity)
 						const savedActivity = await user.save()
-						console.log(savedActivity)
-						console.log(`Resultado del query ${savedActivity}`)
 					} catch (err){
-						//console.log(err)
 						errors++
 						return handleError(err, res)
 					}
 
 				} else {
-				  	console.log('Se modificó')
-				  	//subDoc.set(req.body);
 				  	subDoc.set({modified: false, taken: false})
 
 				  	try {
 						const savedActivity = await user.save()
-						console.log(savedActivity)
-						console.log(`Resultado del query ${savedActivity}`)
 					} catch (err){
-						//console.log(err)
 						errors++
 						handleError(err, res)
 					}
@@ -209,49 +181,8 @@ app.post('/updateActivities', required, async (req, res) => {
 	res.status(201).json({message: 'Actualización de actividades se ha realizado de manera exitosa'})
 })
 
-/*app.post('/updateLostActivities', required, async (req, res) => {
-
-	console.log('Llegué a LOST activities')
-
-	User.findById({_id:req.user._id}, async function(err, user){
-		if (err){
-			console.log(err)
-			return handleError(err, res)
-		} else {
-			console.log('USER EN LOST:')
-			console.log(user)
-			user.activities.forEach(async function(activity, index) {
-				
-				if (activity.modified||activity.taken){
-
-					console.log('Se modificó')
-					var subDoc = user.activities.id(activity._id);
-				  	//subDoc.set(req.body);
-				  	subDoc.set({modified: false, taken: false})
-
-				  	try {
-						const savedActivity = await user.save()
-						//console.log(savedActivity)
-						console.log(`Resultado del query ${savedActivity}`)
-					} catch (err){
-						console.log(err)
-						errors++
-						handleError(err, res)
-					}
-
-				}
-			});
-			console.log('Saliendo de LOST activities')
-			res.status(201).json({message: 'Actualización de actividades se ha realizado de manera exitosa'})
-		}
-	})
-})*/
-
-//	POST  /api/simpleSelection
-//app.post('/', required, async (req, res) => {
 app.post('/newSelectionActivity', adminRequired, async (req, res) => {
-	console.log('Llegó a la ruta del server');
-
+	
 	const {difficulty, type, comment, fullString, splittedString, correctAnswer, possibleAnswers } = req.body
 	const activity = {
 		difficulty,
@@ -283,10 +214,7 @@ app.post('/newSelectionActivity', adminRequired, async (req, res) => {
 })
 
 //	POST  /api/activities/newMistakeActivity
-//app.post('/', required, async (req, res) => {
 app.post('/newMistakeActivity', adminRequired, async (req, res) => {
-
-	console.log('Llegó a la ruta del server');
 
 	const {difficulty, type, comment, fullString, splittedString, correctAnswer, possibleAnswers } = req.body
 	const activity = {
@@ -302,10 +230,9 @@ app.post('/newMistakeActivity', adminRequired, async (req, res) => {
 	}
 
 	try {
-		//El db api debe ser solo de selection
+		
 		const savedActivity = await activities.createActivity(activity)
 		try {
-			//Hacer que updateUsers sea una promesa para poder validar errores
 			const test = await activities.updateUsersActivities(savedActivity)
 			res.status(201).json(savedActivity)
 		} catch (err) {
@@ -319,7 +246,6 @@ app.post('/newMistakeActivity', adminRequired, async (req, res) => {
 })
 
 //	POST  /api/activities/newMistakeActivity
-//app.post('/', required, async (req, res) => {
 app.post('/updateActivity', adminRequired, async (req, res) => {
 
 	const {difficulty, type, comment, fullString, splittedString, correctAnswer, possibleAnswers, createdAt, _id } = req.body
@@ -362,11 +288,11 @@ app.post('/updateActivity', adminRequired, async (req, res) => {
 						});
 
 
-						//const test = await activities.updateUsersActivity(updated)
+						
 						res.status(201).json({message: 'Se ha actualizado la actividad exitosamente'})
 
 					} catch(err) {
-						// statements
+						
 						console.log(err)
 						return handleError(err, res)
 					}
@@ -393,21 +319,5 @@ app.post('/updateActivity', adminRequired, async (req, res) => {
 })
 
 
-//	POST  /api/questions/:id/answers
-/*app.post('/:id/answers', required, simpleSelectionActivityMiddleware, async (req, res) => {
-	const answer = req.body
-	const q = req.simpleSelectionActivity
-	answer.createdAt = new Date()
-	answer.user = new User(req.user)
-	
-	try {
-		const savedAnswer = await simpleSelection.createAnswer(q, answer)
-		res.status(201).json(savedAnswer)
-	} catch (err){
-		handleError(err, res)
-	}
-})*/
 
-
-// Aqui van las rutas
 export default app

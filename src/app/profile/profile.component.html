@@ -118,14 +118,23 @@
                                         </canvas>
                                     </div>
                                 </div>
-                        </div> 
+                        </div>
+
+                        <div *ngIf="!loading&&generalChartData.length<1">
+                            <div class="alert alert-info" role="alert">
+                                ¡Aún no has tenido actividad!
+                            </div>
+                            <div class="text-center">
+                                <button type="button" class="btn btn-primary" [routerLink]="['/activities']">Ir a actividades</button>
+                            </div>
+                        </div>
 
                     </tab>
                     <tab heading="Datos semanales" class="mt-2" (select)="onSelect($event)">
                         <mat-spinner *ngIf="loading" class="spinner" style="margin:0 auto;" color='accent'>
                         </mat-spinner>
 
-                        <div *ngIf="!loading&&generalChartData.length>0" class="row align-items-center">
+                        <div *ngIf="!loading&&generalWeeklyChartData.length>0" class="row align-items-center">
                 
                             <div class="col col-md-6">
                                 <ul class=" mb-2">
@@ -216,18 +225,18 @@
                                         </canvas>
                                     </div>
                                 </div>
-                        </div> 
+                        </div>
+
+                        <div *ngIf="!loading&&generalWeeklyChartData.length<1">
+                            <div class="alert alert-info" role="alert">
+                                ¡Aún no has tenido actividad esta semana!
+                            </div>
+                            <div class="text-center">
+                                <button type="button" class="btn btn-primary" [routerLink]="['/activities']">Ir a actividades</button>
+                            </div>
+                        </div>
                     </tab>
                 </tabset>
-            </div>
-
-            <div *ngIf="!loading&&generalChartData.length<1">
-                <div class="alert alert-info" role="alert">
-                    ¡Aún no has tenido actividad!
-                </div>
-                <div class="text-center">
-                    <button type="button" class="btn btn-primary" [routerLink]="['/activities']">Ir a actividades</button>
-                </div>
             </div>
 
         </div>

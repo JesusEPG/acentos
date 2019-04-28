@@ -67,6 +67,8 @@ export class ProfileComponent implements OnInit {
 	//private loading = true;
 	//private data:any[];
 
+	private weeklyResult:boolean = false;
+
 	private value: string;
 	
 
@@ -189,7 +191,9 @@ export class ProfileComponent implements OnInit {
 	onSelect(data: TabDirective): void {
 	    this.value = data.heading;
 
-	    if(data.heading=='Datos semanales'&&this.generalWeeklyChartData.length<1) {
+	    //if(data.heading=='Datos semanales'&&this.generalWeeklyChartData.length<1) {
+	    if(data.heading=='Datos semanales'&&!this.weeklyResult) {
+
 	    	console.log('Hice request al server');
 	    	this.loading = true;
 		    this.profileService
@@ -197,6 +201,7 @@ export class ProfileComponent implements OnInit {
 				.then((data: any[]) => {
 					
 					if (data){
+
 						if(data.length===1){
 
 							//Si hay ejercicios de un tipo
@@ -269,7 +274,7 @@ export class ProfileComponent implements OnInit {
 
 						}
 					}
-
+					this.weeklyResult = true;
 					this.loading = false;
 				})
 				.catch((err: any) => {

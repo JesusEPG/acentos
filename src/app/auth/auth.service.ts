@@ -134,6 +134,10 @@ export class AuthService {
 	}
 
 	adminLogin = ({adminToken, userId, firstName, lastName, email, role }) => {
+		if(this.isLoggedIn()) {
+			localStorage.clear();
+			this.currentUser = null;
+		}
 		this.currentAdminUser = new AdminUser(email, null, firstName, lastName, userId, role)
 		localStorage.setItem('adminToken', adminToken);
 		localStorage.setItem('adminUser', JSON.stringify({userId, firstName , lastName, email, role}));

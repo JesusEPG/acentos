@@ -5,9 +5,9 @@ import { auth, activities, admin, profile } from './routes'
 const app = express();
 
 app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({extended:true})) //Para que lea cosas en formato UTF8
+app.use(bodyParser.urlencoded({extended:true})) 
 
-if(process.env.NODE_ENV === 'development') {		//indica en que entorno estamos
+if(process.env.NODE_ENV === 'development') {
 	app.use((req, res, next) => {
 		res.setHeader('Access-Control-Allow-Origin', '*');		//cualquier dominio pueda acceder
 		res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Request-With, Content-Type, Accept');	//con cualquiera de estos headers se pueda devolver algo
@@ -17,8 +17,6 @@ if(process.env.NODE_ENV === 'development') {		//indica en que entorno estamos
 }
 
 
-//question se encargará de decidir que va a devolver
-// se usa 'use' porque se pueden manejar distintos tipos de request, y es cuestion donde define cada tipo
 
 app.use('/api/activities', activities)
 
@@ -27,9 +25,5 @@ app.use('/api/admin', admin)
 app.use('/api/auth', auth)
 
 app.use('/api/profile', profile)
-
-//app.get('/', (req, res) => res.send('Hola desde el servidor'))
-
-
 
 export default app

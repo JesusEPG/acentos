@@ -2,7 +2,6 @@ import express from 'express'
 import jwt from 'jsonwebtoken'
 import { secret } from '../config'
 import { User, Admin } from '../models'
-import Debug from 'debug'
 import { activities } from '../db-api'
 import { handleError } from '../utils'
 
@@ -11,15 +10,12 @@ import {
 	compareSync as comparePasswords
 } from 'bcryptjs'
 
-const debug = Debug('acentos:auth-routes')
-
-
 const app = express.Router()
 
 app.post('/signin', async (req, res, next) => {
 
 	const { userName, password } = req.body
-	const user = await User.findOne({ userName }) //busca el que tenga ese userName
+	const user = await User.findOne({ userName })
 
 	//El usuario no existe
 	if(!user){
@@ -30,11 +26,6 @@ app.post('/signin', async (req, res, next) => {
 	if(!comparePasswords(password, user.password)){
 		return handleLoginFailed(res, 'La contraseña no coincide')
 	}
-
-	console.log(user._id)
-
-	//const prueba = await activities.prueba(user._id)
-	//console.log(prueba)
 
 	//Las credenciales son correctas
 	const token = createToken(user)
@@ -55,23 +46,21 @@ app.post('/signin', async (req, res, next) => {
 
 app.post('/adminSignin', async (req, res, next) => {
 	const { email, password } = req.body
-	const admin = await Admin.findOne({ email }) //busca el que tenga ese email
+	const admin = await Admin.findOne({ email })
 	//El usuario no existe
 	if(!admin){
-		debug(`Admin with email ${email} not found`)
 		return handleLoginFailed(res, 'No se encontró el email')
 	}
 
 	//La contraseña ingresada es invalida
 	if(!comparePasswords(password, admin.password)){
-		debug(`Password ${password} does not match`)
 		return handleLoginFailed(res, 'La contraseña no coincide')
 	}
 
 	//Las credenciales son correctas
 	const adminToken = createToken(admin)
 	
-	//Se envía el usuario desglosado para no envíar la contraseña plana
+	//Se envía el usuario desglosado para no envíar la contraseña
 	res.status(200).json({
 		message: 'Login succeded',
 		adminToken,
@@ -87,13 +76,8 @@ app.post('/adminSignin', async (req, res, next) => {
 app.post('/signup', async (req, res) => {
 
 	let newActivities = []
-
-	console.log(req.body)
-
 	const { firstName, lastName, userName, password, school, grade } = req.body
-	
-	//VALIDAR QUE EL USUARIO NO EXISTA
-	const user = await User.findOne({ userName }) //busca el que tenga ese userName
+	const user = await User.findOne({ userName })
 
 	if(user) {
 		return res.status(401).json({
@@ -102,11 +86,8 @@ app.post('/signup', async (req, res) => {
 		})
 	} else {
 
-		//Inicializar campos del algoritmo en usuario para cada actividad
+		//Se inicializan campos del algoritmo en usuario para cada actividad
 		const result = await activities.findAllActivities()
-
-		console.log("RESULT:")
-		console.log(result)
 
 		result.forEach(function(activity){
 			
@@ -123,20 +104,6 @@ app.post('/signup', async (req, res) => {
 					})
 		})
 
-		/*const admin = new Admin({
-			"firstName": "Mervin" ,
-			"lastName": "Coello",
-			"email": "mahonricoello@gmail.com",
-			"role": "admin",
-			"password": hash("123", 10)
-		})
-		admin.save(function (err, newUser) {
-		    if (err){
-		    	console.log(err)
-		    	return handleError(err, res)
-		    }
-		  });*/
-
 		const u = new User({
 			firstName,
 			lastName,
@@ -151,9 +118,7 @@ app.post('/signup', async (req, res) => {
 		    if (err){
 		    	console.log(err)
 		    	return handleError(err, res)
-		    } 
-
-		    debug(`Creating new user ${newUser}`)
+		    }
 			const token = createToken(newUser)
 			res.status(201).json({
 				message: 'Se ha creado el usuario de exitosamente',
@@ -161,7 +126,9 @@ app.post('/signup', async (req, res) => {
 				userId: newUser._id,
 				firstName,
 				lastName,
-				userName
+				userName,
+				grade,
+				school
 			})
 		  });
 	}

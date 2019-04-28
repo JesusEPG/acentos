@@ -13,6 +13,7 @@ export class AuthGuard implements CanActivate {
 	    
 	    if (this.authService.isTokenExpired()) {
 	      	if(this.authService.isAdminLoggedIn()){
+	      		//hay bug intentar ir a admin desde user normal
 	      		this.router.navigate(['/admin']);
 	      		return false;
 	      	} else {

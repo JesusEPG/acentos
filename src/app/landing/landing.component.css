@@ -8,7 +8,7 @@
 .jumbotron {
 	position: relative;
  	background: url(../../assets/images/Jumbo-02.jpg)
-             no-repeat bottom center / cover;
+             no-repeat top center / cover;
 }
 .jumbotron, .container {
 	padding: 75px 0;

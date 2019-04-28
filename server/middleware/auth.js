@@ -9,10 +9,7 @@ const debug = Debug('acentos:auth-middleware')
 export const required = (req, res, next) => {
 	
 	jwt.verify(req.query.token, secret, (err, token) => {
-		console.log('Token: ')
-		console.log(token)
 		if(err){
-			debug('JWT was not encrypted with our secret')
 			return res.status(401).json({
 				message: 'Sin autorización',
 				error: err
@@ -22,7 +19,6 @@ export const required = (req, res, next) => {
 		User.findOne({ _id: token.user._id }, async function(err, user){
 			
 			if(user&&!user.modified){
-				debug(`Token verified ${token}`)
 				req.user = token.user
 				next()
 			 	
@@ -32,7 +28,6 @@ export const required = (req, res, next) => {
 				
 				try {
 					const modifiedUser = await user.save()
-					console.log(modifiedUser)
 					return res.status(401).json({
 						message: 'Sin autorización',
 						error: {error: 'Usuario modificado', message: 'Contacta al profesor para más información', name: 'User has been modified' },
