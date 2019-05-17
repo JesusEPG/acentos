@@ -28,7 +28,7 @@ export class AuthService {
 	){
 
 		this.usersURL = urljoin(environment.apiUrl, 'auth');
-		
+		console.log(environment);
 		if(this.isLoggedIn()){
 			const { userId, userName, firstName, lastName, school, grade } = JSON.parse(localStorage.getItem('user'));
 			this.currentUser = new User(userName, null, firstName, lastName, school, grade, userId);
@@ -47,11 +47,14 @@ export class AuthService {
 		return this.http.post(url, body, {headers})
 			.map((response: Response) => {
 				const json = response.json();
+				console.log('En el map de register');
+				console.log(json);
 				return json;
 			})
 			.catch((error: Response) => {
 				const res = error.json();
-				
+				console.log('En el catch de register');
+				console.log(res);
 				if(res){
 					if(res.message){
 						
@@ -75,12 +78,16 @@ export class AuthService {
 		return this.http.post(url, body, { headers })
 			.map((response: Response) => {
 				const json = response.json();
+				console.log('En el map de login');
+				console.log(json);
 				this.login(json);
 				return json;
 			})
 			.catch((error: Response) => {
 				const res = error.json();
-				
+				console.log('En el catch de login');
+				console.log(res);
+
 				if(res){
 					if(res.message){
 						
@@ -126,14 +133,16 @@ export class AuthService {
 			});
 	}
 
-	login = ({token, userId, firstName, lastName, userName, grade, school }) => {
+	login = ({ data }) => {
+		const { token, userId, firstName, lastName, userName, grade, school } = data;
 		this.currentUser = new User(userName, null, firstName, lastName, school, grade, userId)
 		localStorage.setItem('token', token);
 		localStorage.setItem('user', JSON.stringify({userId, firstName , lastName, userName, school, grade}));
 		this.router.navigateByUrl('/');
 	}
 
-	adminLogin = ({adminToken, userId, firstName, lastName, email, role }) => {
+	adminLogin = ({ data }) => {
+		const { adminToken, userId, firstName, lastName, email, role } = data;
 		if(this.isLoggedIn()) {
 			localStorage.clear();
 			this.currentUser = null;

@@ -39,8 +39,10 @@ export class SignupComponent implements OnInit {
 			this.authService.signup(user)
 				.subscribe(
 					this.authService.login,
+					// () => {console.log('Exito')},
 					(error) => {
 						//Error en el servidor
+						console.log('Error');
 						if(error==="Registro de usuario falló. Nombre de usuario ya está en uso"){
 							this.snackBar.open(error,
 												'x',

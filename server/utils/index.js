@@ -5,3 +5,11 @@ export const handleError = (error, res) => {
 		error
 	})
 }
+
+export const handleNewError = (error, res, status, message) => {
+	//console.log(error)
+	res.status(status).json({
+		message: message,
+		error
+	})
+}

@@ -10,7 +10,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "start:server": "NODE_ENV=development DEBUG=acentos* nodemon server/index.js --exec babel-node",
-    "start:windows:server": "SET NODE_ENV=development&& DEBUG=acentos*&& nodemon server/index.js --exec babel-node",
+    "start:windows:server": "SET NODE_ENV=development&& nodemon server/index.js --exec babel-node",
     "start:client": "ng serve"
   },
   "private": true,

@@ -50,9 +50,10 @@ export class SigninComponent implements OnInit {
 	                },
 					(error) => {
 						//Error en el servidor
-						this.snackBar.open(error,
-											'x',
-											{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']}
+						this.snackBar.open(
+							error,
+							'x',
+							{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']}
 						);
 						this.authService.logout();
 						this.loading = false;
@@ -60,9 +61,10 @@ export class SigninComponent implements OnInit {
 				);	
 		} else {
 			//Not valid
-			this.snackBar.open(`¡Verifica los datos e intenta nuevamente!`,
-								'x',
-								{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']}
+			this.snackBar.open(
+				`¡Verifica los datos e intenta nuevamente!`,
+				'x',
+				{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']}
 			);
 		}
 	}
