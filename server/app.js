@@ -7,14 +7,21 @@ const app = express();
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:true})) 
 
-if(process.env.NODE_ENV === 'development') {
-	app.use((req, res, next) => {
-		res.setHeader('Access-Control-Allow-Origin', '*');		//cualquier dominio pueda acceder
-		res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Request-With, Content-Type, Accept');	//con cualquiera de estos headers se pueda devolver algo
-		res.setHeader('Access-Control-Allow-Methods', 'POST, GET, PATCH, DELETE, OPTIONS');		//con cualquiera de estos metodos se pueda servir la respuesta
-		next();
-	})
-}
+app.use((req, res, next) => {
+	res.setHeader('Access-Control-Allow-Origin', '*');		//cualquier dominio pueda acceder
+	res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Request-With, Content-Type, Accept');	//con cualquiera de estos headers se pueda devolver algo
+	res.setHeader('Access-Control-Allow-Methods', 'POST, GET, PATCH, DELETE, OPTIONS');		//con cualquiera de estos metodos se pueda servir la respuesta
+	next();
+})
+
+// if(process.env.NODE_ENV === 'development') {
+// 	app.use((req, res, next) => {
+// 		res.setHeader('Access-Control-Allow-Origin', '*');		//cualquier dominio pueda acceder
+// 		res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Request-With, Content-Type, Accept');	//con cualquiera de estos headers se pueda devolver algo
+// 		res.setHeader('Access-Control-Allow-Methods', 'POST, GET, PATCH, DELETE, OPTIONS');		//con cualquiera de estos metodos se pueda servir la respuesta
+// 		next();
+// 	})
+// }
 
 
 
