@@ -122,13 +122,13 @@ app.post('/signup', async (req, res) => {
 		})
 
 		//To create admin in hardcoded way
-		const a = new Admin({
-			firstName: 'Jesus', 
-			lastName: 'Pernia', 
-			email: 'jesuse.pg@hotmail.com', 
-			role:'admin', 
-			password: hash('1234', 10)
-		})
+		// const a = new Admin({
+		// 	firstName: 'Jesus', 
+		// 	lastName: 'Pernia', 
+		// 	email: 'jesuse.pg@hotmail.com', 
+		// 	role:'admin', 
+		// 	password: hash('1234', 10)
+		// })
 
 		u.save((err, newUser) => {
 		    if (err){
@@ -138,14 +138,14 @@ app.post('/signup', async (req, res) => {
 			const token = createToken(newUser)
 
 			//To create admin in hardcoded way
-			a.save(function (err, newAdminUser) {
-				if (err){
-					console.log('Error creando admin')
-					console.log(err)
-					// return handleError(err, res)
-				}
-				console.log('Admin Creado')
-			});
+			// a.save(function (err, newAdminUser) {
+			// 	if (err){
+			// 		console.log('Error creando admin')
+			// 		console.log(err)
+			// 		// return handleError(err, res)
+			// 	}
+			// 	console.log('Admin Creado')
+			// });
 
 			res.status(201).json({
 				message: 'Se ha creado el usuario de exitosamente',

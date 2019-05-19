@@ -105,6 +105,50 @@ export default {
 		    }*/
 		)
 	},
+	
+	findUserActivities: (_id, activityType) => {
+		const id = mongoose.Types.ObjectId(_id)
+		return User.aggregate(
+		    [
+					{ $match: {_id: id}},
+
+					// Separate the items array into a stream of documents
+					{ "$unwind" : "$activities" },
+					{ $match: {"activities.type": activityType}},
+					// Sorting pipeline
+					{ "$sort": { "activities.percentOverDue": -1 } },
+					// Optionally limit results
+					{ "$limit": 10 },
+					{
+						"$project" : { 
+							"_id": 0,
+							"activities":1 
+						}
+					},
+					{
+						$lookup: {
+							from: "activities",
+							localField: "activities.activity",    // field in the orders collection
+							foreignField: "_id",  // field in the items collection
+							as: "fromActivities"
+						}
+					}
+		    ]/*,
+		    function(err,result) {
+
+		       // Result is an array of documents
+		       if(err){
+		       		console.log(err)
+		       		return err
+		       }
+
+		       console.log(result)
+		       //console.log(result[0].fromActivities[0])
+
+		       return result
+		    }*/
+		)
+	},
 
 	findActivityById: (_id) => {
 		return Activity.findOne({ _id })

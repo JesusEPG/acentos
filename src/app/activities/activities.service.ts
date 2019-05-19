@@ -24,10 +24,11 @@ export class ActivitiesService {
 				private router: Router){
 		this.activitiesUrl = urljoin(environment.apiUrl, 'activities');
 	}
-
-	getMistakeActivities(): Promise<void | SelectionActivity[]>{
+	
+	getActivities(activityType: string): Promise<void | SelectionActivity[]>{
 		const token = this.getToken();
-		const url = this.activitiesUrl+ '/mistakes' + token;
+		// const url = this.activitiesUrl + '/selection' + token;
+		const url = this.activitiesUrl + '/activities' + token + `&&type=${activityType}`;
 		return this.http.get(url)
 			.toPromise()
 			.then(response => response.json() as SelectionActivity[])
@@ -38,6 +39,7 @@ export class ActivitiesService {
 				if(res){
 					if(res.error){
 						if(res.error.error === 'Usuario modificado'){
+							console.log('Modificado');
 							this.snackBar.open(`${res.error.error}. ${res.error.message}`,
 												'x',
 												{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']});
@@ -59,66 +61,7 @@ export class ActivitiesService {
 																		userName: res.userName,
 																		school: res.school,
 																		grade: res.grade}));
-							return this.getMistakeActivities();
-						} else if (res.error.error === 'Usuario no disponible') {
-							//Usuario eliminado
-							this.snackBar.open(`${res.error.error}. ${res.error.message}`,
-												'x',
-												{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color'] });
-							this.authService.logout()
-							this.router.navigateByUrl('/');
-						} else {
-							this.snackBar.open(`Hubo un problema al traer la información. Intenta más tarde`,
-												'x',
-												{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color'] });
-							this.router.navigateByUrl('/');
-						}
-
-					} else {
-						this.snackBar.open(`Presentamos problema con el servidor. Intenta más tarde`,
-											'x',
-											{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']});
-						this.router.navigateByUrl('/');
-					}
-				}
-			});
-	}
-
-	getSelectionActivities(): Promise<void | SelectionActivity[]>{
-		const token = this.getToken();
-		const url = this.activitiesUrl+ '/selection' + token;
-		return this.http.get(url)
-			.toPromise()
-			.then(response => response.json() as SelectionActivity[])
-			.catch((response) => {
-				console.log('Catch del mistakesActivities.service');
-				const res = response.json();
-
-				if(res){
-					if(res.error){
-						if(res.error.error === 'Usuario modificado'){
-							this.snackBar.open(`${res.error.error}. ${res.error.message}`,
-												'x',
-												{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']});
-							
-							localStorage.clear();
-
-							this.authService.currentUser = new User(res.userName,
-																	null,
-																	res.firstName,
-																	res.lastName,
-																	res.school,
-																	res.grade,
-																	res.userId);
-							
-							localStorage.setItem('token', res.token);
-							localStorage.setItem('user', JSON.stringify({userId: res.userId,
-																		firstName: res.firstName,
-																		lastName: res.lastName,
-																		userName: res.userName,
-																		school: res.school,
-																		grade: res.grade}));
-							return this.getSelectionActivities();
+							return this.getActivities(activityType);
 						} else if (res.error.error === 'Usuario no disponible') {
 							//Usuario eliminado
 							this.snackBar.open(`${res.error.error}. ${res.error.message}`,

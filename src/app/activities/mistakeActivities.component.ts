@@ -49,7 +49,8 @@ export class MistakeActivitiesComponent implements OnInit, OnDestroy, ComponentC
 	ngOnInit() {
 		
 		this.activitiesService
-			.getMistakeActivities()
+			// .getMistakeActivities()
+			.getActivities('Mistake')
 			.then((activities: SelectionActivity[]) => {
 				this.activities = activities;
 

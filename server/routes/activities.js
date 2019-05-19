@@ -8,69 +8,13 @@ import { User } from '../models'
 
 const app = express.Router()
 
-// 	GET	/api/activities/mistakes
-app.get('/mistakes', required, async (req, res) => {
-
-		
+app.get('/activities', required, async (req, res) => {
+	
 	var result = []
 
 	try {
 
-		//Obtengo las actividades
-		const fetchedActivities = await activities.findMistakesActivities(req.user._id)
-
-		User.findById({_id: req.user._id}, async function(err, user){
-
-			if (err) {
-				console.log(err)
-				return handleError(err, res)
-			}
-
-			fetchedActivities.forEach(async function(activity, index) {
-				//Para cada actividad en fetchedactivities se marcan como taken
-				//y se crea el objeto con todos los datos para devolver al client
-
-				var subDoc = user.activities.id(activity.activities._id);
-				subDoc.set({taken: true})
-
-				result.push({
-							activity: activity.activities.activity,
-							difficulty: activity.activities.difficulty,
-							lastAttempt: activity.activities.lastAttempt,
-							reviewInterval: activity.activities.reviewInterval,
-							percentOverDue: activity.activities.percentOverDue,
-							correctCount: activity.activities.correctCount,
-			    			incorrectCount: activity.activities.incorrectCount,
-			    			lastAnswer: activity.activities.lastAnswer,
-			    			_id: activity.activities._id,
-							type: activity.activities.type,
-							correctAnswer: activity.fromActivities[0].correctAnswer,
-							possibleAnswers: activity.fromActivities[0].possibleAnswers,
-							splittedString: activity.fromActivities[0].splittedString,
-							comment: activity.fromActivities[0].comment,
-							fullString: activity.fromActivities[0].fullString
-				})
-
-			})
-			const newUser = await user.save()
-			res.status(200).json(result)
-
-
-		})
-	} catch (err) {
-		return handleError(err, res)
-	}
-})
-
-// 	GET	/api/activities/mistakes
-app.get('/selection', required, async (req, res) => {
-
-		
-	var result = []
-
-	try {
-
-		const fetchedActivities = await activities.findSelectionActivities(req.user._id)
+		const fetchedActivities = await activities.findUserActivities(req.user._id, req.query.type)
 
 		User.findById({_id: req.user._id}, async function(err, user){
 

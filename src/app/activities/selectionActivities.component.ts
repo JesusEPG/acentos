@@ -49,7 +49,8 @@ export class SelectionActivitiesComponent implements OnInit, ComponentCanDeactiv
 
 	ngOnInit() {
 		this.activitiesService
-			.getSelectionActivities()
+			// .getSelectionActivities()
+			.getActivities('Selection')
 			.then((activities: SelectionActivity[]) => {
 				this.activities = activities;
 
