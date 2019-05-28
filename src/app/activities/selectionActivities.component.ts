@@ -24,17 +24,18 @@ export class SelectionActivitiesComponent implements OnInit, ComponentCanDeactiv
 	activities: SelectionActivity[];
 	updatedActivities: SelectionActivity[];
 	selectedAnswers: any[] =[];
-	counter:number = 0;
+	counter: number = 0;
 	loading = true;
 	result = false;
 	preview = true;
 
-	constructor(private activitiesService: ActivitiesService,
-				public snackBar: MatSnackBar,
-				private router: Router){
-
-	}
-  	@HostListener('window:beforeunload')
+	constructor(
+		private activitiesService: ActivitiesService,
+		public snackBar: MatSnackBar,
+		private router: Router
+	){}
+	  
+	@HostListener('window:beforeunload')
   	canDeactivate(): Observable<boolean> | boolean {
 
     	if(this.preview){
@@ -58,9 +59,10 @@ export class SelectionActivitiesComponent implements OnInit, ComponentCanDeactiv
 
 					if(this.activities.length<1){
 
-						this.snackBar.open(`No hay actividades de completar oración disponbles. Intente más tarde`,
-											'x', 
-											{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']}
+						this.snackBar.open(
+							`No hay actividades de completar oración disponbles. Intente más tarde`,
+							'x', 
+							{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']}
 						);
 						this.router.navigateByUrl('/');
 						
@@ -73,9 +75,11 @@ export class SelectionActivitiesComponent implements OnInit, ComponentCanDeactiv
 				}
 			})
 			.catch((err: any) => {
-				this.snackBar.open(`Hubo un problema al traer la información. Intenta más tarde`,
-									'x',
-									{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color'] });
+				this.snackBar.open(
+					`Hubo un problema al traer la información. Intenta más tarde`,
+					'x',
+					{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color'] }
+				);
 				this.router.navigateByUrl('/');
 			});
 	}

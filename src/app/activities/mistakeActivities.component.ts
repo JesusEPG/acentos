@@ -58,9 +58,10 @@ export class MistakeActivitiesComponent implements OnInit, OnDestroy, ComponentC
 
 					if(this.activities.length<1){
 
-						this.snackBar.open(`No hay actividades de identificación de error disponibles. Intente más tarde`,
-											'x', 
-											{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']}
+						this.snackBar.open(
+							`No hay actividades de identificación de error disponibles. Intente más tarde`,
+							'x', 
+							{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color']}
 						);
 						this.router.navigateByUrl('/');
 						
@@ -72,9 +73,11 @@ export class MistakeActivitiesComponent implements OnInit, OnDestroy, ComponentC
 				}
 			})
 			.catch((err: any) => {
-				this.snackBar.open(`Hubo un problema al traer la información. Intenta más tarde`,
-									'x',
-									{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color'] });
+				this.snackBar.open(
+					`Hubo un problema al traer la información. Intenta más tarde`,
+					'x',
+					{ duration: 2500, verticalPosition: 'top', panelClass: ['snackbar-color'] }
+				);
 				this.router.navigateByUrl('/');
 			});
 	}

@@ -34,6 +34,8 @@ import { ActivityListComponent } from './admin/activityList.component';
 import { UpdateMistakeActivityComponent } from './mistakes/updateMistakeActivity.component';
 import { UpdateSelectionActivityComponent } from './simpleSelection/updateSelectionActivity.component';
 import { UpdateUserComponent } from './admin/updateUser.component';
+import { SummaryComponent } from './utils/summary/summary.component';
+import { ActivityPreviewComponent } from './utils/activityPreview/activityPreview.component';
 
 //Services
 import { AuthService } from './auth/auth.service';
@@ -45,7 +47,6 @@ import { SessionGuard } from './activities/session-guard.service';
 
 //Routes
 import { Routing } from './app.routing';
-
 
 @NgModule({
   declarations: [
@@ -68,7 +69,9 @@ import { Routing } from './app.routing';
     ActivityListComponent,
     UpdateMistakeActivityComponent,
     UpdateSelectionActivityComponent,
-    UpdateUserComponent
+    UpdateUserComponent,
+    SummaryComponent,
+    ActivityPreviewComponent
   ],
   imports: [
     BrowserModule,
