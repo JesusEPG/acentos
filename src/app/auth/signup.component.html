@@ -13,6 +13,34 @@
 			<div class="col-md-5">
 				<form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
 					<div class="form-row">
+						<div class="col-md-12">
+							<div class="image-container">
+								<label *ngIf="!croppedImage" for="file-upload" class="custom-file-upload">
+									<span class="uploader-text">Cargar imagen</span>
+								</label>
+								<input id="file-upload" type="file" (change)="fileChangeEvent($event)"/>
+	
+								<image-cropper
+									class="cropper"
+									*ngIf="cropperOnPage"
+									[imageChangedEvent]="imageChangedEvent"
+									[maintainAspectRatio]="true"
+									[aspectRatio]="1 / 1"
+									[resizeToWidth]="150"
+									[roundCropper]="true"
+									format="png"
+									(imageCropped)="imageCropped($event)"
+									(imageLoaded)="imageLoaded()"
+									(cropperReady)="cropperReady()"
+									(loadImageFailed)="loadImageFailed()"
+								></image-cropper>
+								<button *ngIf="cropperOnPage" type="submit" class="btn btn-primary cropper-button" color="accent" (click)="cropperOnPage=false">Cerrar</button>
+	
+								<img *ngIf="croppedImage" [src]="croppedImage" class="selected-image"/>
+							</div>
+							
+						</div>
+
 						<div class="form-group col-md-6">
 							<label for="first_name">Nombre</label>
 							<input class="form-control" placeholder="Nombre" formControlName="firstName" id="firstName" tooltip="Sólo letras. Máximo 50 caracteres" onkeydown="if (event.keyCode == 13) return false">

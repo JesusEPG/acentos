@@ -21,7 +21,7 @@ export class ActivitiesService {
 	constructor(private http: Http,
 				private authService: AuthService,
 				public snackBar: MatSnackBar,
-				private router: Router){
+				private router: Router) {
 		this.activitiesUrl = urljoin(environment.apiUrl, 'activities');
 	}
 	

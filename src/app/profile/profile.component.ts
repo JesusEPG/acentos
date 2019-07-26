@@ -183,6 +183,10 @@ export class ProfileComponent implements OnInit {
 	grade() {
 		return this.authService.currentUser.grade;
 	}
+	
+	userImage() {
+		return this.authService.currentUser.userImage;
+	}
 
 	school() {
 		return this.authService.currentUser.school;

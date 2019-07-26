@@ -7,6 +7,7 @@ import { HttpModule } from '@angular/http';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { NgPipesModule } from 'ngx-pipes'; //CAMBIAR!!
 import { NgxPaginationModule } from 'ngx-pagination';
+import { ImageCropperModule } from 'ngx-image-cropper';
 
 //Angular Material
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -84,7 +85,8 @@ import { Routing } from './app.routing';
     MaterialModule,
     ChartsModule,
     NgPipesModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    ImageCropperModule
   ],
   providers: [AuthService, AuthGuard, SigninGuard, AdminGuardService, AdminSigninGuard, SessionGuard],
   bootstrap: [AppComponent]

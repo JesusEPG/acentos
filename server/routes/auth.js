@@ -1,4 +1,6 @@
 import express from 'express'
+// import fs  from 'fs';
+import * as fs from 'fs';
 import jwt from 'jsonwebtoken'
 import { secret } from '../config'
 import { User, Admin } from '../models'
@@ -40,6 +42,7 @@ app.post('/signin', async (req, res, next) => {
 			lastName: user.lastName,
 			userName: user.userName,
 			grade: user.grade,
+			profileImagePath: user.profileImagePath,
 			school: user.school
 		}
 	})
@@ -78,6 +81,8 @@ app.post('/adminSignin', async (req, res, next) => {
 app.post('/signup', async (req, res) => {
 	
 	let newActivities = []
+	console.log('Request: ', req.body);
+	
 	const { firstName, lastName, userName, password, school, grade } = req.body
 	const user = await User.findOne({ userName })
 
@@ -93,73 +98,86 @@ app.post('/signup', async (req, res) => {
 		//implementar try/catch
 
 		//Se inicializan campos del algoritmo en usuario para cada actividad
-		const result = await activities.findAllActivities()
+		try {
+			const path = './server/public/files/' + Date.now() + '.png'
+			const imgData = req.body.userImage.replace(/^data:([A-Za-z-+/]+);base64,/, '');
+			fs.writeFileSync(path, imgData, {encoding: 'base64'});
+			console.log(path);
 
-		result.forEach((activity) => {
-			
-			newActivities.push({ 
-				activity: activity._id,
-				type: activity.type,
-				difficulty: activity.difficulty,
-				percentOverDue: 1,
-				reviewInterval: 1,
-				lastAttempt: null,
-				correctCount: 0,
-				incorrectCount: 0,
-				lastAnswer: null
+			const result = await activities.findAllActivities()
+
+			result.forEach((activity) => {
+				
+				newActivities.push({ 
+					activity: activity._id,
+					type: activity.type,
+					difficulty: activity.difficulty,
+					percentOverDue: 1,
+					reviewInterval: 1,
+					lastAttempt: null,
+					correctCount: 0,
+					incorrectCount: 0,
+					lastAnswer: null
+				})
 			})
-		})
 
-		const u = new User({
-			firstName,
-			lastName,
-			userName,
-			password: hash(password, 10),
-			modified: false,
-			school,
-			grade,
-			activities: newActivities
-		})
-
-		//To create admin in hardcoded way
-		// const a = new Admin({
-		// 	firstName: 'Jesus', 
-		// 	lastName: 'Pernia', 
-		// 	email: 'jesuse.pg@hotmail.com', 
-		// 	role:'admin', 
-		// 	password: hash('1234', 10)
-		// })
-
-		u.save((err, newUser) => {
-		    if (err){
-		    	console.log(err)
-		    	return handleError(err, res)
-		    }
-			const token = createToken(newUser)
+			const u = new User({
+				firstName,
+				lastName,
+				userName,
+				password: hash(password, 10),
+				modified: false,
+				school,
+				grade,
+				profileImagePath: path,
+				activities: newActivities
+			})
 
 			//To create admin in hardcoded way
-			// a.save(function (err, newAdminUser) {
-			// 	if (err){
-			// 		console.log('Error creando admin')
-			// 		console.log(err)
-			// 		// return handleError(err, res)
-			// 	}
-			// 	console.log('Admin Creado')
-			// });
+			// const a = new Admin({
+			// 	firstName: 'Jesus', 
+			// 	lastName: 'Pernia', 
+			// 	email: 'jesuse.pg@hotmail.com', 
+			// 	role:'admin', 
+			// 	password: hash('1234', 10)
+			// })
 
-			res.status(201).json({
-				message: 'Se ha creado el usuario de exitosamente',
-				data: {
-					token,
-					userId: newUser._id,
-					firstName,
-					lastName,
-					userName,
-					grade,
-					school
+			u.save((err, newUser) => {
+				if (err){
+					console.log(err)
+					return handleError(err, res)
 				}
-			})
-		});
+				const token = createToken(newUser)
+
+				//To create admin in hardcoded way
+				// a.save(function (err, newAdminUser) {
+				// 	if (err){
+				// 		console.log('Error creando admin')
+				// 		console.log(err)
+				// 		// return handleError(err, res)
+				// 	}
+				// 	console.log('Admin Creado')
+				// });
+
+				res.status(201).json({
+					message: 'Se ha creado el usuario de exitosamente',
+					data: {
+						token,
+						userId: newUser._id,
+						firstName,
+						lastName,
+						userName,
+						grade,
+						profileImagePath: path,
+						school
+					}
+				})
+			});
+			
+		} catch (error) {
+			console.log('Error escribiendo file: ', error);
+		}
+		
 	}
 })
 

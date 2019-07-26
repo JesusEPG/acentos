@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { ImageCroppedEvent } from 'ngx-image-cropper';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 import { AuthService } from './auth.service';
 import { User } from './user.model';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { noWhitespaceValidator } from '../utils/noWhitespaces.validator';
 
 @Component({
@@ -14,7 +16,12 @@ import { noWhitespaceValidator } from '../utils/noWhitespaces.validator';
 export class SignupComponent implements OnInit {
 
 	signupForm: FormGroup;
-	loading:boolean = false;
+	loading: boolean = false;
+
+	uploadedImage: any;
+	imageChangedEvent: any = '';
+	croppedImage: any = '';
+	cropperOnPage: boolean = false;
 
 	constructor(private authService: AuthService,
 				private snackBar: MatSnackBar){}
@@ -31,11 +38,52 @@ export class SignupComponent implements OnInit {
 
 	}
 
+	onFileChange(event: any) {
+		console.log(event);
+		let reader = new FileReader();
+		if(event.target.files && event.target.files.length > 0) {
+			let file = event.target.files[0];
+			reader.readAsDataURL(file);
+			reader.onload = () => {
+				console.log(event);
+				console.log('Reader result');
+				console.log(reader.result);
+				// this.uploadedImage = event.target.result;
+				this.uploadedImage = reader.result;
+			}
+		}
+	}
+
+	fileChangeEvent(event: any): void {
+		this.cropperOnPage = true;
+        this.imageChangedEvent = event;
+	}
+	
+    imageCropped(event: ImageCroppedEvent) {
+		console.log(event);
+		this.croppedImage = event.base64;
+		console.log('Cambio la imagen');
+		
+	}
+	
+    imageLoaded() {
+        // show cropper
+	}
+	
+    cropperReady() {
+		// cropper ready
+		// this.cropperOnPage = true;
+	}
+	
+    loadImageFailed() {
+        // show message
+    }
+
 	onSubmit() {
 		if(this.signupForm.valid){
 			this.loading = true;
 			const {firstName, lastName, userName, password, school, grade} = this.signupForm.value;
-			const user = new User(userName, password, firstName, lastName, school, grade);
+			const user = new User(userName, password, firstName, lastName, school, grade, this.croppedImage);
 			this.authService.signup(user)
 				.subscribe(
 					this.authService.login,

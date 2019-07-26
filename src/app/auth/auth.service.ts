@@ -134,10 +134,10 @@ export class AuthService {
 	}
 
 	login = ({ data }) => {
-		const { token, userId, firstName, lastName, userName, grade, school } = data;
-		this.currentUser = new User(userName, null, firstName, lastName, school, grade, userId)
+		const { token, userId, firstName, lastName, userName, grade, profileImagePath, school } = data;
+		this.currentUser = new User(userName, null, firstName, lastName, school, grade, profileImagePath, userId)
 		localStorage.setItem('token', token);
-		localStorage.setItem('user', JSON.stringify({userId, firstName , lastName, userName, school, grade}));
+		localStorage.setItem('user', JSON.stringify({userId, firstName , lastName, userName, school, grade, profileImagePath}));
 		this.router.navigateByUrl('/');
 	}
 

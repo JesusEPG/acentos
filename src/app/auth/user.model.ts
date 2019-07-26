@@ -6,8 +6,10 @@ export class User {
 		public lastName?: string,
 		public school?: string,
 		public grade?: string,
+		public userImage?: string,
 		public _id?: string,
-		public activities?: any[]
+		public activities?: any[],
+		
 	) {}
 
 	fullName() {

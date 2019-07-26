@@ -24,34 +24,30 @@ app.get('/activities', required, async (req, res) => {
 			}
 
 			fetchedActivities.forEach(async function(activity, index) {
-				
-				
+						
 				var subDoc = user.activities.id(activity.activities._id);
 				subDoc.set({taken: true})
 
 				result.push({
-							activity: activity.activities.activity,
-							difficulty: activity.activities.difficulty,
-							lastAttempt: activity.activities.lastAttempt,
-							reviewInterval: activity.activities.reviewInterval,
-							percentOverDue: activity.activities.percentOverDue,
-							correctCount: activity.activities.correctCount,
-			    			incorrectCount: activity.activities.incorrectCount,
-			    			lastAnswer: activity.activities.lastAnswer,
-			    			_id: activity.activities._id,
-							type: activity.activities.type,
-							correctAnswer: activity.fromActivities[0].correctAnswer,
-							possibleAnswers: activity.fromActivities[0].possibleAnswers,
-							splittedString: activity.fromActivities[0].splittedString,
-							comment: activity.fromActivities[0].comment,
-							fullString: activity.fromActivities[0].fullString
+					activity: activity.activities.activity,
+					difficulty: activity.activities.difficulty,
+					lastAttempt: activity.activities.lastAttempt,
+					reviewInterval: activity.activities.reviewInterval,
+					percentOverDue: activity.activities.percentOverDue,
+					correctCount: activity.activities.correctCount,
+					incorrectCount: activity.activities.incorrectCount,
+					lastAnswer: activity.activities.lastAnswer,
+					_id: activity.activities._id,
+					type: activity.activities.type,
+					correctAnswer: activity.fromActivities[0].correctAnswer,
+					possibleAnswers: activity.fromActivities[0].possibleAnswers,
+					splittedString: activity.fromActivities[0].splittedString,
+					comment: activity.fromActivities[0].comment,
+					fullString: activity.fromActivities[0].fullString
 				})
-
 			})
 			const newUser = await user.save()
 			res.status(200).json(result)
-
-
 		})
 	} catch (err) {
 		handleError(err, res)
@@ -64,19 +60,15 @@ app.get('/:id', adminRequired, async (req, res) => {
 	try{
 		const activity = await activities.findActivityById(req.params.id)
 		res.status(200).json(activity)
-
 	} catch (err) {
 		return handleError(err, res)
 	}
-
 })
 
 app.post('/updateActivities', required, async (req, res) => {
 
-	
 	//activities to update
 	const toUpdate = req.body
-
 
 	User.findById({_id:req.user._id}, async function(err, user){
 		if (err){
@@ -144,7 +136,6 @@ app.post('/newSelectionActivity', adminRequired, async (req, res) => {
 		
 		const savedActivity = await activities.createActivity(activity)
 		try {
-			
 			const test = await activities.updateUsersActivities(savedActivity)
 			res.status(201).json(savedActivity)
 		} catch (err) {
@@ -161,6 +152,7 @@ app.post('/newSelectionActivity', adminRequired, async (req, res) => {
 app.post('/newMistakeActivity', adminRequired, async (req, res) => {
 
 	const {difficulty, type, comment, fullString, splittedString, correctAnswer, possibleAnswers } = req.body
+
 	const activity = {
 		difficulty,
 		type,
@@ -220,23 +212,16 @@ app.post('/updateActivity', adminRequired, async (req, res) => {
 
 								if(activity.activity.equals(updatedActivity._id)){
 									if (activity.taken){
-										const update = await activities.updateUsersTakenActivity(user._id, updatedActivity)
-										
+										const update = await activities.updateUsersTakenActivity(user._id, updatedActivity)	
 									} else {
-
-										const update = await activities.updateUsersActivity(user._id, updatedActivity)
-										
+										const update = await activities.updateUsersActivity(user._id, updatedActivity)	
 									}
 								}
 							});
-						});
-
-
+						});	
 						
 						res.status(201).json({message: 'Se ha actualizado la actividad exitosamente'})
-
 					} catch(err) {
-						
 						console.log(err)
 						return handleError(err, res)
 					}
@@ -261,7 +246,5 @@ app.post('/updateActivity', adminRequired, async (req, res) => {
 		return handleError(err, res)
 	}
 })
-
-
 
 export default app

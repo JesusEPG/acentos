@@ -9,6 +9,7 @@ const UserSchema = Schema({
 	modified: { type: Boolean, default: false},
 	school: { type: String, required: true },
 	grade: { type: String, required: true},
+	profileImagePath: { type: String, required: true},
 	//activities: [{}]
 	activities: [{ 
 		activity: { type: Schema.Types.ObjectId, ref: 'SimpleSelectionActivity', required: true },
